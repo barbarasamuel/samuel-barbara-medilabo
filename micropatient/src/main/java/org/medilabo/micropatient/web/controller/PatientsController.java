@@ -49,8 +49,8 @@ public class PatientsController {
         return patientAjoute;
     }
 
-    @PatchMapping(value = "/Patients")
-    public void modifierProduit(@RequestBody Patients patient) {
+    @PatchMapping(value = "/Patients/{id}")
+    public void modifierProduit(@RequestBody Patients patient,@PathVariable Long id) {
         Patients patientModifie = patientsService.save(patient);
     }
 

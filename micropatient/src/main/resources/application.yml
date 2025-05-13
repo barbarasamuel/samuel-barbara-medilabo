@@ -1,0 +1,28 @@
+server:
+  port: 8999
+
+jwt:
+    secret: "secret-key"
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: patient-service
+          uri: http://localhost:8999
+          predicates:
+            - Path=/Patients/**
+        - id: historique-service
+          uri: http://localhost:8998
+          predicates:
+            - Path=/Historiques/**
+        - id: risque-service
+          uri: http://localhost:8997
+          predicates:
+            - Path=/Risques/**
+
+  security:
+    oauth2:
+      resource-server:
+        jwt: secret-key
+        #  issuer-uri: https://medilabo.org/
