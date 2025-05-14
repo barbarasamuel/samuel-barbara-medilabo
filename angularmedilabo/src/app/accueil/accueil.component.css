@@ -1,0 +1,11 @@
+.image-accueil {
+    display: flex; /* Active Flexbox */
+    justify-content: center; /* Centre horizontalement */
+    align-items: center; /* Centre verticalement (si nécessaire) */
+    height: 100vh; /* Optionnel : définit la hauteur du conteneur */
+}
+
+.image-accueil img {
+    max-width: 100%; /* Assure que l'image ne dépasse pas la largeur du conteneur */
+    height: auto; /* Maintient le rapport d'aspect de l'image */
+}

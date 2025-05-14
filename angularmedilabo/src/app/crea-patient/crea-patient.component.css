@@ -1,0 +1,51 @@
+body {
+    background: #F0F0F0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    color: #333;
+}
+
+.contactez-nous {
+    width: 400px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    background: white;
+}
+
+.contactez-nous > h1 {
+    font-weight: bold;
+    text-align: center;
+}
+
+form div {
+    margin-bottom: 15px;
+}
+
+form div > label {
+    margin-bottom: 5px;
+    display: block;
+}
+
+form div > input,
+form div > select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+form button {
+    width: 100%;
+    padding: 10px;
+    background: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+form button:hover {
+    background: #0056b3;
+}
