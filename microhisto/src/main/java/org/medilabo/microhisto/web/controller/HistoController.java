@@ -8,24 +8,24 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/histo")
+//@RequestMapping("/histo")
 public class HistoController {
     @Autowired
     private HistoService histoService;
 
-    @GetMapping("/Histo/{id}")
-    public List<Histo> getAllHistoById(@PathVariable Histo histo) {
-        return histoService.getHistoById(histo);
+    @GetMapping("/Hist/{id}")
+    public List<Histo> getAllHistoByPatient(@PathVariable String id) {
+        return histoService.getHistoByPatient(Long.valueOf(id));
     }
 
-    @GetMapping("/Histo/details/{id}")
+    @GetMapping("/Hist/details/{id}")
     public Histo geNoteById(@PathVariable String id) {
         return histoService.getNoteById(id);
     }
 
-    @PostMapping(value = "/Histo")
-    public Histo save(@RequestBody Histo histo) {
-        return histoService.save(histo);
+    @PostMapping(value = "/Hist/creation/{id}")
+    public Histo insert(@RequestBody Histo histo, @PathVariable String id) {
+        return histoService.insert(histo,id);
     }
 
 }

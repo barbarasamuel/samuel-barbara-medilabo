@@ -4,8 +4,9 @@ import org.medilabo.microhisto.model.Histo;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
+import java.util.Optional;
 
-public interface HistoRepository extends MongoRepository<Histo, String> {
+public interface HistoRepository extends MongoRepository<Histo, Long> {
     //List<Histo> findByPatient(Long patId);
-    List<Histo> findAllById(Long id);
+    Optional<List<Histo>> findByPatId(Long id);
 }
