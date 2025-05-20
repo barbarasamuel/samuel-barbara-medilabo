@@ -11,15 +11,15 @@ spring:
         - id: patient-service
           uri: http://localhost:8999
           predicates:
-            - Path=/Patients/**
+            - Path=/patients/**
         - id: historique-service
           uri: http://localhost:8998
           predicates:
-            - Path=/Hist/**
+            - Path=/hist/**
         - id: risque-service
           uri: http://localhost:8997
           predicates:
-            - Path=/Risques/**
+            - Path=/risques/**
 
   security:
     oauth2:

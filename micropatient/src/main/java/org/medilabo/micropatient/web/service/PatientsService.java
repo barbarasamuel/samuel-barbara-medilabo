@@ -34,7 +34,7 @@ public class PatientsService {
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
         ResponseEntity<String> response = restTemplate.exchange(
-                "http://localhost:8999/Patients",
+                "http://localhost:8999/patients",
                 HttpMethod.GET,
                 entity,
                 String.class

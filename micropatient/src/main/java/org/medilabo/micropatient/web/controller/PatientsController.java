@@ -18,14 +18,14 @@ public class PatientsController {
     @Autowired
     private PatientsService patientsService;
 
-    @GetMapping("/Patients")
+    @GetMapping("/patients")
     //public List<Patients> listePatients() {
     public List<Patients> listePatients() {
         List<Patients> listePatients = patientsService.findAll();
         return listePatients;
     }
 
-    @GetMapping("/Patients/{id}")
+    @GetMapping("/patients/{id}")
     public Patients afficherDetailPatient(@PathVariable Long id) {
         Optional<Patients> patientAffiche = patientsService.findById(id);
         if(patientAffiche.get()==null) throw new PatientIntrouvableException("Le produit avec l'id " + id + " est INTROUVABLE. Écran Bleu si je pouvais.");
@@ -33,7 +33,7 @@ public class PatientsController {
         return patientAffiche.get();
     }
 
-    @PostMapping(value = "/Patients")
+    @PostMapping(value = "/patients")
     //public ResponseEntity ajouterProduit(@RequestBody Patients patient) {
     public Patients ajouterProduit(@RequestBody Patients patient) {
         Patients patientAjoute = patientsService.save(patient);
@@ -49,7 +49,7 @@ public class PatientsController {
         return patientAjoute;
     }
 
-    @PatchMapping(value = "/Patients/{id}")
+    @PatchMapping(value = "/patients/{id}")
     public void modifierProduit(@RequestBody Patients patient,@PathVariable Long id) {
         Patients patientModifie = patientsService.save(patient);
     }

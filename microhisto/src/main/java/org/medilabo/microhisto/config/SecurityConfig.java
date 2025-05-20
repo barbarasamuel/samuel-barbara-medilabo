@@ -27,7 +27,7 @@ public class SecurityConfig {
                 })
                 .cors(cors -> cors.disable())
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/Histo","/Histo/**").permitAll();
+                    auth.requestMatchers("/histo","/histo/**").permitAll();
                     //auth.requestMatchers("/Patients").authenticated();
                     auth.anyRequest().authenticated();
                     //auth.anyRequest().permitAll();

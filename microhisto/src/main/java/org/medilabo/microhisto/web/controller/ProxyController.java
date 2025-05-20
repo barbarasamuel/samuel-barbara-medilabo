@@ -1,6 +1,6 @@
-package org.medilabo.micropatient.web.controller;
+package org.medilabo.microhisto.web.controller;
 
-import org.medilabo.micropatient.web.service.PatientsService;
+import org.medilabo.microhisto.web.service.HistoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/proxy")
 public class ProxyController {
     @Autowired
-    private PatientsService patientsService;
+    private HistoService histoService;
 
-    @GetMapping("/patients")
+    @GetMapping("/hist")
     public ResponseEntity<String> proxyUsers(@RequestHeader("Authorization") String authHeader) {
         String jwt = authHeader.replace("Bearer ", "");
-        String result = patientsService.getUsers(jwt);
+        String result = histoService.getUsers(jwt);
         return ResponseEntity.ok(result);
     }
 }

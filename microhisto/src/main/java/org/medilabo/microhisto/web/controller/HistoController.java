@@ -13,17 +13,17 @@ public class HistoController {
     @Autowired
     private HistoService histoService;
 
-    @GetMapping("/Hist/{id}")
+    @GetMapping("/hist/{id}")
     public List<Histo> getAllHistoByPatient(@PathVariable String id) {
         return histoService.getHistoByPatient(Long.valueOf(id));
     }
 
-    @GetMapping("/Hist/details/{id}")
+    @GetMapping("/hist/details/{id}")
     public Histo geNoteById(@PathVariable String id) {
         return histoService.getNoteById(id);
     }
 
-    @PostMapping(value = "/Hist/creation/{id}")
+    @PostMapping(value = "/hist/creation/{id}")
     public Histo insert(@RequestBody Histo histo, @PathVariable String id) {
         return histoService.insert(histo,id);
     }
