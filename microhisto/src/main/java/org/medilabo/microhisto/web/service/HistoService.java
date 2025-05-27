@@ -55,11 +55,11 @@ public class HistoService {
         return histoRepository.findById(Long.valueOf(id)).orElse(null);
     }
 
-    public Histo insert(Histo histo, String id) {
+    public Histo insert(Histo histo) {
         Histo newHisto = new Histo();
-        newHisto.setPatId(Long.valueOf(id));
+        newHisto.setPatId(histo.getPatId());
         newHisto.setPatient(histo.getPatient());//("TestNone");
         newHisto.setNote(histo.getNote());//("Le patient déclare qu'il 'se sent très bien' Poids égal ou inférieur au poids recommandé");
-        return histoRepository.insert(histo);
+        return histoRepository.insert(newHisto);
     }
 }

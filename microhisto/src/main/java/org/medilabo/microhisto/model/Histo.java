@@ -9,16 +9,16 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "medilabo")
 public class Histo {
     @Id
-    private Long id;
+    private String id;
     private Long patId;
     private String patient;
     private String note;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

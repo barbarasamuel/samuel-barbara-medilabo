@@ -23,9 +23,9 @@ public class HistoController {
         return histoService.getNoteById(id);
     }
 
-    @PostMapping(value = "/hist/creation/{id}")
-    public Histo insert(@RequestBody Histo histo, @PathVariable String id) {
-        return histoService.insert(histo,id);
+    @PostMapping(value = "/hist/creation")//@PostMapping(value = "/hist/creation/{id}")
+    public Histo insert(@RequestBody Histo histo) {
+        return histoService.insert(histo);
     }
 
 }
