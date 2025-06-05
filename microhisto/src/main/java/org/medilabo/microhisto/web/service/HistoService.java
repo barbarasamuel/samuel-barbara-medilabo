@@ -52,7 +52,12 @@ public class HistoService {
     }
 
     public Histo getNoteById(String id) {
-        return histoRepository.findById(Long.valueOf(id)).orElse(null);
+        Optional<Histo> histo = histoRepository.findById(id);
+        if(histo.isPresent()){
+            return histo.get();
+        }else{
+            return null;
+        }
     }
 
     public Histo insert(Histo histo) {

@@ -7,6 +7,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface HistoRepository extends MongoRepository<Histo, Long> {
-    //List<Histo> findByPatient(Long patId);
     Optional<List<Histo>> findByPatId(Long id);
+    Optional<Histo> findById(String id);
 }

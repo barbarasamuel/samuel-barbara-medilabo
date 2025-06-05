@@ -7,19 +7,17 @@ import org.medilabo.micropatient.web.service.PatientsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 public class PatientsController {
     @Autowired
     private PatientsService patientsService;
 
     @GetMapping("/patients")
-    //public List<Patients> listePatients() {
     public List<Patients> listePatients() {
         List<Patients> listePatients = patientsService.findAll();
         return listePatients;
@@ -34,8 +32,7 @@ public class PatientsController {
     }
 
     @PostMapping(value = "/patients")
-    //public ResponseEntity ajouterProduit(@RequestBody Patients patient) {
-    public Patients ajouterProduit(@RequestBody Patients patient) {
+    public Patients ajouterPatient(@RequestBody Patients patient) {
         Patients patientAjoute = patientsService.save(patient);
         /*if (patientAjoute == null)
             return ResponseEntity.noContent().build();
@@ -49,9 +46,15 @@ public class PatientsController {
         return patientAjoute;
     }
 
-    @PatchMapping(value = "/patients/{id}")
-    public void modifierProduit(@RequestBody Patients patient,@PathVariable Long id) {
+    @PutMapping(value = "/patients/{id}")
+    public ResponseEntity<Patients> modifierPatient(@RequestBody Patients patient,@PathVariable Long id) {
+        Optional<Patients> existing = patientsService.findById(id);
+        if (existing.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
         Patients patientModifie = patientsService.save(patient);
+        return ResponseEntity.ok(patientModifie);
     }
 
 

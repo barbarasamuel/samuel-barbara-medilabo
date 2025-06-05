@@ -79,6 +79,7 @@ public class SecurityConfig {
                     auth.requestMatchers("/hist/**").permitAll();
                     //auth.requestMatchers(HttpMethod.GET, "/hist/**").hasAuthority("USER");
                     //auth.requestMatchers(HttpMethod.POST, "/hist/**").hasAuthority("USER");
+                    auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
                     auth.anyRequest().authenticated();
                     //auth.anyRequest().permitAll();
                 })
