@@ -9,8 +9,6 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-
-//@RequestMapping("/histo")
 public class HistoController {
     @Autowired
     private HistoService histoService;

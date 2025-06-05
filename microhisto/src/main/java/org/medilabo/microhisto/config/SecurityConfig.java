@@ -31,40 +31,14 @@ public class SecurityConfig {
     @Autowired
     private TokenService tokenService;
 
-    /*@Autowired
-    private JwtAuthenticationFilter jwtAuthenticationFilter;*/
-    /*private final JwtAuthenticationFilter jwtAuthenticationFilter;
-*/
-    /*public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
-        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-    }*/
-
     @Value("${jwt.secret}")
     private String jwtSecret;
 
-    /*@Bean
-    UserDetailsService userDetailsService() {
-        return new UserDetailsServiceImpl();
-    }*/
-
-    /*@Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter() {
-        return new JwtAuthenticationFilter();
-    }@Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter(UserDetailsService userDetailsService) {
-        return new JwtAuthenticationFilter(tokenService, userDetailsService);
-    }*/////////////////
     @Bean
     public UserDetailsService userDetailsService() {
         return new UserDetailsServiceImpl();
     }
-/*
-    @Bean
-    public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService());
-        return authProvider;
-    }*/
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,
                                                    JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception{
@@ -77,35 +51,12 @@ public class SecurityConfig {
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/hist/**").permitAll();
-                    //auth.requestMatchers(HttpMethod.GET, "/hist/**").hasAuthority("USER");
-                    //auth.requestMatchers(HttpMethod.POST, "/hist/**").hasAuthority("USER");
                     auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
                     auth.anyRequest().authenticated();
-                    //auth.anyRequest().permitAll();
                 })
-                /*.oauth2ResourceServer(oauth2 -> oauth2
-                        .jwt(jwt -> jwt
-                                .decoder(jwtDecoder())
-                        )
-                )*/
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-
-                /*.sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .exceptionHandling(ex -> ex
-                        .authenticationEntryPoint(unauthorizedEntryPoint)
-                        .accessDeniedHandler(accessDeniedHandler))*/
                 .build();
     }
-
-    /*@Bean
-    public UserDetailsService userDetailsService() {
-
-        UserDetails user = User.builder()
-                .username("currentUser")
-                .roles("USER")
-                .build();
-        return new InMemoryUserDetailsManager(user);
-    }*/
 
     @Bean
     public JwtDecoder jwtDecoder() {
