@@ -8,13 +8,6 @@ import { ListePatientsComponent } from './liste-patients/liste-patients.componen
 import { DetailsPatientComponent } from './details-patient/details-patient.component';
 import { BrowserModule } from '@angular/platform-browser';
 
-/*@Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
-})*/
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -23,11 +16,6 @@ import { BrowserModule } from '@angular/platform-browser';
   styleUrl: 'app.component.css'
 })
 
-/*@NgModule({
-  declarations: [ListePatientsComponent,DetailsPatientComponent],
-  imports:[BrowserModule],
-  bootstrap: []
-})*/
 export class AppComponent {
   /*title = 'medilabo';*/
   patientsData: any;

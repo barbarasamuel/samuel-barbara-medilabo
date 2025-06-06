@@ -1,14 +1,20 @@
 {
-    "/Patients": {
+    "/patients": {
       "target": "http://localhost:8999",
       "secure": false,
       "changeOrigin": true,
       "logLevel": "debug"},
-    "headers": {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET, POST, PATCH, DELETE, OPTIONS",
-      "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-    
-    }
+
+      "/patients/*": {
+      "target": "http://localhost:8999",
+      "secure": false,
+      "changeOrigin": true,
+      "logLevel": "debug"},
+
+    "/hist/*": {
+      "target": "http://localhost:8998",
+      "secure": false,
+      "changeOrigin": true,
+      "logLevel": "debug"}
 
   }

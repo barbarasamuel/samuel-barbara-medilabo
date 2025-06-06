@@ -2,26 +2,31 @@
     <h2 *ngIf="mode === 'create'">Créer un patient</h2>
     <h2 *ngIf="mode === 'edit'">Modifier un patient</h2>
     <h2 *ngIf="mode === 'view'">Détails du patient</h2>
-    {{patient|json}}
-    <form [formGroup]="patientForm"  (ngSubmit)="onSave()">
+    <!--{{patient|json}}-->
+    <form [formGroup]="patientForm" (ngSubmit)="onSave()">
         <div  *ngIf="patient">
+            <label for="id">Identifiant du patient</label>
+            <input type="text" id="id" formControlName="id" name="id" readonly/>
+        </div>
+        <div>
             <label for="nom">Nom</label>
-            <input type="text" id="nom" formControlName="nom" placeholder="Dupont" name="nom" required />
+            <input type="text" id="nom" formControlName="nom" placeholder="Dupont" required /><!--name="nom" -->
         </div>
         <div>
             <label for="prenom">Prénom</label>
-            <input type="text" id="prenom" formControlName="prenom" placeholder="Michel" name="prenom" required />
+            <input type="text" id="prenom" formControlName="prenom" placeholder="Michel" required /><!--name="prenom" -->
         </div>
-        <div>
-            <label for="date-naissance">Date de naissance</label>
-            <!----><!--<input type="date" id="date-naissance" [value]="patientForm.get('dateNaissance')?.value | date:'yyyy/MM/dd'" name="date-naissance" required />
+        <!--------------------------------><div>
+            <label for="date-naissance">Date de naissance</label><!---->
+            <!-- {{ dateVariable | date: 'dd/MM/yyyy' }}<input type="date" id="date-naissance" [value]="patientForm.get('dateNaissance')?.value | date:'yyyy/MM/dd'" name="date-naissance" required />
         -->
-            <input type="text" id="date-naissance" formControlName="dateNaissance" name="date-naissance" required />
+            <!--type="datetime-local"--><input type="date" id="date-naissance" formControlName="dateNaissance" name="date-naissance" required />
+            <!--<input type="date" [value]="formatDateJsonForDatetimeLocal(patient.dateNaissance)" id="date-naissance" formControlName="dateNaissance" name="date-naissance" required />-->
         </div>
+        <!----------------------------->
         <div>
             <label for="genre">Genre</label>
-            <select name="genre" formControlName="genre" id="genre" required>
-                <option value="" disabled selected hidden>Genre</option>
+            <select formControlName="genre" id="genre" required>
                 <option value="F">Féminin</option>
                 <option value="M">Masculin</option>
                 <option value="A">Autre</option>
@@ -29,14 +34,14 @@
         </div>
         <div>
             <label for="adresse">Adresse</label>
-            <input type="text" id="adresse" formControlName="adresse" placeholder="123 Rue de Paris" name="adresse" required />
+            <input type="text" id="adresse" formControlName="adresse" placeholder="123 Rue de Paris" /><!--name="adresse" -->
         </div>
         <div>
             <label for="telephone">Numéro de téléphone</label>
-            <input type="text" id="telephone" formControlName="telephone" placeholder="123-123-1234" name="telephone" required />
+            <input type="text" id="telephone" formControlName="telephone" placeholder="123-123-1234" /><!--name="telephone" -->
         </div>
         <div>
-            <button type="submit" [disabled]="patientForm.invalid">Enregistrer</button>
+            <button type="submit" [disabled]="patientForm.invalid">Enregistrer ({{ patientForm.invalid ? 'invalide' : 'valide' }})</button>
         </div>
     </form>
 </div>

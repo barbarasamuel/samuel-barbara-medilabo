@@ -1,0 +1,5 @@
+.liens {
+  display: flex;             /* Activation de Flexbox */
+  gap: 50px;                 /* Espacement de 20px entre les liens */
+  justify-content: flex-start; /* Alignement à gauche (par défaut) */
+}

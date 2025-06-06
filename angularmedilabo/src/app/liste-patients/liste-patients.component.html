@@ -13,36 +13,14 @@
         <td>{{ patient.nom }}</td>
         <td>{{ patient.prenom }}</td>
         <td>{{ patient.genre }}</td>
-        <td>{{ patient.dateNaissance }}</td>
+        <!--<td>{{ patient.dateNaissance| date: 'shortDate' : 'fr'}}</td>-->
+        <td>{{formatDateJsonForDatetimeLocal(patient.dateNaissance)| date: 'dd/MM/yyyy'}}</td>
         <td>
-          <button (click)="onModify(patient.id)">Modifier</button><button (click)="onOpenHistory()">Historique</button>
+          <button (click)="onModify(patient.id)">Modifier</button><button (click)="onOpenHistory(patient.id)">Historique</button>
         </td>
     </tr>
   </tbody>
 </table>
-<!--<div>
-  <ul>
-    <li *ngFor="let patient of patients$ | async">
-      <div>
-        <label for="nom">Nom</label>
-        <input type="text" id="nom" name="nom" placeholder="Dupont" required>
-    </div>
-    <div>
-        <label for="prenom">Prénom</label>
-        <input type="text" id="prenom" name="prenom" placeholder="Michel" required>
-    </div>
-    <div>
-        <label for="date-naissance">Date de naissance</label>
-        <input type="date" id="date-naissance" name="date-naissance" required>
-    </div>
-    {{ patient.nom }} {{ patient.prenom }} {{ patient.dateNaissance }}
-      <button (click)="onModify(patient.id)">Modifier</button><button (click)="onOpenHistory()">Historique</button>
-    </li>
-  </ul>
-</div>-->
-<!--@for (patient of patients; track patient.id) {
-    <app-details-patient [patient]="patient" /><button (click)="onModify()">Modifier</button><button (click)="onOpenHistory()">Historique</button>
-  }-->
 
 <button (click)="onCreatePatient()">Créer un nouveau patient</button>
  

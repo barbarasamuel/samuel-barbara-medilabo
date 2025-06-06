@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import { Patient } from '../models/patient';
 import {CommonModule} from '@angular/common';
 
+
 @Component({
   selector: 'app-liste-patients',
   standalone: true,
@@ -19,48 +20,44 @@ import {CommonModule} from '@angular/common';
 export class ListePatientsComponent  implements OnInit {
   patients$!: Observable<Patient[]>;
   patients: any[] = [];
-  //constructor(private router: Router, private patientsService: PatientsService) { }
   
-patientForm!: FormGroup;
+  patientForm!: FormGroup;
   
   constructor(private router: Router,private formBuilder: FormBuilder, private patientsService: PatientsService) { 
     this.patients$ = this.patientsService.patients$;
-    //this.patients$ = this.patientsService.getAllPatients();
-    /*this.patientForm = this.formBuilder.group({
-      id: [null],
-      nom: [null,[Validators.required,Validators.pattern('^[a-zA-Z]+$')]],
-      prenom: [null,[Validators.required,Validators.pattern('^[a-zA-Z]+$')]],
-      dateNaissance: [null,[Validators.required,[Validators.pattern('^(19\d{2}|20\d{2})$)-(0?[1-9]|1[0-2])-(0?[1-9]|[12][0-9]|3[01])$')]]],
-      
-    });*/
+    
   } 
-  //patients!: DetailsPatientComponent[];
 
   ngOnInit() {
     // Appel de la méthode du service
     this.patients$ = this.patientsService.getAllPatients();
-    /*this.patientsService.getAllPatients().subscribe(data => {
-      this.patients = data;
-    });*/
-    /*this.patientForm = this.formBuilder.group({
-              id: [null],
-              nom: [null,[Validators.required,Validators.pattern('^[a-zA-Z]+$')]],
-              prenom: [null,[Validators.required,Validators.pattern('^[a-zA-Z]+$')]],
-              dateNaissance: [null,[Validators.required,[Validators.pattern('^(19\d{2}|20\d{2})$)-(0?[1-9]|1[0-2])-(0?[1-9]|[12][0-9]|3[01])$')]],
-              genre: [null,[Validators.required]],
-              adresse: [null],
-              telephone: [null, [Validators.pattern('^\d{3}-\d{3}-\d{4}$')]]
-          });*/
+
+    //Rechargement de la liste
+    this.loadPatients();
   }
+
+  loadPatients() {
+    this.patientsService.getAllPatients().subscribe(data => {
+      this.patients = data;
+    });
+  }
+
   onCreatePatient() {
-    this.router.navigate(['/details-patient']);//this.router.navigateByUrl('/crea-patient');
+    this.router.navigate(['/details-patient']);
   }
   
   onModify(patientId: number): void {
     this.router.navigate(['/details-patient',patientId]);
   }
 
-  onOpenHistory() {
-    this.router.navigateByUrl('/list-history-patient');
+  onOpenHistory(patientId: number): void {
+    this.router.navigate(['/liste-histo',patientId]);
+  }
+
+  formatDateJsonForDatetimeLocal(dateString: string): string {
+    const date = new Date(dateString);
+    const offset = date.getTimezoneOffset();
+    const localDate = new Date(date.getTime() - offset * 60 * 1000);
+    return localDate.toISOString().slice(0, 16);
   }
 }

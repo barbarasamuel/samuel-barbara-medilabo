@@ -1,0 +1,30 @@
+<div class="detailshisto">
+    <h2 *ngIf="mode === 'create'">Créer une note</h2>
+    <h2 *ngIf="mode === 'edit'">Modifier une note</h2>
+    <h2 *ngIf="mode === 'view'">Détails de la note</h2>
+    
+    <form [formGroup]="histoForm"  (ngSubmit)="onSave()">
+        <div  *ngIf="histo">
+            <label for="id">Numéro de note</label>
+            <input type="text" id="id" formControlName="id" name="id" />
+        </div>
+        <div>
+            <label for="patId">Numéro du patient</label>
+            <input type="text" id="patId" formControlName="patId" placeholder="1" name="patId" required />
+        </div>
+        <div>
+            <label for="patient">Nom</label>
+            <input type="text" id="patient" formControlName="patient" placeholder="Dupont" name="patient" required />
+        </div>
+        <div>
+            <label for="note">Note</label>
+            <input type="text" id="note" formControlName="note" placeholder="Le patient a arrêté de fumer" name="note" required />
+        </div>
+        <div *ngIf="mode === 'create'">
+            <button type="submit" [disabled]="histoForm.invalid">Enregistrer</button>
+        </div>
+        <div *ngIf="mode === 'view'">
+            <button (click)="onGoBack()">Retour à la liste des notes pour ce patient</button>
+        </div>
+    </form>
+</div>

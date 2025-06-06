@@ -6,19 +6,6 @@ body {
     color: #333;
 }
 
-.contactez-nous {
-    width: 400px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 20px;
-    background: white;
-}
-
-.contactez-nous > h1 {
-    font-weight: bold;
-    text-align: center;
-}
-
 form div {
     margin-bottom: 15px;
 }
@@ -28,8 +15,7 @@ form div > label {
     display: block;
 }
 
-form div > input,
-form div > select {
+form div > input {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
