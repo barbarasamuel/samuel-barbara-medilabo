@@ -14,7 +14,7 @@
         <td>{{ patient.prenom }}</td>
         <td>{{ patient.genre }}</td>
         <!--<td>{{ patient.dateNaissance| date: 'shortDate' : 'fr'}}</td>-->
-        <td>{{formatDateJsonForDatetimeLocal(patient.dateNaissance)| date: 'dd/MM/yyyy'}}</td>
+        <td>{{patient.dateNaissance| date: 'dd/MM/yyyy'}}</td>
         <td>
           <button (click)="onModify(patient.id)">Modifier</button><button (click)="onOpenHistory(patient.id)">Historique</button>
         </td>

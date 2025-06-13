@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, Pipe, PipeTransform } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { FormBuilder,FormGroup,Validators,ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder,FormGroup,Validators,ReactiveFormsModule,ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { PatientsService } from '../services/patients.service';
 import { ActivatedRoute,Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
@@ -17,11 +17,14 @@ import { CommonModule,JsonPipe,NgIf, DatePipe } from '@angular/common';
 })
 export class DetailsPatientComponent implements OnInit{
   patients$!: Observable<Patient>;
-  
+  //note$!: Observable<string>;//////////
+  note : string = '';
+
   patientForm!: FormGroup;
   @Input() mode: 'create' | 'edit' | 'view' = 'view';
   @Input() patientId?: number;
   @Input() patient!: Patient;
+  //@Input() note!: string;
   isReadOnly = false;
     
   constructor(private router: Router, private formBuilder: FormBuilder,private route: ActivatedRoute,
@@ -36,6 +39,7 @@ export class DetailsPatientComponent implements OnInit{
       this.mode = modeFromRoute;
     }
 
+
     this.patientForm = this.formBuilder.group({
       nom: ['',[Validators.required,Validators.pattern('^[a-zA-Z]+$')]],
       prenom: ['',[Validators.required,Validators.pattern('^[a-zA-Z]+$')]],
@@ -43,7 +47,7 @@ export class DetailsPatientComponent implements OnInit{
       dateNaissance: ['',[Validators.required]],
       genre: ['',[Validators.required]],
       adresse: [''],
-      telephone: ['', [Validators.pattern('^\d{3}-\d{3}-\d{4}$')]]
+      telephone: ['', telephoneValidator()]//, optionalPatternValidator('^\d{3}-\d{3}-\d{4}$')]
     }, {
       updateOn: 'blur'
     });
@@ -54,14 +58,20 @@ export class DetailsPatientComponent implements OnInit{
         this.patient = data;
         this.initializeForm();
       });
+  
+      this.patientsService.getPatientRisque(patientId).subscribe((data) => this.note = data);
+      
     }
           
-    this.isReadOnly = this.mode === 'view';
+    function telephoneValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value?.trim();
+      if (!value) return null; // champ facultatif
 
-    if (this.mode === 'view') {
-      this.patientForm.disable();
-    }
-    
+      const isValid = /^\d{3}-\d{3}-\d{4}$/.test(value);
+      return isValid ? null : { patternInvalid: true };
+    };
+  }
   }
 
   initializeForm(){
@@ -72,8 +82,8 @@ export class DetailsPatientComponent implements OnInit{
       prenom: [this.patient.prenom],
       dateNaissance: [this.formatDateJsonForDatetimeLocal(this.patient.dateNaissance)],
       genre: [this.patient.genre],
-      adresse: [this.patient.adressePostale],
-      telephone: [this.patient.numTel]
+      adresse: [this.patient.adresse],
+      telephone: [this.patient.telephone]
     }, {
       updateOn: 'blur'
     });
@@ -84,18 +94,27 @@ export class DetailsPatientComponent implements OnInit{
     
     //console.log(this.patientForm.get('genre')?.errors);
     if (this.patientForm.invalid) return;
+    const patientData: Patient = this.patientForm.value;
 
-    const patientData = this.patientForm.value;
-    this.patient = patientData;
-  
     if (this.mode === 'create') {
-      this.patientsService.addPatient(this.patient).subscribe((response) => {
-      //this.patientsService.addPatient(patientData).subscribe((response) => {
+
+      const formValue = this.patientForm.value;
+
+      // Convertir la date (ex: '2025-06-11') → objet Date → JSON
+      const date = new Date(formValue.dateNaissance);
+      const dateJson = date.toISOString(); // ← format JSON correct
+
+      const patientData: Patient = {
+        ...formValue,
+        dateNaissance: dateJson  // remplace la date brute par format JSON
+      };
+
+      this.patientsService.addPatient(patientData).subscribe((response) => {
                 console.log('Nouveau patient:', response);
             });
     } else if (this.mode === 'edit') {
 
-      this.patientsService.updatePatient(this.patient).subscribe((response) => {
+      this.patientsService.updatePatient(patientData).subscribe((response) => {
                 console.log('Patient mis à jour:', response);
         });
     }
@@ -109,4 +128,5 @@ export class DetailsPatientComponent implements OnInit{
     const localDate = new Date(date.getTime() - offset * 60 * 1000);
     return localDate.toISOString().slice(0, 10);
   }
+
 }

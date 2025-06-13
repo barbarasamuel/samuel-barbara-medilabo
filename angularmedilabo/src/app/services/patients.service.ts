@@ -39,5 +39,10 @@ export class PatientsService {
     return this.http.put<Patient>(`${this.apiUrl}/${patient.id}`, patient);
   }
   
+  getPatientRisque(patientId: number): Observable<string> {
+    return this.http.get(`${'http://localhost:8997/evaluer'}/${patientId}`, {
+    responseType: 'text'
+  });
+  }
   
 }

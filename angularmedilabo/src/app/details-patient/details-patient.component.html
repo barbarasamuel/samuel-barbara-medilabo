@@ -3,8 +3,11 @@
     <h2 *ngIf="mode === 'edit'">Modifier un patient</h2>
     <h2 *ngIf="mode === 'view'">Détails du patient</h2>
     <!--{{patient|json}}-->
+    <!--{{note|json}}-->
+    
     <form [formGroup]="patientForm" (ngSubmit)="onSave()">
         <div  *ngIf="patient">
+            <p>Risque de diabète: {{ note }}</p>
             <label for="id">Identifiant du patient</label>
             <input type="text" id="id" formControlName="id" name="id" readonly/>
         </div>
@@ -12,18 +15,27 @@
             <label for="nom">Nom</label>
             <input type="text" id="nom" formControlName="nom" placeholder="Dupont" required /><!--name="nom" -->
         </div>
+        <div *ngIf="patientForm.controls['nom'].invalid && patientForm.controls['nom'].touched">
+            Merci de saisir un nom.
+        </div>
         <div>
             <label for="prenom">Prénom</label>
             <input type="text" id="prenom" formControlName="prenom" placeholder="Michel" required /><!--name="prenom" -->
         </div>
-        <!--------------------------------><div>
-            <label for="date-naissance">Date de naissance</label><!---->
-            <!-- {{ dateVariable | date: 'dd/MM/yyyy' }}<input type="date" id="date-naissance" [value]="patientForm.get('dateNaissance')?.value | date:'yyyy/MM/dd'" name="date-naissance" required />
-        -->
-            <!--type="datetime-local"--><input type="date" id="date-naissance" formControlName="dateNaissance" name="date-naissance" required />
-            <!--<input type="date" [value]="formatDateJsonForDatetimeLocal(patient.dateNaissance)" id="date-naissance" formControlName="dateNaissance" name="date-naissance" required />-->
+         <div *ngIf="patientForm.controls['prenom'].invalid && patientForm.controls['prenom'].touched">
+            Merci de saisir un prénom.
         </div>
-        <!----------------------------->
+        <div *ngIf="mode === 'edit'">
+            <label for="date-naissance">Date de naissance</label><!---->
+            <input type="date" id="date-naissance" formControlName="dateNaissance" name="date-naissance" required />
+        </div>
+        <div *ngIf="mode === 'create'">
+            <label for="date-naissance">Date de naissance</label>
+              <input type="text" id="date-naissance" formControlName="dateNaissance" placeholder="jj/MM/yyyy" name="date-naissance" required />
+        </div>
+         <div *ngIf="patientForm.controls['dateNaissance'].invalid && patientForm.controls['dateNaissance'].touched">
+            Format invalide. Utilisez jj/MM/yyyy.
+        </div>
         <div>
             <label for="genre">Genre</label>
             <select formControlName="genre" id="genre" required>
@@ -32,16 +44,24 @@
                 <option value="A">Autre</option>
             </select>
         </div>
+        <div *ngIf="patientForm.controls['genre'].invalid && patientForm.controls['genre'].touched">
+            Merci de sélectionner un genre.
+        </div>
         <div>
             <label for="adresse">Adresse</label>
-            <input type="text" id="adresse" formControlName="adresse" placeholder="123 Rue de Paris" /><!--name="adresse" -->
+            <input type="text" id="adresse" formControlName="adresse" placeholder="123 Rue de Paris" name="adresse"/>
         </div>
         <div>
             <label for="telephone">Numéro de téléphone</label>
-            <input type="text" id="telephone" formControlName="telephone" placeholder="123-123-1234" /><!--name="telephone" -->
+            <input type="text" id="telephone" formControlName="telephone" placeholder="123-123-1234" name="telephone"/>
+        </div>
+        <div *ngIf="patientForm.controls['telephone'].invalid && patientForm.controls['telephone'].touched">
+            Merci de saisir un numéro de téléphone au format suivant: 123-123-1234
         </div>
         <div>
             <button type="submit" [disabled]="patientForm.invalid">Enregistrer ({{ patientForm.invalid ? 'invalide' : 'valide' }})</button>
         </div>
     </form>
+    
+    <p>Formulaire soumis : {{ patientForm.value | json }}</p>
 </div>

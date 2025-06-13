@@ -15,6 +15,11 @@
       "target": "http://localhost:8998",
       "secure": false,
       "changeOrigin": true,
-      "logLevel": "debug"}
+      "logLevel": "debug"},
 
+      "/evaluer/*": {
+      "target": "http://localhost:8997",
+      "secure": false,
+      "changeOrigin": true,
+      "logLevel": "debug"}
   }

@@ -1,5 +1,4 @@
 import { Component,OnInit, inject } from '@angular/core';
-//import { DetailsHistoComponent } from '../details-histo/details-histo.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { HistoService } from '../services/histo.service';

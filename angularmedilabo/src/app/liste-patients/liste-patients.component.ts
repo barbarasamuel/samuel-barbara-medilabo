@@ -1,7 +1,6 @@
 import { Component,OnInit } from '@angular/core';
-import { DetailsPatientComponent } from '../details-patient/details-patient.component';
+//import { DetailsPatientComponent } from '../details-patient/details-patient.component';
 import { Router } from '@angular/router';
-//import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { PatientsService } from '../services/patients.service';
 import { Observable } from 'rxjs';
@@ -54,10 +53,10 @@ export class ListePatientsComponent  implements OnInit {
     this.router.navigate(['/liste-histo',patientId]);
   }
 
-  formatDateJsonForDatetimeLocal(dateString: string): string {
+  /*formatDateJsonForDatetimeLocal(dateString: string): string {
     const date = new Date(dateString);
     const offset = date.getTimezoneOffset();
     const localDate = new Date(date.getTime() - offset * 60 * 1000);
     return localDate.toISOString().slice(0, 16);
-  }
+  }*/
 }
