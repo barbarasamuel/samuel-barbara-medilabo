@@ -1,5 +1,6 @@
 package org.medilabo.microhisto.web.service;
 
+import org.medilabo.microhisto.dto.HistoriqueDTO;
 import org.medilabo.microhisto.model.Histo;
 import org.medilabo.microhisto.web.dao.HistoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class HistoService {
@@ -43,12 +46,8 @@ public class HistoService {
     ////////////////////////////////////////////
 
     public List<Histo> getHistoByPatient(Long id) {
-        Optional<List<Histo>> histo = histoRepository.findByPatId(id);
-        if(histo.isPresent()) {
-            return histo.get();//histoRepository.findByPatient(histo.get().getPatient());
-        }else{
-            return null;
-        }
+        List<Histo> histo = histoRepository.findByPatId(id);
+        return histo;
     }
 
     public Histo getNoteById(String id) {
@@ -66,5 +65,25 @@ public class HistoService {
         newHisto.setPatient(histo.getPatient());//("TestNone");
         newHisto.setNote(histo.getNote());//("Le patient déclare qu'il 'se sent très bien' Poids égal ou inférieur au poids recommandé");
         return histoRepository.insert(newHisto);
+    }
+
+    public HistoriqueDTO getHistoriqueByPatientId(String patientId) {
+        List<Histo> historique = histoRepository.findByPatId(Long.valueOf(patientId));
+
+        List<String> notesList = new ArrayList<>();
+
+        if (historique == null || historique.isEmpty()) {
+            throw new RuntimeException("Historique pour le patient " + patientId + " non trouvé");
+        }
+
+        notesList = historique.stream()
+                .map(Histo::getNote)
+                .collect(Collectors.toList());
+
+        HistoriqueDTO historiqueDto = new HistoriqueDTO();
+        historiqueDto.setPatId(Long.valueOf(patientId));
+        historiqueDto.setNote(notesList);
+
+        return historiqueDto;
     }
 }

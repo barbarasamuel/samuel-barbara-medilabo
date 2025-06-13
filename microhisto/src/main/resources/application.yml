@@ -1,0 +1,15 @@
+server:
+  port: 8998
+
+spring:
+  application:
+    name: microhisto
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/histo
+      auto-index-creation: true
+
+logging:
+  level:
+    org.springframework.data.mongodb: DEBUG
+    org.springframework.web: DEBUG

@@ -1,5 +1,6 @@
 package org.medilabo.micropatient.web.controller;
 
+import org.medilabo.micropatient.dto.PatientsDTO;
 import org.medilabo.micropatient.model.Patients;
 import org.medilabo.micropatient.web.dao.PatientsRepository;
 import org.medilabo.micropatient.web.exceptions.PatientIntrouvableException;
@@ -57,5 +58,13 @@ public class PatientsController {
         return ResponseEntity.ok(patientModifie);
     }
 
-
+    @GetMapping("/{id}")
+    public ResponseEntity<PatientsDTO> getPatient(@PathVariable String id) {
+        try {
+            PatientsDTO patient = patientsService.getPatientById(id);
+            return ResponseEntity.ok(patient);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

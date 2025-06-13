@@ -19,7 +19,31 @@ spring:
         - id: risque-service
           uri: http://localhost:8997
           predicates:
-            - Path=/risques/**
+            - Path=/risque/**
+
+
+##############################
+    application:
+      name: micropatient
+    datasource:
+      url: jdbc:mysql://localhost:3306/medilabo
+      username: root
+      password: rootroot_2024
+      driver-class-name: com.mysql.cj.jdbc.Driver
+    jpa:
+      hibernate:
+        ddl-auto: update
+      show-sql: true
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.MySQL8Dialect
+          format_sql: true
+
+  logging:
+    level:
+      org.springframework.web: DEBUG
+
+  ##############################
 
   security:
     oauth2:

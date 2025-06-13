@@ -27,7 +27,7 @@ public class Patients {
     private Date dateNaissance;
     @Column(nullable=false)
     private String genre;
-    private String adressePostale;
-    private String numTel;
+    private String adresse;
+    private String telephone;
 
 }

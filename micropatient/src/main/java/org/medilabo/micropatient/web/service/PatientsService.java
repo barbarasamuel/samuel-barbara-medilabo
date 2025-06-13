@@ -1,5 +1,6 @@
 package org.medilabo.micropatient.web.service;
 
+import org.medilabo.micropatient.dto.PatientsDTO;
 import org.medilabo.micropatient.model.Patients;
 import org.medilabo.micropatient.web.dao.PatientsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,4 +60,23 @@ public class PatientsService {
         Optional<Patients> detailsPatient = patientsRepository.findById(id);
         return detailsPatient;
     }
+
+    public PatientsDTO getPatientById(String id) {
+        Optional<Patients> optionalPatient = patientsRepository.findById(Long.valueOf(id));
+                //.orElseThrow(() -> new RuntimeException("Patient avec l'ID " + id + " non trouvé"));
+
+        if(optionalPatient.isPresent()){
+            PatientsDTO patientDTO = PatientsDTO.builder()
+                    .id(optionalPatient.get().getId())
+                    .dateNaissance(optionalPatient.get().getDateNaissance())
+                    .genre(optionalPatient.get().getGenre())
+                    .build();
+
+            return patientDTO;
+        }else{
+            return null;
+        }
+
+    }
+
 }
