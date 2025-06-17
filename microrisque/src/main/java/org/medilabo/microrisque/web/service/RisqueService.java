@@ -2,23 +2,17 @@ package org.medilabo.microrisque.web.service;
 
 import org.medilabo.microrisque.config.MicroHistoClient;
 import org.medilabo.microrisque.config.MicroPatientClient;
-import org.medilabo.microrisque.model.Document;
 import org.medilabo.microrisque.model.HistoriqueDTO;
 import org.medilabo.microrisque.model.PatientsDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class RisqueService {
@@ -34,6 +28,11 @@ public class RisqueService {
             "Rechute", "Réaction", "Anticorps"
     );
 
+    /**
+     *
+     * To estimate the risk of diabetes
+     *
+     */
     public String evaluerRisque(String patientId) {
         try {
             // Récupérer les données patient
@@ -56,7 +55,6 @@ public class RisqueService {
                     .toLocalDate();
 
             int age = calculerAge(date);
-            //int age = calculerAge(patient.getDateNaissance());
 
             // Compter les termes déclencheurs
             int nombreTermes = compterTermesDeclencheurs(historique.getNote());
@@ -70,10 +68,20 @@ public class RisqueService {
         }
     }
 
+    /**
+     *
+     * To calculate the age
+     *
+     */
     private int calculerAge(LocalDate dateNaissance) {
         return Period.between(dateNaissance, LocalDate.now()).getYears();
     }
 
+    /**
+     *
+     * To calculate the number of trigger words
+     *
+     */
     private int compterTermesDeclencheurs(List<String> termes) {
         if (termes == null) return 0;
 
@@ -83,6 +91,11 @@ public class RisqueService {
                 .count();
     }
 
+    /**
+     *
+     * To evaluate the risk according to criteria
+     *
+     */
     private String evaluerRisqueSelonCriteres(String genre, int age, int nombreTermes) {
         // Cas "Early onset"
         if ((genre.equalsIgnoreCase("homme") && age < 30 && nombreTermes == 5) ||

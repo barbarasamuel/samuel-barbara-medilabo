@@ -14,12 +14,17 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 
+/**
+ *
+ * To manage the security
+ *
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
+/*
     @Value("${jwt.secret}")
-    private String jwtSecret;
+    private String jwtSecret;*/
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
@@ -43,10 +48,10 @@ public class SecurityConfig {
                 .build();
     }
 
-    @Bean
+    /*@Bean
     public JwtDecoder jwtDecoder() {
         byte[] keyBytes = jwtSecret.getBytes(StandardCharsets.UTF_8);
         SecretKey key = new SecretKeySpec(keyBytes, "HmacSHA256");
         return NimbusJwtDecoder.withSecretKey(key).build();
-    }
+    }*/
 }

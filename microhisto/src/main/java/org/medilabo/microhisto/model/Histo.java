@@ -5,7 +5,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
-
+/**
+ *
+ * To get the data about Histo
+ *
+ */
 @Document(collection = "medilabo")
 public class Histo {
     @Id

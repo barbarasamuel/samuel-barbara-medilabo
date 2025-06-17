@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/proxy")
 public class ProxyController {
-    @Autowired
+   /* @Autowired
     private PatientsService patientsService;
 
     @GetMapping("/patients")
@@ -19,5 +19,5 @@ public class ProxyController {
         String jwt = authHeader.replace("Bearer ", "");
         String result = patientsService.getUsers(jwt);
         return ResponseEntity.ok(result);
-    }
+    }*/
 }

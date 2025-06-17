@@ -2,6 +2,11 @@ package org.medilabo.microrisque.model;
 
 import java.util.List;
 
+/**
+ *
+ * DTO design pattern to collect the information about HistoriqueDTO
+ *
+ */
 public class HistoriqueDTO {
     private Long patId;
     private List<String> note;

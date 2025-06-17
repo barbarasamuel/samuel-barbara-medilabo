@@ -18,12 +18,22 @@ public class PatientsController {
     @Autowired
     private PatientsService patientsService;
 
+    /**
+     *
+     * To list all the patients
+     *
+     */
     @GetMapping("/patients")
     public List<Patients> listePatients() {
         List<Patients> listePatients = patientsService.findAll();
         return listePatients;
     }
 
+    /**
+     *
+     * To display the details of a patient
+     *
+     */
     @GetMapping("/patients/{id}")
     public Patients afficherDetailPatient(@PathVariable Long id) {
         Optional<Patients> patientAffiche = patientsService.findById(id);
@@ -32,6 +42,11 @@ public class PatientsController {
         return patientAffiche.get();
     }
 
+    /**
+     *
+     * To add a patient
+     *
+     */
     @PostMapping(value = "/patients")
     public Patients ajouterPatient(@RequestBody Patients patient) {
         Patients patientAjoute = patientsService.save(patient);
@@ -47,6 +62,11 @@ public class PatientsController {
         return patientAjoute;
     }
 
+    /**
+     *
+     * To update a patient
+     *
+     */
     @PutMapping(value = "/patients/{id}")
     public ResponseEntity<Patients> modifierPatient(@RequestBody Patients patient,@PathVariable Long id) {
         Optional<Patients> existing = patientsService.findById(id);
@@ -58,6 +78,11 @@ public class PatientsController {
         return ResponseEntity.ok(patientModifie);
     }
 
+    /**
+     *
+     * To get the patient id, birthday and gender
+     *
+     */
     @GetMapping("/{id}")
     public ResponseEntity<PatientsDTO> getPatient(@PathVariable String id) {
         try {

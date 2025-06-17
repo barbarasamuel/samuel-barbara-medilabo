@@ -15,21 +15,41 @@ public class HistoController {
     @Autowired
     private HistoService histoService;
 
+    /**
+     *
+     * To display the list of the patient histos
+     *
+     */
     @GetMapping("/hist/{id}")
     public List<Histo> getAllHistoByPatient(@PathVariable String id) {
         return histoService.getHistoByPatient(Long.valueOf(id));
     }
 
+    /**
+     *
+     * To get the histo note
+     *
+     */
     @GetMapping("/hist/details/{id}")
     public Histo geNoteById(@PathVariable String id) {
         return histoService.getNoteById(id);
     }
 
+    /**
+     *
+     * To add a histo
+     *
+     */
     @PostMapping(value = "/hist/creation")//@PostMapping(value = "/hist/creation/{id}")
     public Histo insert(@RequestBody Histo histo) {
         return histoService.insert(histo);
     }
 
+    /**
+     *
+     * To get all the patient histos
+     *
+     */
     @GetMapping("/hist/risque/{patientId}")
     public ResponseEntity<HistoriqueDTO> getHistorique(@PathVariable String patientId) {
         try {

@@ -6,6 +6,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+/**
+ *
+ * Annotated interface definition to generate via Feign HTTP clients HTTP
+ * to communicate with the microhisto remote microservice
+ *
+*/
 @FeignClient(name = "microhisto", url = "${microhisto.url:http://localhost:8998}")
 public interface MicroHistoClient {
     @GetMapping("/hist/risque/{patientId}")

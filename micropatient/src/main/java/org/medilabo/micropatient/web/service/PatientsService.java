@@ -22,7 +22,7 @@ public class PatientsService {
     private PatientsRepository patientsRepository;
 
     /////////////////////////////////////////////
-    private final RestTemplate restTemplate;
+    /*private final RestTemplate restTemplate;
 
     public PatientsService() {
         this.restTemplate = new RestTemplate();
@@ -42,15 +42,24 @@ public class PatientsService {
         );
 
         return response.getBody();
-    }
+    }*/
     ////////////////////////////////////////////
 
-
+    /**
+     *
+     * To get all the patients
+     *
+     */
     public List<Patients> findAll(){
         return patientsRepository.findAll();
     }
 
 
+    /**
+     *
+     * To add or update a patient
+     *
+     */
     public Patients save(Patients patient){
 
         return patientsRepository.save(patient);
@@ -61,6 +70,11 @@ public class PatientsService {
         return detailsPatient;
     }
 
+    /**
+     *
+     * To get the id, the birthday and the gender of a patient
+     *
+     */
     public PatientsDTO getPatientById(String id) {
         Optional<Patients> optionalPatient = patientsRepository.findById(Long.valueOf(id));
                 //.orElseThrow(() -> new RuntimeException("Patient avec l'ID " + id + " non trouvé"));

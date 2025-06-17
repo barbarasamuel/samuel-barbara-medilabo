@@ -22,7 +22,7 @@ public class HistoService {
     private HistoRepository histoRepository;
 
     /////////////////////////////////////////////
-    private final RestTemplate restTemplate;
+    /*private final RestTemplate restTemplate;
 
     public HistoService() {
         this.restTemplate = new RestTemplate();
@@ -42,14 +42,24 @@ public class HistoService {
         );
 
         return response.getBody();
-    }
+    }*/
     ////////////////////////////////////////////
 
+    /**
+     *
+     * To get the patient histos list
+     *
+     */
     public List<Histo> getHistoByPatient(Long id) {
         List<Histo> histo = histoRepository.findByPatId(id);
         return histo;
     }
 
+    /**
+     *
+     * To get the histo details
+     *
+     */
     public Histo getNoteById(String id) {
         Optional<Histo> histo = histoRepository.findById(id);
         if(histo.isPresent()){
@@ -59,6 +69,11 @@ public class HistoService {
         }
     }
 
+    /**
+     *
+     * To add a histo
+     *
+     */
     public Histo insert(Histo histo) {
         Histo newHisto = new Histo();
         newHisto.setPatId(histo.getPatId());
@@ -67,6 +82,11 @@ public class HistoService {
         return histoRepository.insert(newHisto);
     }
 
+    /**
+     *
+     * To get the patient histos
+     *
+     */
     public HistoriqueDTO getHistoriqueByPatientId(String patientId) {
         List<Histo> historique = histoRepository.findByPatId(Long.valueOf(patientId));
 

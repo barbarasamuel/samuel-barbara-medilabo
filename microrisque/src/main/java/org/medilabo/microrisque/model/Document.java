@@ -1,7 +1,7 @@
 package org.medilabo.microrisque.model;
 
 public class Document {
-    private String id;
+    /*private String id;
     private String content;
 
     public String getId() {
@@ -18,5 +18,5 @@ public class Document {
 
     public void setContent(String content) {
         this.content = content;
-    }
+    }*/
 }

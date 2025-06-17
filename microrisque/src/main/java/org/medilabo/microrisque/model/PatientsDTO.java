@@ -1,12 +1,15 @@
 package org.medilabo.microrisque.model;
 
-import java.time.LocalDate;
 import java.util.Date;
 
+/**
+ *
+ * DTO design pattern to collect the information about PatientsDTO
+ *
+ */
 public class PatientsDTO {
     private String id;
     private String genre;
-    //private LocalDate dateNaissance;
     private Date dateNaissance;
 
     // Constructeurs

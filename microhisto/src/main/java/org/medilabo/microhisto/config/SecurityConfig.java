@@ -25,6 +25,11 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 
+/**
+ *
+ * To manage the security
+ *
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
