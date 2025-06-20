@@ -99,25 +99,25 @@ public class RisqueService {
     private String evaluerRisqueSelonCriteres(String genre, int age, int nombreTermes) {
         // Cas "Early onset"
         if ((genre.equalsIgnoreCase("homme") && age < 30 && nombreTermes == 5) ||
-                (genre.equalsIgnoreCase("femme") && age < 30 && nombreTermes == 7) ||
+                (genre.equalsIgnoreCase("femme") && age < 30 && nombreTermes >= 7) ||
                 (age >= 30 && nombreTermes >= 8)) {
-            return "Risque Early onset";
+            return "Apparition précoce (Early onset)";
         }
 
         // Cas "In Danger"
         if ((genre.equalsIgnoreCase("homme") && age < 30 && nombreTermes == 3) ||
                 (genre.equalsIgnoreCase("femme") && age < 30 && nombreTermes == 4) ||
                 (age >= 30 && nombreTermes >= 6 && nombreTermes <= 7)) {
-            return "Risque In Danger";
+            return "Danger (In Danger)";
         }
 
         // Cas "None" - entre 2 et 5 termes et plus de 30 ans
         if (age >= 30 && nombreTermes >= 2 && nombreTermes <= 5) {
-            return "Risque Borderline";
+            return "Risque limité (Borderline)";
         }
 
         // Cas par défaut
-        return "Risque None";
+        return "Aucun risque (None)";
     }
     /*@Autowired
     private RestTemplate restTemplate;

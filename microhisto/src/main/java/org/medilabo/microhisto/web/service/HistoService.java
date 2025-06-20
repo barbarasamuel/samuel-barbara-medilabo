@@ -92,10 +92,6 @@ public class HistoService {
 
         List<String> notesList = new ArrayList<>();
 
-        if (historique == null || historique.isEmpty()) {
-            throw new RuntimeException("Historique pour le patient " + patientId + " non trouvé");
-        }
-
         notesList = historique.stream()
                 .map(Histo::getNote)
                 .collect(Collectors.toList());

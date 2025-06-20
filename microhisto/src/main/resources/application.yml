@@ -2,6 +2,23 @@ server:
   port: 8998
 
 spring:
+  ############
+  cloud:
+    gateway:
+      routes:
+        - id: patient-service
+          uri: http://localhost:8999
+          predicates:
+            - Path=/patients/**
+        - id: historique-service
+          uri: http://localhost:8998
+          predicates:
+            - Path=/hist/**
+        - id: risque-service
+          uri: http://localhost:8997
+          predicates:
+            - Path=/evaluer/**
+  ############
   application:
     name: microhisto
   data:
