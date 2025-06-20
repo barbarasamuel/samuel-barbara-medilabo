@@ -17,7 +17,8 @@ import {CommonModule} from '@angular/common';
 export class ListeHistoComponent  implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
-  patId = 0;
+  patId !: number;
+  nom ='';
   histo$!: Observable<Histo[]>;
   histo: any[] = [];
   
@@ -29,23 +30,37 @@ export class ListeHistoComponent  implements OnInit {
   ngOnInit() {
     // Appel de la méthode du service
     this.route.params.subscribe(params => {
-       this.patId = +params['patId']; // + permet de convertir la chaîne en nombre
-        
+       this.patId = +params['id']; // + permet de convertir la chaîne en nombre
+        this.nom = params['nom'];
         this.histo$ = this.histoService.getAllHistoPatient(this.patId);
       });
     
+/*if (this.mode==="create") { 
+      const patientId = Number(this.route.snapshot.paramMap.get('id'));*/
+
     //Rechargement de la liste
-    this.loadPatients();
+    this.loadHistos();
   }
 
-  loadPatients() {
+  loadHistos() {
     this.histoService.getAllHistoPatient(this.patId).subscribe(data => {
       this.histo = data;
     });
   }
 
-  onCreateNote() {
+  /*onCreateNote() {
     this.router.navigate(['/details-histo']);
+    
+    //Rechargement de la liste
+    this.loadHistos();
+  }*/
+
+  onCreateNote(histoIdPat: number, histoNomPat: string) {
+    //this.router.navigate(['/details-histo']);
+    this.router.navigate(['/details-histo',histoIdPat ,histoNomPat]);
+    
+    //Rechargement de la liste
+    this.loadHistos();
   }
 
   onOpenNote(histoId: string): void {

@@ -7,7 +7,7 @@ import { Patient } from '../models/patient';
   providedIn: 'root'
 })
 export class PatientsService {
-  
+  private patientsUpdated = new BehaviorSubject<void>(undefined);
   private patientsSubject: BehaviorSubject<Patient[]>;
 
   // Observable public pour la consommation
@@ -44,5 +44,5 @@ export class PatientsService {
     responseType: 'text'
   });
   }
-  
+
 }

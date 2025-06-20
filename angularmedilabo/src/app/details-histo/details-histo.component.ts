@@ -34,12 +34,30 @@ export class DetailsHistoComponent {
               this.mode = modeFromRoute;
             }
   
+            /*
             this.histoForm = this.formBuilder.group({
-              id: [''],
-              patId: [''],
-              patient: [''],
-              note: ['']
-            });
+                id: [''],
+                patId: [''],
+                patient: [''],
+                note: ['']
+              });*/
+
+              if (this.mode==="create") {
+                const histoIdPat = String(this.route.snapshot.paramMap.get('patId'));
+                const histoNomPat = this.route.snapshot.paramMap.get('nom');
+                console.log(histoNomPat);
+                this.histoForm = this.formBuilder.group({
+                  id: [''],
+                  patId: [histoIdPat],
+                  patient: [histoNomPat],
+                  note: ['']
+                });
+              }
+                /*if (this.mode==="view") {
+                  this.initializeForm();
+                }*/
+
+              
   
             if (this.mode==="view") { 
               const histoId = String(this.route.snapshot.paramMap.get('id'));
@@ -49,7 +67,6 @@ export class DetailsHistoComponent {
               });
             }
             
-            //this.isReadOnly = this.mode === 'view';
             
           }
   

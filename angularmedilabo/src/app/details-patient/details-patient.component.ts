@@ -119,7 +119,10 @@ export class DetailsPatientComponent implements OnInit{
         });
     }
 
-    this.router.navigate(['/liste-patients']);
+    setTimeout(() => {
+      this.router.navigate(['/liste-patients']);
+    }, 100);
+    
   }
   
   formatDateJsonForDatetimeLocal(dateString: string): string {

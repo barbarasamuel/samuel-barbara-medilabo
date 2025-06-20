@@ -1,4 +1,4 @@
-<p>Gestion des patients</p>
+<h2>Gestion des patients</h2>
 <table>
   <thead>
     <tr>
@@ -16,7 +16,10 @@
         <!--<td>{{ patient.dateNaissance| date: 'shortDate' : 'fr'}}</td>-->
         <td>{{patient.dateNaissance| date: 'dd/MM/yyyy'}}</td>
         <td>
-          <button (click)="onModify(patient.id)">Modifier</button><button (click)="onOpenHistory(patient.id)">Historique</button>
+          <button (click)="onModify(patient.id)">Visualiser/Modifier</button>
+        </td>
+        <td>
+          <button (click)="onOpenHistory(patient.id, patient.nom)">Historique</button>
         </td>
     </tr>
   </tbody>

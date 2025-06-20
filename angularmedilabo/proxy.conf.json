@@ -1,17 +1,12 @@
 {
-    "/patients": {
+
+      "/patients/**": {
       "target": "http://localhost:8999",
       "secure": false,
       "changeOrigin": true,
       "logLevel": "debug"},
 
-      "/patients/*": {
-      "target": "http://localhost:8999",
-      "secure": false,
-      "changeOrigin": true,
-      "logLevel": "debug"},
-
-    "/hist/*": {
+    "/hist/**": {
       "target": "http://localhost:8998",
       "secure": false,
       "changeOrigin": true,

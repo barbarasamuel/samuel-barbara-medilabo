@@ -10,18 +10,18 @@
         </div>
         <div>
             <label for="patId">Numéro du patient</label>
-            <input type="text" id="patId" formControlName="patId" placeholder="1" name="patId" required />
+            <input type="text" id="patId" formControlName="patId" placeholder="1" name="patId" readonly />
         </div>
-        <!----><div *ngIf="histoForm.controls['patId'].invalid && histoForm.controls['patId'].touched">
+        <!--<div *ngIf="histoForm.controls['patId'].invalid && histoForm.controls['patId'].touched">
             Merci de saisir le numéro du patient.
-        </div>
+        </div>-->
         <div>
             <label for="patient">Nom</label>
-            <input type="text" id="patient" formControlName="patient" placeholder="Dupont" name="patient" required />
+            <input type="text" id="patient" formControlName="patient" placeholder="Dupont" name="patient" readonly />
         </div>
-        <!----><div *ngIf="histoForm.controls['patient'].invalid && histoForm.controls['patient'].touched">
+        <!--<div *ngIf="histoForm.controls['patient'].invalid && histoForm.controls['patient'].touched">
             Merci de saisir le nom du patient.
-        </div>
+        </div>-->
         <div>
             <label for="note">Note</label>
             <input type="text" id="note" formControlName="note" placeholder="Le patient a arrêté de fumer" name="note" required />

@@ -1,15 +1,17 @@
-<p>Gestion des notes</p>
+<h2>Gestion des notes</h2>
 <table>
   <thead>
     <tr>
+      <th>N° patient</th>
       <th>Nom</th>
-      <th>Numéro de notes</th>
+      <th>Notes</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let histo of histo$ | async">
+        <td>{{ histo.patId }}</td>
         <td>{{ histo.patient }}</td>
-        <td>{{ histo.id }}</td>
+        <td>{{ histo.note }}</td>
         <td>
           <button (click)="onOpenNote(histo.id)">Visualiser</button>
         </td>
@@ -17,5 +19,4 @@
   </tbody>
 </table>
 
-
-<button (click)="onCreateNote()">Créer une nouvelle note</button>
+<button (click)="onCreateNote(patId,nom)">Créer une nouvelle note</button>

@@ -1,9 +1,10 @@
 import { Component,OnInit } from '@angular/core';
 //import { DetailsPatientComponent } from '../details-patient/details-patient.component';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { PatientsService } from '../services/patients.service';
 import { Observable } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { Patient } from '../models/patient';
 import {CommonModule} from '@angular/common';
 
@@ -22,7 +23,7 @@ export class ListePatientsComponent  implements OnInit {
   
   patientForm!: FormGroup;
   
-  constructor(private router: Router,private formBuilder: FormBuilder, private patientsService: PatientsService) { 
+  constructor(private route: ActivatedRoute, private router: Router,private formBuilder: FormBuilder, private patientsService: PatientsService) { 
     this.patients$ = this.patientsService.patients$;
     
   } 
@@ -33,30 +34,27 @@ export class ListePatientsComponent  implements OnInit {
 
     //Rechargement de la liste
     this.loadPatients();
+    
   }
 
   loadPatients() {
-    this.patientsService.getAllPatients().subscribe(data => {
-      this.patients = data;
-    });
+    this.patients = this.route.snapshot.data['patients'];
+    console.log('rafraichissement');
+    
   }
 
   onCreatePatient() {
     this.router.navigate(['/details-patient']);
+    
   }
   
   onModify(patientId: number): void {
     this.router.navigate(['/details-patient',patientId]);
+    
   }
 
-  onOpenHistory(patientId: number): void {
-    this.router.navigate(['/liste-histo',patientId]);
+  onOpenHistory(patientId: number, patient: string): void {
+    this.router.navigate(['/liste-histo',patientId, patient]);
   }
 
-  /*formatDateJsonForDatetimeLocal(dateString: string): string {
-    const date = new Date(dateString);
-    const offset = date.getTimezoneOffset();
-    const localDate = new Date(date.getTime() - offset * 60 * 1000);
-    return localDate.toISOString().slice(0, 16);
-  }*/
 }

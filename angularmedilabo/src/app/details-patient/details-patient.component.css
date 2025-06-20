@@ -1,51 +1,64 @@
 body {
-    background: #F0F0F0;
+    background: white;
     font-family: Arial, sans-serif;
     display: flex;
     justify-content: center;
+    align-items: center; /* Ajout pour centrer verticalement aussi */
+    height: 100vh;        /* Nécessaire pour occuper toute la hauteur */
+    margin: 0;
     color: #333;
 }
 
-.contactez-nous {
-    width: 400px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 20px;
-    background: white;
-}
-
-.contactez-nous > h1 {
-    font-weight: bold;
-    text-align: center;
+form {
+    background: rgb(136, 170, 228);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centre tout le contenu du formulaire */
 }
 
 form div {
     margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centre les enfants horizontalement */
 }
 
 form div > label {
     margin-bottom: 5px;
     display: block;
+    text-align: center;
 }
 
 form div > input,
 form div > select {
-    width: 100%;
+    width: 250px; /* Optionnel : une largeur fixe au lieu d’un pourcentage */
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
 }
 
-form button {
+h2{
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color:#033c79;
+}
+
+form div > button,
+form div > input[type="submit"] {
+    width: 250px;
     padding: 10px;
-    background: #007BFF;
+    background-color:#033c79;
     color: white;
     border: none;
     border-radius: 4px;
-    font-size: 16px;
+    cursor: pointer;
 }
 
-form button:hover {
-    background: #0056b3;
+form div > button:hover,
+form div > input[type="submit"]:hover {
+    background-color: #0056b3;
 }
+

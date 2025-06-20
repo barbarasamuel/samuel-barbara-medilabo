@@ -1,12 +1,12 @@
 <div class="detailspatient">
     <h2 *ngIf="mode === 'create'">Créer un patient</h2>
-    <h2 *ngIf="mode === 'edit'">Modifier un patient</h2>
-    <h2 *ngIf="mode === 'view'">Détails du patient</h2>
+    <h2 *ngIf="mode === 'edit'">Détails du patient</h2>
+    
     <!--{{patient|json}}-->
     <!--{{note|json}}-->
     
     <form [formGroup]="patientForm" (ngSubmit)="onSave()">
-        <div  *ngIf="patient">
+        <div *ngIf="patient">
             <p>Risque de diabète: {{ note }}</p>
             <label for="id">Identifiant du patient</label>
             <input type="text" id="id" formControlName="id" name="id" readonly/>
@@ -63,5 +63,5 @@
         </div>
     </form>
     
-    <p>Formulaire soumis : {{ patientForm.value | json }}</p>
+    <!--<p>Formulaire soumis : {{ patientForm.value | json }}</p>-->
 </div>
