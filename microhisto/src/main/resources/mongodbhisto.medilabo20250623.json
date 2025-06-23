@@ -1,0 +1,99 @@
+[{
+  "_id": {
+    "$oid": "68357e720c4f1e42d1fc2892"
+  },
+  "patId": {
+    "$numberLong": "1"
+  },
+  "patient": "TestNone",
+  "note": "Le patient déclare qu'il 'se sent très bien' Poids égal ou inférieur au poids recommandé",
+  "_class": "org.medilabo.microhisto.model.Histo"
+},
+{
+  "_id": {
+    "$oid": "683eeb29ef7aa45a24015a42"
+  },
+  "patId": {
+    "$numberLong": "2"
+  },
+  "patient": "TestBorderline",
+  "note": "Le patient déclare qu'il ressent beaucoup de stress au travail Il se plaint également que son audition est anormale dernièrement",
+  "_class": "org.medilabo.microhisto.model.Histo"
+},
+{
+  "_id": {
+    "$oid": "683eee2cef7aa45a24015a43"
+  },
+  "patId": {
+    "$numberLong": "2"
+  },
+  "patient": "TestBorderline",
+  "note": "Le patient déclare avoir fait une réaction aux médicaments au cours des 3 derniers mois Il remarque également que son audition continue d'être anormale",
+  "_class": "org.medilabo.microhisto.model.Histo"
+},
+{
+  "_id": {
+    "$oid": "683ef0ecef7aa45a24015a44"
+  },
+  "patId": {
+    "$numberLong": "3"
+  },
+  "patient": "TestInDanger",
+  "note": "Le patient déclare qu'il fume depuis peu",
+  "_class": "org.medilabo.microhisto.model.Histo"
+},
+{
+  "_id": {
+    "$oid": "683ef4a0ef7aa45a24015a45"
+  },
+  "patId": {
+    "$numberLong": "3"
+  },
+  "patient": "TestInDanger",
+  "note": "Le patient déclare qu'il est fumeur et qu'il a cessé de fumer l'année dernière Il se plaint également de crises d’apnée respiratoire anormales Tests de laboratoire indiquant un taux de cholestérol LDL élevé",
+  "_class": "org.medilabo.microhisto.model.Histo"
+},
+{
+  "_id": {
+    "$oid": "683ef5acef7aa45a24015a46"
+  },
+  "patId": {
+    "$numberLong": "4"
+  },
+  "patient": "TestEarlyOnset",
+  "note": "Le patient déclare qu'il lui est devenu difficile de monter les escaliers Il se plaint également d’être essoufflé Tests de laboratoire indiquant que les anticorps sont élevés Réaction aux médicaments",
+  "_class": "org.medilabo.microhisto.model.Histo"
+},
+{
+  "_id": {
+    "$oid": "68512c3c4dccd836e127bff5"
+  },
+  "patId": {
+    "$numberLong": "4"
+  },
+  "patient": "TestEarlyOnset",
+  "note": "Le patient déclare qu'il a mal au dos lorsqu'il reste assis pendant longtemps",
+  "_class": "org.medilabo.microhisto.model.Histo"
+},
+{
+  "_id": {
+    "$oid": "68512c564dccd836e127bff6"
+  },
+  "patId": {
+    "$numberLong": "4"
+  },
+  "patient": "TestEarlyOnset",
+  "note": "Le patient déclare avoir commencé à fumer depuis peu Hémoglobine A1C supérieure au niveau recommandé",
+  "_class": "org.medilabo.microhisto.model.Histo"
+},
+{
+  "_id": {
+    "$oid": "68512cbf4dccd836e127bff7"
+  },
+  "patId": {
+    "$numberLong": "4"
+  },
+  "patient": "TestEarlyOnset",
+  "note": "Taille, Poids, Cholestérol, Vertige et Réaction",
+  "_class": "org.medilabo.microhisto.model.Histo"
+}]

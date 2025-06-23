@@ -86,8 +86,10 @@ public class RisqueService {
         if (termes == null) return 0;
 
         return (int) termes.stream()
-                .filter(terme -> TERMES_DECLENCHEURS.stream()
-                        .anyMatch(declencheur -> terme.toLowerCase().contains(declencheur.toLowerCase())))
+                .flatMap(terme -> TERMES_DECLENCHEURS.stream()
+                        .filter(declencheur -> terme.toLowerCase().contains(declencheur.toLowerCase())))
+                /*.filter(terme -> TERMES_DECLENCHEURS.stream()
+                        .anyMatch(declencheur -> terme.toLowerCase().contains(declencheur.toLowerCase())))*/
                 .count();
     }
 
@@ -98,15 +100,15 @@ public class RisqueService {
      */
     private String evaluerRisqueSelonCriteres(String genre, int age, int nombreTermes) {
         // Cas "Early onset"
-        if ((genre.equalsIgnoreCase("homme") && age < 30 && nombreTermes == 5) ||
-                (genre.equalsIgnoreCase("femme") && age < 30 && nombreTermes >= 7) ||
+        if ((genre.equalsIgnoreCase("M") && age < 30 && nombreTermes == 5) ||
+                (genre.equalsIgnoreCase("F") && age < 30 && nombreTermes >= 7) ||
                 (age >= 30 && nombreTermes >= 8)) {
             return "Apparition précoce (Early onset)";
         }
 
         // Cas "In Danger"
-        if ((genre.equalsIgnoreCase("homme") && age < 30 && nombreTermes == 3) ||
-                (genre.equalsIgnoreCase("femme") && age < 30 && nombreTermes == 4) ||
+        if ((genre.equalsIgnoreCase("M") && age < 30 && nombreTermes == 3) ||
+                (genre.equalsIgnoreCase("F") && age < 30 && nombreTermes == 4) ||
                 (age >= 30 && nombreTermes >= 6 && nombreTermes <= 7)) {
             return "Danger (In Danger)";
         }
