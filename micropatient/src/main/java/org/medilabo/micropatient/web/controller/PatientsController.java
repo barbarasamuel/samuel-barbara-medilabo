@@ -2,13 +2,14 @@ package org.medilabo.micropatient.web.controller;
 
 import org.medilabo.micropatient.dto.PatientsDTO;
 import org.medilabo.micropatient.model.Patients;
-import org.medilabo.micropatient.web.dao.PatientsRepository;
 import org.medilabo.micropatient.web.exceptions.PatientIntrouvableException;
 import org.medilabo.micropatient.web.service.PatientsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,18 +49,19 @@ public class PatientsController {
      *
      */
     @PostMapping(value = "/patients")
-    public Patients ajouterPatient(@RequestBody Patients patient) {
+    public ResponseEntity<Patients> ajouterPatient(@RequestBody Patients patient) {
         Patients patientAjoute = patientsService.save(patient);
-        /*if (patientAjoute == null)
+        if (patientAjoute == null)
             return ResponseEntity.noContent().build();
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(patientAjoute.getId())
-                .toUri();*/
-        //return ResponseEntity.created(location).build();
-        return patientAjoute;
+                .toUri();
+
+        return ResponseEntity.created(location).build();
+
     }
 
     /**

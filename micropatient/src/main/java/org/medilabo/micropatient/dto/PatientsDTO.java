@@ -1,6 +1,5 @@
 package org.medilabo.micropatient.dto;
 
-import jakarta.persistence.Column;
 import lombok.Builder;
 import lombok.Data;
 
