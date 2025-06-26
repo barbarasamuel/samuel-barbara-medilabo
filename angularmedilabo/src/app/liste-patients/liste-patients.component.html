@@ -13,13 +13,12 @@
         <td>{{ patient.nom }}</td>
         <td>{{ patient.prenom }}</td>
         <td>{{ patient.genre }}</td>
-        <!--<td>{{ patient.dateNaissance| date: 'shortDate' : 'fr'}}</td>-->
         <td>{{patient.dateNaissance| date: 'dd/MM/yyyy'}}</td>
         <td>
-          <button (click)="onModify(patient.id)">Visualiser/Modifier</button>
+          <button class="tablebutton" (click)="onModify(patient.id)">Visualiser/Modifier</button>
         </td>
         <td>
-          <button (click)="onOpenHistory(patient.id, patient.nom)">Historique</button>
+          <button class="tablebutton" (click)="onOpenHistory(patient.id, patient.nom)">Historique</button>
         </td>
     </tr>
   </tbody>

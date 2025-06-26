@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { PatientsService } from '../services/patients.service';
 import { Observable } from 'rxjs';
-import { filter } from 'rxjs/operators';
+//import { filter } from 'rxjs/operators';
 import { Patient } from '../models/patient';
 import {CommonModule} from '@angular/common';
 

@@ -32,7 +32,7 @@ form div > label {
 
 form div > input,
 form div > select {
-    width: 250px; /* Optionnel : une largeur fixe au lieu d’un pourcentage */
+    width: 250px;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;

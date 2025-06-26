@@ -1,12 +1,12 @@
-import { Component, NgModule } from '@angular/core';
+import { Component } from '@angular/core';//, NgModule
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './header/header.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import { PatientsService } from './services/patients.service';
 import { CommonModule } from '@angular/common';
-import { ListePatientsComponent } from './liste-patients/liste-patients.component';
+/*import { ListePatientsComponent } from './liste-patients/liste-patients.component';
 import { DetailsPatientComponent } from './details-patient/details-patient.component';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule } from '@angular/platform-browser';*/
 
 @Component({
   selector: 'app-root',
@@ -17,7 +17,7 @@ import { BrowserModule } from '@angular/platform-browser';
 })
 
 export class AppComponent {
-  /*title = 'medilabo';*/
+  
   patientsData: any;
 
   constructor(private patientsService: PatientsService) {}

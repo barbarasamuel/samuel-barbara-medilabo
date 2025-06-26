@@ -1,4 +1,6 @@
+
 .image-accueil {
+    background-color: #033c79;
     display: flex; /* Active Flexbox */
     justify-content: center; /* Centre horizontalement */
     align-items: center; /* Centre verticalement (si nécessaire) */
@@ -6,6 +8,6 @@
 }
 
 .image-accueil img {
-    max-width: 100%; /* Assure que l'image ne dépasse pas la largeur du conteneur */
+    max-width: 90%; /* Assure que l'image ne dépasse pas la largeur du conteneur */
     height: auto; /* Maintient le rapport d'aspect de l'image */
 }

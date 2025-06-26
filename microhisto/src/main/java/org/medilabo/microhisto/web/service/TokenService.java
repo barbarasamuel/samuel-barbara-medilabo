@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 import java.util.function.Function;
@@ -17,11 +18,15 @@ public class TokenService{
     @Value("${jwt.secret}")
     private String secret;
 
-    private static final String SECRET_KEY = "supersecretencryptionkeythatshouldbelongenough1234";
-
+    //private static final String SECRET_KEY = "supersecretencryptionkeythatshouldbelongenough1234";
+/////////////////////////////////
     private Key getSigningKey() {
-        return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+        return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
+/////////////////////////////////
+    /*////////////////private Key getSigningKey() {
+        return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+    }*/
 
     // Extrait le nom d'utilisateur du token JWT
     public String extractUsername(String token) {

@@ -1,10 +1,9 @@
 server:
   port: 8999
 
-jwt:
-    secret: "secret-key"
-
 spring:
+    profiles:
+      active: secret
     application:
       name: micropatient
     datasource:

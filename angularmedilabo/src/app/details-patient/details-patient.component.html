@@ -13,14 +13,14 @@
         </div>
         <div>
             <label for="nom">Nom</label>
-            <input type="text" id="nom" formControlName="nom" placeholder="Dupont" required /><!--name="nom" -->
+            <input type="text" id="nom" formControlName="nom" placeholder="Dupont" required />
         </div>
         <div *ngIf="patientForm.controls['nom'].invalid && patientForm.controls['nom'].touched">
             Merci de saisir un nom.
         </div>
         <div>
             <label for="prenom">Prénom</label>
-            <input type="text" id="prenom" formControlName="prenom" placeholder="Michel" required /><!--name="prenom" -->
+            <input type="text" id="prenom" formControlName="prenom" placeholder="Michel" required />
         </div>
          <div *ngIf="patientForm.controls['prenom'].invalid && patientForm.controls['prenom'].touched">
             Merci de saisir un prénom.
@@ -41,7 +41,6 @@
             <select formControlName="genre" id="genre" required>
                 <option value="F">Féminin</option>
                 <option value="M">Masculin</option>
-                <option value="A">Autre</option>
             </select>
         </div>
         <div *ngIf="patientForm.controls['genre'].invalid && patientForm.controls['genre'].touched">

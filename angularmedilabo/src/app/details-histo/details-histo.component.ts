@@ -33,31 +33,18 @@ export class DetailsHistoComponent {
             if (modeFromRoute) {
               this.mode = modeFromRoute;
             }
-  
-            /*
-            this.histoForm = this.formBuilder.group({
+
+            if (this.mode==="create") {
+              const histoIdPat = String(this.route.snapshot.paramMap.get('patId'));
+              const histoNomPat = this.route.snapshot.paramMap.get('nom');
+              console.log(histoNomPat);
+              this.histoForm = this.formBuilder.group({
                 id: [''],
-                patId: [''],
-                patient: [''],
+                patId: [histoIdPat],
+                patient: [histoNomPat],
                 note: ['']
-              });*/
-
-              if (this.mode==="create") {
-                const histoIdPat = String(this.route.snapshot.paramMap.get('patId'));
-                const histoNomPat = this.route.snapshot.paramMap.get('nom');
-                console.log(histoNomPat);
-                this.histoForm = this.formBuilder.group({
-                  id: [''],
-                  patId: [histoIdPat],
-                  patient: [histoNomPat],
-                  note: ['']
-                });
-              }
-                /*if (this.mode==="view") {
-                  this.initializeForm();
-                }*/
-
-              
+              });
+            }
   
             if (this.mode==="view") { 
               const histoId = String(this.route.snapshot.paramMap.get('id'));
@@ -66,8 +53,7 @@ export class DetailsHistoComponent {
                 this.initializeForm();
               });
             }
-            
-            
+   
           }
   
           initializeForm(){
@@ -95,10 +81,10 @@ export class DetailsHistoComponent {
               
               this.histoService.postAddHisto(this.histo).subscribe((response) => {
                 console.log('Nouvelle note créée:', response);
+                this.router.navigate(['/liste-histo', this.histo.patId, this.histo.patient]);
             });
             }
-  
-            this.router.navigate(['/liste-histo', this.histo.patId]);
+            
           }
 
           onGoBack(){

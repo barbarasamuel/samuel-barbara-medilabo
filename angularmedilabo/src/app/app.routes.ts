@@ -7,7 +7,6 @@ import { AccueilComponent } from './accueil/accueil.component';
 import { patientsResolver} from './functions/patients.resolver';
 
 export const routes: Routes = [
-    //{ path: 'liste-patients', component: ListePatientsComponent },
     { path: 'liste-patients', component: ListePatientsComponent, resolve: {patients: patientsResolver} },
     { path: 'details-patient', component: DetailsPatientComponent, data: { mode: 'create' } },
     { path: 'details-patient/:id', component: DetailsPatientComponent, data: { mode: 'edit' } },

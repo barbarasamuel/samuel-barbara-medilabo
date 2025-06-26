@@ -2,9 +2,13 @@ server:
   port: 8998
 
 spring:
+  profiles:
+    active: secret
   ############
   cloud:
     gateway:
+      default-filters:
+        - AddRequestHeader=Authorization,
       routes:
         - id: patient-service
           uri: http://localhost:8999

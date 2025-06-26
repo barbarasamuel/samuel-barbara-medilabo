@@ -1,3 +1,8 @@
+h2 {
+  font-weight: bold;
+  color: #033c79;
+}
+
 .liens {
   display: flex;             /* Activation de Flexbox */
   gap: 50px;                 /* Espacement de 20px entre les liens */

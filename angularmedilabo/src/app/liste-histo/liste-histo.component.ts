@@ -34,9 +34,6 @@ export class ListeHistoComponent  implements OnInit {
         this.nom = params['nom'];
         this.histo$ = this.histoService.getAllHistoPatient(this.patId);
       });
-    
-/*if (this.mode==="create") { 
-      const patientId = Number(this.route.snapshot.paramMap.get('id'));*/
 
     //Rechargement de la liste
     this.loadHistos();
@@ -48,15 +45,7 @@ export class ListeHistoComponent  implements OnInit {
     });
   }
 
-  /*onCreateNote() {
-    this.router.navigate(['/details-histo']);
-    
-    //Rechargement de la liste
-    this.loadHistos();
-  }*/
-
   onCreateNote(histoIdPat: number, histoNomPat: string) {
-    //this.router.navigate(['/details-histo']);
     this.router.navigate(['/details-histo',histoIdPat ,histoNomPat]);
     
     //Rechargement de la liste
