@@ -8,23 +8,27 @@ import { Histo } from '../models/histo';
 })
 export class HistoService {
 
-  private apiUrl = 'http://localhost:8998/hist';
-
   constructor(private http: HttpClient) { 
     // Initialisation avec un tableau vide ou des données initiales
     const initialHisto: Histo[] = [];
   }
 
   getAllHistoPatient(idPatient: number): Observable<Histo[]> {
-    return this.http.get<Histo[]>(`${'http://localhost:8998/hist'}/${idPatient}`);
+    //return this.http.get<Histo[]>(`${'http://localhost:8998/hist'}/${idPatient}`);
+    //return this.http.get<Histo[]>(`${'http://microhisto:8998/hist'}/${idPatient}`);
+    return this.http.get<Histo[]>(`${'/api/hist'}/${idPatient}`);
   }
 
   getHistoById(id: string): Observable<Histo> {
-    return this.http.get<Histo>(`${'http://localhost:8998/hist/details'}/${id}`);
+    //return this.http.get<Histo>(`${'http://localhost:8998/hist/details'}/${id}`);
+    //return this.http.get<Histo>(`${'http://microhisto:8998/hist/details'}/${id}`);
+    return this.http.get<Histo>(`${'/api/hist/details'}/${id}`);
   }
 
   postAddHisto(histo: Histo): Observable<Histo> {
-    return this.http.post<Histo>('http://localhost:8998/hist/creation', histo); 
+    //return this.http.post<Histo>('http://localhost:8998/hist/creation', histo);
+    //return this.http.post<Histo>('http://microhisto:8998/hist/creation', histo); 
+    return this.http.post<Histo>('/api/hist/creation', histo);
   }
 
 }

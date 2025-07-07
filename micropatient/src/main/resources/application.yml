@@ -7,7 +7,8 @@ spring:
     application:
       name: micropatient
     datasource:
-      url: jdbc:mysql://localhost:3306/medilabo
+      #url: jdbc:mysql://localhost:3306/medilabo
+      url: jdbc:mysql://mysql:3306/medilabo
       username: root
       password: rootroot_2024
       driver-class-name: com.mysql.cj.jdbc.Driver

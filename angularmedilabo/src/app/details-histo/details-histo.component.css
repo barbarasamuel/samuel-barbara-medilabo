@@ -61,3 +61,8 @@ form div > button:hover,
 form div > input[type="submit"]:hover {
     background-color: #0056b3;
 }
+
+.readonly {
+  background-color: #888;/*#e0e0e0;*/
+  
+}

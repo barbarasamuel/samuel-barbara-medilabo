@@ -1,0 +1,20 @@
+{
+
+      "/patients/**": {
+      "target": "http://micropatient:8999",
+      "secure": false,
+      "changeOrigin": true,
+      "logLevel": "debug"},
+
+    "/hist/**": {
+      "target": "http://microhisto:8998",
+      "secure": false,
+      "changeOrigin": true,
+      "logLevel": "debug"},
+
+      "/evaluer/*": {
+      "target": "http://microrisque:8997",
+      "secure": false,
+      "changeOrigin": true,
+      "logLevel": "debug"}
+  }

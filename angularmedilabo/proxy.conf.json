@@ -1,20 +1,11 @@
 {
-
-      "/patients/**": {
-      "target": "http://localhost:8999",
-      "secure": false,
-      "changeOrigin": true,
-      "logLevel": "debug"},
-
-    "/hist/**": {
-      "target": "http://localhost:8998",
-      "secure": false,
-      "changeOrigin": true,
-      "logLevel": "debug"},
-
-      "/evaluer/*": {
-      "target": "http://localhost:8997",
-      "secure": false,
-      "changeOrigin": true,
-      "logLevel": "debug"}
+  "/api/**": {
+    "target": "http://microhisto:8996",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/api": ""
+    }
   }
+}

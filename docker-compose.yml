@@ -1,0 +1,85 @@
+services:
+# Service de la base de données MySQL
+  mysql:
+    image: mysql:8
+    restart: always
+    environment:
+      MYSQL_DATABASE: medilabo
+      MYSQL_ROOT_PASSWORD: rootroot_2024
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - app-network
+
+# Service de la base de données MongoDB
+  mongodb:
+    image: mongo:6
+    container_name: mongodb
+    restart: always
+    ports:
+      - "27017:27017"  # facultatif : à exposer uniquement pour debug
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rootroot_2024
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - app-network
+
+  # Service de microservice "microhisto"
+  microhisto:
+    build: ./microhisto
+    ports:
+      - "8996:8996"  # Expose le port de l'hôte vers le port du conteneur
+    environment:
+      # Ajout de la variable d'environnement de connexion Mongo
+      MONGO_URL: mongodb://root:rootroot_2024@mongodb:27017
+    depends_on:
+      - mongodb
+    networks:
+      - app-network
+
+  # Service de microservice "micropatient"
+  micropatient:
+    build: ./micropatient
+    ports:
+      - "8999:8999"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/medilabo?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: rootroot_2024     
+    depends_on:
+      - mysql
+    networks:
+      - app-network
+
+  # Service de microservice "microrisque"
+  microrisque:
+    build: ./microrisque
+    ports:
+      - "8997:8997"
+    networks:
+      - app-network
+
+  # Service frontend angularmedilabo
+  #angularmedilabo:
+  frontend:
+    build: ./angularmedilabo
+    ports:
+      - "4200:80"  # Expose le port 4200 de l'hôte vers le port 80 du conteneur
+    depends_on:
+      - microhisto
+      - micropatient
+      - microrisque  # Le frontend dépend des microservices backend
+    networks:
+      - app-network
+
+volumes:
+  mysql_data:
+  mongo_data:
+
+networks:
+  app-network:
+    driver: bridge  # Utilise un réseau bridge pour la communication interne entre services

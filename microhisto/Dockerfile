@@ -8,7 +8,7 @@ WORKDIR /app
 COPY target/microhisto-0.0.1-SNAPSHOT.jar microhisto.jar
 
 # Étape 4 : expose le port 8998 (par défaut pour Spring Boot)
-EXPOSE 8998
+EXPOSE 8996
 
 # Étape 5 : commande pour exécuter l’application
 ENTRYPOINT ["java", "-jar", "microhisto.jar"]
