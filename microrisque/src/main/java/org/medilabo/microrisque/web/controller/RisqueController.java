@@ -7,7 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("/evaluer")
+@CrossOrigin(origins = {"http://localhost","http://localhost:8080","http://localhost:4200"})
 public class RisqueController {
     @Autowired
     private RisqueService risqueService;
@@ -17,7 +18,8 @@ public class RisqueController {
      * To communicate the evaluated risk
      *
      */
-    @GetMapping("/evaluer/{patientId}")
+    //@GetMapping("/evaluer/{patientId}")
+    @GetMapping("/{patientId}")
     public ResponseEntity<String> evaluerRisque(@PathVariable String patientId) {
         try {
             String resultat = risqueService.evaluerRisque(patientId);

@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("/hist")
+//@CrossOrigin(origins = {"http://localhost","http://localhost:8080","http://localhost:4200"})
 public class HistoController {
     @Autowired
     private HistoService histoService;
@@ -20,7 +21,8 @@ public class HistoController {
      * To display the list of the patient histos
      *
      */
-    @GetMapping("/hist/{id}")
+    //@GetMapping("/hist/{id}")
+    @GetMapping("/{id}")
     public List<Histo> getAllHistoByPatient(@PathVariable String id) {
         return histoService.getHistoByPatient(Long.valueOf(id));
     }
@@ -30,7 +32,8 @@ public class HistoController {
      * To get the histo note
      *
      */
-    @GetMapping("/hist/details/{id}")
+    //@GetMapping("/hist/details/{id}")
+    @GetMapping("/details/{id}")
     public Histo geNoteById(@PathVariable String id) {
         return histoService.getNoteById(id);
     }
@@ -40,7 +43,8 @@ public class HistoController {
      * To add a histo
      *
      */
-    @PostMapping(value = "/hist/creation")//@PostMapping(value = "/hist/creation/{id}")
+    //@PostMapping(value = "/hist/creation")//@PostMapping(value = "/hist/creation/{id}")
+    @PostMapping(value = "/creation")
     public Histo insert(@RequestBody Histo histo) {
         return histoService.insert(histo);
     }
@@ -50,7 +54,8 @@ public class HistoController {
      * To get all the patient histos
      *
      */
-    @GetMapping("/hist/risque/{patientId}")
+    //@GetMapping("/hist/risque/{patientId}")
+    @GetMapping("/risque/{patientId}")
     public ResponseEntity<HistoriqueDTO> getHistorique(@PathVariable String patientId) {
         try {
             HistoriqueDTO historique = histoService.getHistoriqueByPatientId(patientId);

@@ -1,6 +1,6 @@
 {
-  "/api/**": {
-    "target": "http://microhisto:8996",
+  "/api": {
+    "target": "http://localhost:8996",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug",

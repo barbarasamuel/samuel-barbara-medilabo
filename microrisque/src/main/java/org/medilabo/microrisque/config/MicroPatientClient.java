@@ -14,6 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
  */
 @FeignClient(name = "micropatient", configuration = FeignConfig.class, url = "${micropatient.url:http://localhost:8999}")
 public interface MicroPatientClient {
-    @GetMapping("/patients/{id}")
+    @GetMapping("/patients/info/{id}")
     ResponseEntity<PatientsDTO> getPatient(@PathVariable Long id);
 }

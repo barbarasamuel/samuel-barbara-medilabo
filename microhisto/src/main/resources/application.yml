@@ -11,8 +11,8 @@ spring:
         - AddRequestHeader=Authorization,
       routes:
         - id: patient-service
-          #uri: http://localhost:8999
-          uri: http://micropatient:8999
+          uri: http://localhost:8999
+          #uri: http://micropatient:8999
           predicates:
             - Path=/patients/**
         - id: historique-service
@@ -22,7 +22,8 @@ spring:
           predicates:
             - Path=/hist/**
         - id: risque-service
-          uri: http://microrisque:8997
+          #uri: http://microrisque:8997
+          uri: http://localhost:8997
           predicates:
             - Path=/evaluer/**
   ############

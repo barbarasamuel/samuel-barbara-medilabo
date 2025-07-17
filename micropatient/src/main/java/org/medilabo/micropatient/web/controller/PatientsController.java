@@ -14,7 +14,8 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("/patients")
+//@CrossOrigin(origins = {"http://localhost","http://localhost:8080","http://localhost:4200"})
 public class PatientsController {
     @Autowired
     private PatientsService patientsService;
@@ -24,7 +25,8 @@ public class PatientsController {
      * To list all the patients
      *
      */
-    @GetMapping("/patients")
+    //@GetMapping("/patients")
+    @GetMapping("")
     public List<Patients> listePatients() {
         List<Patients> listePatients = patientsService.findAll();
         return listePatients;
@@ -35,7 +37,8 @@ public class PatientsController {
      * To display the details of a patient
      *
      */
-    @GetMapping("/patients/{id}")
+    //@GetMapping("/patients/{id}")
+    @GetMapping("/{id}")
     public Patients afficherDetailPatient(@PathVariable Long id) {
         Optional<Patients> patientAffiche = patientsService.findById(id);
         if(patientAffiche.get()==null) throw new PatientIntrouvableException("Le produit avec l'id " + id + " est INTROUVABLE. Écran Bleu si je pouvais.");
@@ -48,7 +51,8 @@ public class PatientsController {
      * To add a patient
      *
      */
-    @PostMapping(value = "/patients")
+    //@PostMapping(value = "/patients")
+    @PostMapping("")
     public ResponseEntity<Patients> ajouterPatient(@RequestBody Patients patient) {
         Patients patientAjoute = patientsService.save(patient);
         if (patientAjoute == null)
@@ -69,7 +73,8 @@ public class PatientsController {
      * To update a patient
      *
      */
-    @PutMapping(value = "/patients/{id}")
+    //@PutMapping(value = "/patients/{id}")
+    @PutMapping(value = "/{id}")
     public ResponseEntity<Patients> modifierPatient(@RequestBody Patients patient,@PathVariable Long id) {
         Optional<Patients> existing = patientsService.findById(id);
         if (existing.isEmpty()) {
@@ -85,7 +90,7 @@ public class PatientsController {
      * To get the patient id, birthday and gender
      *
      */
-    @GetMapping("/{id}")
+    @GetMapping("/info/{id}")
     public ResponseEntity<PatientsDTO> getPatient(@PathVariable String id) {
         try {
             PatientsDTO patient = patientsService.getPatientById(id);
