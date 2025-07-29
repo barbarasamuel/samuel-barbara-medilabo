@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: microeureka-server
+server:
+  port: 8761 # Port par défaut pour Eureka
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false

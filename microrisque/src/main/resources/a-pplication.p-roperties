@@ -1,6 +1,6 @@
 spring.application.name=microrisque
 
-server.port=8997
+#server.port=8997
 logging.org.medilabo.microrisque=debug
 logging.level.root=info
 logging.level.org.medilabo=info

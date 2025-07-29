@@ -1,0 +1,19 @@
+server:
+  port: 8997 # Port pour le microservice microrisque
+spring:
+  application:
+    name: microrisque # Nom du service, utilisé par Eureka et l'API Gateway
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+# Configuration du logging
+logging:
+  level:
+    root: ERROR # Niveau de log par défaut pour toutes les classes non spécifiées
+    org.medilabo: INFO # Niveau INFO pour les classes de votre package org.medilabo
+    org.medilabo.microrisque: debug # Niveau DEBUG pour les logs spécifiques de l'application microrisque
+    org.springframework.boot.web.embedded.tomcat: INFO # Pour les logs Tomcat embarqué
+    org.springframework.security: DEBUG # Pour les logs détaillés de Spring Security (utile pour JWT)

@@ -80,9 +80,11 @@ public class SecurityConfig {
                 //.cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> {
+                    auth.anyRequest().permitAll();
+                    /*auth.requestMatchers("/auth/**").permitAll();
                     auth.requestMatchers("/hist/**").permitAll();
-                    auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
-                    auth.anyRequest().authenticated();
+                    auth.requestMatchers(HttpMethod., "/**").permitAll();
+                    auth.anyRequest().authenticated();*/
                 })
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

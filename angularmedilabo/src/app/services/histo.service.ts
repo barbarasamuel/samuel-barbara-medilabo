@@ -16,18 +16,21 @@ export class HistoService {
   getAllHistoPatient(idPatient: number): Observable<Histo[]> {
     //return this.http.get<Histo[]>(`${'http://localhost:8998/hist'}/${idPatient}`);
     //return this.http.get<Histo[]>(`${'http://microhisto:8998/hist'}/${idPatient}`);
+    //return this.http.get<Histo[]>(`${'/api/hist'}/${idPatient}`);
     return this.http.get<Histo[]>(`${'/api/hist'}/${idPatient}`);
   }
 
   getHistoById(id: string): Observable<Histo> {
     //return this.http.get<Histo>(`${'http://localhost:8998/hist/details'}/${id}`);
     //return this.http.get<Histo>(`${'http://microhisto:8998/hist/details'}/${id}`);
+    //return this.http.get<Histo>(`${'/api/hist/details'}/${id}`);
     return this.http.get<Histo>(`${'/api/hist/details'}/${id}`);
   }
 
   postAddHisto(histo: Histo): Observable<Histo> {
     //return this.http.post<Histo>('http://localhost:8998/hist/creation', histo);
     //return this.http.post<Histo>('http://microhisto:8998/hist/creation', histo); 
+    //return this.http.post<Histo>('/api/hist/creation', histo);
     return this.http.post<Histo>('/api/hist/creation', histo);
   }
 

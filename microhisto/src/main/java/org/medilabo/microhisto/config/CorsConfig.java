@@ -32,7 +32,14 @@ public class CorsConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(List.of("http://localhost","http://localhost:8080","http://localhost:4200")); // ou "*", pour tout ouvrir
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "OPTIONS"));
-        config.setAllowedHeaders(List.of("*"));
+        //config.setAllowedHeaders(List.of("*"));
+        config.setAllowedHeaders(List.of(
+                "Authorization",
+                "Content-Type",
+                "X-Requested-With",
+                "Accept",
+                "Origin"
+        ));
         config.setAllowCredentials(true); // pour gérer les cookies ou auth
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

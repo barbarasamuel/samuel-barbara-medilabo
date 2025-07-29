@@ -23,7 +23,21 @@ export class AppComponent {
   constructor(private patientsService: PatientsService) {}
 
   ngOnInit(): void {
-    this.patientsService.getAllPatients().subscribe(
+    
+    this.patientsService.getAllPatients().subscribe({
+        next: (data) => { // 'next' est pour les données reçues avec succès
+          console.log(data);
+          this.patientsData = data;
+        },
+        error: (error) => { // 'error' est pour gérer les erreurs
+          console.error('Error fetching data:', error);
+        },
+        complete: () => { // 'complete' est appelé quand l'observable est terminé (optionnel)
+          console.log('Data fetching completed.');
+        }
+      });
+      
+    /*this.patientsService.getAllPatients().subscribe(
       data => {
         console.log(data);
         this.patientsData = data;
@@ -31,6 +45,6 @@ export class AppComponent {
       (error) => {
         console.error('Error fetching data:', error);
       }
-    );
+    );*/
   }
 }

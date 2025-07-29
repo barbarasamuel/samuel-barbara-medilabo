@@ -1,31 +1,9 @@
 server:
-  port: 8996
+  port: 8998
 
 spring:
   profiles:
     active: secret
-  ############
-  cloud:
-    gateway:
-      default-filters:
-        - AddRequestHeader=Authorization,
-      routes:
-        - id: patient-service
-          uri: http://localhost:8999
-          #uri: http://micropatient:8999
-          predicates:
-            - Path=/patients/**
-        - id: historique-service
-          #uri: http://localhost:8998
-          #uri: http://microhisto:8998
-          uri: http://localhost:8996
-          predicates:
-            - Path=/hist/**
-        - id: risque-service
-          #uri: http://microrisque:8997
-          uri: http://localhost:8997
-          predicates:
-            - Path=/evaluer/**
   ############
   application:
     name: microhisto
@@ -34,7 +12,18 @@ spring:
       uri: mongodb://localhost:27017/histo
       auto-index-creation: true
 
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+# Configuration du logging
 logging:
   level:
+    root: ERROR # Niveau de log par défaut pour toutes les classes non spécifiées
+    org.medilabo: INFO # Niveau INFO pour les classes du package org.medilabo
+    org.medilabo.microhisto: debug # Niveau DEBUG pour les logs spécifiques de l'application microhisto
+    org.springframework.boot.web.embedded.tomcat: INFO # Pour les logs Tomcat embarqué
+    org.springframework.security: DEBUG # Pour les logs détaillés de Spring Security (utile pour JWT)
     org.springframework.data.mongodb: DEBUG
     org.springframework.web: DEBUG
