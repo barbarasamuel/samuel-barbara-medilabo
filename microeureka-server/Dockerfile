@@ -5,10 +5,10 @@ FROM eclipse-temurin:21-jdk-alpine
 WORKDIR /app
 
 # Étape 3 : copie du fichier jar dans le conteneur
-COPY target/microhisto-0.0.1-SNAPSHOT.jar microhisto.jar
+COPY target/microeureka-server-0.0.1-SNAPSHOT.jar microeureka-server.jar
 
-# Étape 4 : expose le port 8998 (par défaut pour Spring Boot)
-EXPOSE 8998
+# Étape 4 : expose le port 8761 (par défaut pour Spring Boot)
+EXPOSE 8761
 
 # Étape 5 : commande pour exécuter l’application
-ENTRYPOINT ["java", "-jar", "microhisto.jar"]
+ENTRYPOINT ["java", "-jar", "microeureka-server.jar"]

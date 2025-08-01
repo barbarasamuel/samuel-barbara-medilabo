@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
  * to communicate with the micropatient remote microservice
  *
  */
-@FeignClient(name = "micropatient", configuration = FeignConfig.class, url = "${micropatient.url:http://localhost:8999}")
+//@FeignClient(name = "micropatient", configuration = FeignConfig.class, url = "${micropatient.url:http://localhost:8999}")
+@FeignClient(name = "micropatient", configuration = FeignConfig.class, url = "${micropatient.url:http://micropatient:8999}")
 public interface MicroPatientClient {
     @GetMapping("/patients/info/{id}")
     ResponseEntity<PatientsDTO> getPatient(@PathVariable Long id);

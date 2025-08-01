@@ -1,0 +1,87 @@
+server:
+  port: 8996
+
+spring:
+  application:
+    name: microapigateway
+  #profiles:
+    #active: secret
+  ############
+cloud:
+  gateway:
+    discovery:
+      locator:
+        enabled: true # Permet à l'API Gateway de router les requêtes par le nom du service Eureka
+        lowerCaseServiceId: true # Optionnel: pour gérer les IDs de service en minuscules
+
+    routes:
+      #- id: patient-service
+      - id: MICROPATIENT
+        #uri: http://localhost:8999
+        #uri: http://micropatient:8999
+        uri: lb://MICROPATIENT
+        predicates:
+        #- Path=/patients
+        - Path=/patients/**
+          #- Path=/patients{segment}
+        filters:
+          # Conserve le préfixe /patients et le transmet au microservice
+          # Le chemin "/patients" correspondra à /patients dans le microservice
+          # Le chemin "/patients/1" correspondra à /patients/1 dans le microservice
+          - StripPrefix=0 #- RewritePath=/patients(?<segment>/?.*), /patients${segment}
+      #- id: historique-service
+      - id: MICROHISTO
+        #uri: http://localhost:8998
+        #uri: http://microhisto:8998
+        #uri: http://localhost:8998
+        uri: lb://MICROHISTO
+        predicates:
+          - Path=/hist/**
+        filters:
+          - StripPrefix=0
+      - id: auth-service
+        uri: http://localhost:8998
+        predicates:
+          - Path=/auth/**
+        filters:
+          - StripPrefix=0
+      #- id: risque-service
+      - id: MICRORISQUE
+        #uri: http://microrisque:8997
+        #uri: http://localhost:8997
+        uri: lb://MICRORISQUE
+        predicates:
+          - Path=/evaluer/**
+        filters:
+          - StripPrefix=0
+
+  ############
+  #application:
+  #  name: microapigateway
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+#logging:
+#  level:
+#    org.springframework.cloud.gateway: DEBUG
+#    org.springframework.web: DEBUG
+
+# Configuration du logging
+logging:
+  level:
+    root: ERROR # Niveau de log par défaut pour toutes les classes non spécifiées
+    org.medilabo: INFO # Niveau INFO pour les classes de votre package org.medilabo
+    org.springframework.boot.web.embedded.tomcat: INFO # Pour les logs Tomcat embarqué
+    org.springframework.security: DEBUG # Pour les logs détaillés de Spring Security (utile pour JWT)
+    org.springframework.cloud.gateway: DEBUG # Très important pour le débogage de la Gateway
+    org.springframework.web: DEBUG # Pour les logs HTTP détaillés (Requêtes, Réponses)
+
+# Propriétés JWT (peuvent être ici ou dans un fichier séparé si vous utilisez des profils)
+# Si vous décommentez 'profiles.active: secret', vous pourriez vouloir placer ces propriétés
+# dans un fichier 'application-secret.yml' pour les rendre spécifiques à ce profil.
+  #jwt:
+  #header: Authorization
+  #secret: my-very-secret-key

@@ -9,13 +9,18 @@ spring:
     name: microhisto
   data:
     mongodb:
-      uri: mongodb://localhost:27017/histo
+      #uri: mongodb://localhost:27017/histo
+      uri: mongodb://mongo:27017/histo
       auto-index-creation: true
 
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://eureka-server:8761/eureka/
+      #defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+  instance:
+    prefer-ip-address: true
 
 # Configuration du logging
 logging:
