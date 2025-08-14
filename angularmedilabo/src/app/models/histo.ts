@@ -1,6 +1,6 @@
 export interface Histo {
     id: string;
-    patId: string;
+    patId: number;
     patient: string;
     note: string;
 }

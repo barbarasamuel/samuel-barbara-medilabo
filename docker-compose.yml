@@ -3,14 +3,12 @@ services:
     image: nginx:latest
     container_name: nginx
     ports:
-      - "8080:80"
+      - "5900:80"
     volumes:
       - ./angularmedilabo/default.conf:/etc/nginx/conf.d/default.conf
       - ./angularmedilabo/dist/medilabo/browser:/usr/share/nginx/html:ro
     depends_on:
-      - micropatient
-      - microhisto
-      - microrisque
+      - microapigateway
     networks:
       - app-network
 
@@ -19,6 +17,7 @@ services:
     image: eurekaserver:latest
     build:
       context: ./microeureka-server
+      dockerfile: Dockerfile
     container_name: microeureka-server
     ports:
       - "8761:8761"
@@ -33,7 +32,7 @@ services:
       MYSQL_DATABASE: medilabo
       MYSQL_ROOT_PASSWORD: rootroot_2024
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
@@ -49,32 +48,72 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: rootroot_2024
+      MONGO_INITDB_DATABASE: admin
     volumes:
       - mongo_data:/data/db
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--host", "localhost", "--port", "27017", "--username", "root", "--password", "rootroot_2024", "--authenticationDatabase", "admin", "--eval", "db.adminCommand('ping')"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
 
-  # Service de microservice "microhisto"
+# Service d'initialisation
+  db-init:
+    image: mongo:6
+    command: >
+      bash -c '
+        until mongosh mongodb://root:rootroot_2024@mongodb:27017/medilabo?authSource=admin --eval "db.runCommand({ ping: 1 })" > /dev/null 2>&1; do
+          echo " En attente de MongoDB...";
+          sleep 2;
+        done &&
+        echo " MongoDB prêt, création de la base et des index..." &&
+        mongosh mongodb://root:rootroot_2024@mongodb:27017/medilabo?authSource=admin --eval "
+          db.histo.insertOne({
+            patId: 1,
+            patient: \"Dupont\",
+            note: \"Fumeur\"
+          });
+          db.histo.createIndex({patId: 1});
+          db.histo.createIndex({patient: 1});
+          db.histo.createIndex({patId: 1, patient: 1});
+          echo(\"Base de données medilabo initialisée avec succès\");
+        "
+      '
+    depends_on:
+      - mongodb
+    networks:
+      - app-network
+
+# Service de microservice "microhisto"
   microhisto:
-    build: ./microhisto
+    build:
+      context: ./microhisto
+      dockerfile: Dockerfile
     ports:
       - "8998:8998"  # Expose le port de l'hôte vers le port du conteneur
     environment:
       # Ajout de la variable d'environnement de connexion Mongo
-      MONGO_URL: mongodb://root:rootroot_2024@mongodb:27017
+      SPRING_DATA_MONGODB_URI: mongodb://root:rootroot_2024@mongodb:27017/medilabo?authSource=admin
+      SPRING_DATA_MONGODB_DATABASE: medilabo
       SPRING_APPLICATION_NAME: microhisto
       SERVER_PORT: 8998
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://microeureka-server:8761/eureka/
       EUREKA_INSTANCE_PREFER_IP_ADDRESS: true
     depends_on:
-      - mongodb
-      - microeureka-server
+      #db-init:
+    # condition: service_completed_successfully
+     - microeureka-server
     networks:
       - app-network
 
-  # Service de microservice "micropatient"
+# Service de microservice "micropatient"
   micropatient:
-    build: ./micropatient
+    build:
+      context: ./micropatient
+      dockerfile: Dockerfile
     ports:
       - "8999:8999"
     environment:
@@ -84,16 +123,18 @@ services:
       SPRING_APPLICATION_NAME: micropatient
       SERVER_PORT: 8999
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://microeureka-server:8761/eureka/
-      EUREKA_INSTANCE_PREFER_IP_ADDRESS: true    
+      EUREKA_INSTANCE_PREFER_IP_ADDRESS: true
     depends_on:
       - mysql
       - microeureka-server
     networks:
       - app-network
 
-  # Service de microservice "microrisque"
+# Service de microservice "microrisque"
   microrisque:
-    build: ./microrisque
+    build:
+      context: ./microrisque
+      dockerfile: Dockerfile
     ports:
       - "8997:8997"
     depends_on:
@@ -106,22 +147,21 @@ services:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://microeureka-server:8761/eureka/
       EUREKA_INSTANCE_PREFER_IP_ADDRESS: true
 
-  # Service frontend angularmedilabo
-#  frontend:
-#    build: ./angularmedilabo
-#    ports:
-#     - "80:80"  # Expose le port 80 de l'hôte vers le port 80 du conteneur
-#    depends_on:
-#      - microhisto
-#      - micropatient
-#      - microrisque  # Le frontend dépend des microservices backend
-#    networks:
-#      - app-network
+      # Service frontend angularmedilabo
+    #frontend:
+    #build: ./angularmedilabo
+        #ports:
+      # - "5900:80"  # Expose le port 5900 de l'hôte vers le port 80 du conteneur
+        #depends_on:
+      # - microapigateway  # Le frontend dépend des microservices backend et de la gateway
+        #networks:
+      #- app-network
 
   microapigateway:
     image: apigateway:latest
     build:
       context: ./microapigateway
+      dockerfile: Dockerfile
     container_name: microapigateway
     ports:
       - "8996:8996"
@@ -140,4 +180,4 @@ volumes:
 
 networks:
   app-network:
-    driver: bridge  # Utilise un réseau bridge pour la communication interne entre services
+    driver: bridge

@@ -4,44 +4,42 @@ server:
 spring:
   application:
     name: microapigateway
-
-cloud:
-  gateway:
-    discovery:
-      locator:
-        enabled: true
-        lower-case-service-id: true
-
-    routes:
-      - id: micropatient
-        uri: lb://MICROPATIENT
-        predicates:
-          - Path=/patients/**
-        filters:
-          - StripPrefix=0
-      - id: microhisto
-        uri: lb://MICROHISTO
-        predicates:
-          - Path=/hist/**
-        filters:
-          - StripPrefix=0
-      - id: auth-service
-        uri: lb://MICROHISTO
-        predicates:
-          - Path=/auth/**
-        filters:
-          - StripPrefix=0
-      - id: microrisque
-        uri: lb://MICRORISQUE
-        predicates:
-          - Path=/evaluer/**
-        filters:
-          - StripPrefix=0
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: micropatient
+          uri: lb://MICROPATIENT
+          predicates:
+            - Path=/patients/**
+          filters:
+            - StripPrefix=0
+        - id: microhisto
+          uri: lb://MICROHISTO
+          predicates:
+            - Path=/hist/**
+          filters:
+            - StripPrefix=0
+        #- id: auth-service
+        #  uri: lb://MICROHISTO
+        #  predicates:
+        #    - Path=/auth/**
+        #  filters:
+        #    - StripPrefix=0
+        - id: microrisque
+          uri: lb://MICRORISQUE
+          predicates:
+            - Path=/evaluer/**
+          filters:
+            - StripPrefix=0
 
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://eureka-server:8761/eureka/
+      defaultZone: http://microeureka-server:8761/eureka/
       #defaultZone: http://localhost:8761/eureka/
     register-with-eureka: true
     fetch-registry: true

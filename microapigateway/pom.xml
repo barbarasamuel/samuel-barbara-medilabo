@@ -40,24 +40,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-webflux</artifactId>
 		</dependency>
-		<!--<dependency>
-			<groupId>com.vmware.tanzu.springcloudgateway.extensions</groupId>
-			<artifactId>access-control</artifactId>
-		</dependency>-->
-		<!--<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-gateway</artifactId>
-			<version>4.3.0</version>
-		</dependency>-->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-gateway-server-webflux</artifactId>
 			<version>4.3.0</version>
 		</dependency>
-		<!--<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-gateway</artifactId>
-		</dependency>-->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -89,13 +76,6 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-			<!--<dependency>
-				<groupId>com.vmware.tanzu.springcloudgateway.extensions</groupId>
-				<artifactId>extensions-bom</artifactId>
-				<version>${tanzu-scg-extensions.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>-->
 		</dependencies>
 	</dependencyManagement>
 

@@ -25,7 +25,6 @@ public class PatientsController {
      * To list all the patients
      *
      */
-    //@GetMapping("/patients")
     @GetMapping("")
     public List<Patients> listePatients() {
         List<Patients> listePatients = patientsService.findAll();
@@ -37,7 +36,6 @@ public class PatientsController {
      * To display the details of a patient
      *
      */
-    //@GetMapping("/patients/{id}")
     @GetMapping("/{id}")
     public Patients afficherDetailPatient(@PathVariable Long id) {
         Optional<Patients> patientAffiche = patientsService.findById(id);
@@ -51,7 +49,6 @@ public class PatientsController {
      * To add a patient
      *
      */
-    //@PostMapping(value = "/patients")
     @PostMapping("")
     public ResponseEntity<Patients> ajouterPatient(@RequestBody Patients patient) {
         Patients patientAjoute = patientsService.save(patient);
@@ -73,7 +70,6 @@ public class PatientsController {
      * To update a patient
      *
      */
-    //@PutMapping(value = "/patients/{id}")
     @PutMapping(value = "/{id}")
     public ResponseEntity<Patients> modifierPatient(@RequestBody Patients patient,@PathVariable Long id) {
         Optional<Patients> existing = patientsService.findById(id);

@@ -48,8 +48,8 @@ public class HistoService {
     public Histo insert(Histo histo) {
         Histo newHisto = new Histo();
         newHisto.setPatId(histo.getPatId());
-        newHisto.setPatient(histo.getPatient());//("TestNone");
-        newHisto.setNote(histo.getNote());//("Le patient déclare qu'il 'se sent très bien' Poids égal ou inférieur au poids recommandé");
+        newHisto.setPatient(histo.getPatient());
+        newHisto.setNote(histo.getNote());
         return histoRepository.insert(newHisto);
     }
 

@@ -10,7 +10,7 @@ spring:
   data:
     mongodb:
       #uri: mongodb://localhost:27017/histo
-      uri: mongodb://mongo:27017/histo
+      uri: mongodb://root:rootroot_2024@mongodb:27017/histo
       auto-index-creation: true
 
 eureka:

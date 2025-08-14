@@ -48,16 +48,16 @@ public class SecurityConfig {
                 .csrf(csrf -> {
                     csrf.disable();
                 })
-                //.cors(cors -> cors.disable())
-                .cors(Customizer.withDefaults())
+                .cors(cors -> cors.disable())
+                //.cors(Customizer.withDefaults())
                 //.cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/patients/**").permitAll();
-                    auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
-                    auth.anyRequest().authenticated();
+                    // Allow all requests without authentication
+                    auth.anyRequest().permitAll();
                 })
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                // Temporarily disable JWT filter
+                //.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 }

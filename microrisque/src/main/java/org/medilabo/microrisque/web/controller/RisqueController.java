@@ -18,7 +18,6 @@ public class RisqueController {
      * To communicate the evaluated risk
      *
      */
-    //@GetMapping("/evaluer/{patientId}")
     @GetMapping("/{patientId}")
     public ResponseEntity<String> evaluerRisque(@PathVariable String patientId) {
         try {

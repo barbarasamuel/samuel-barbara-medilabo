@@ -29,9 +29,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException, java.io.IOException {
 
         final String authHeader = request.getHeader("Authorization");
+        
+        // Log the request path for debugging
+        System.out.println("JwtAuthenticationFilter processing request to path: " + request.getRequestURI());
+
+        // Always allow access to /patients/** endpoints without authentication
+        if (request.getRequestURI().startsWith("/patients")) {
+            System.out.println("Allowing access to /patients endpoint without authentication");
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         // Vérifie que le header Authorization est présent et bien formaté
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            System.out.println("No Authorization header or not Bearer token, passing to next filter");
             filterChain.doFilter(request, response); // laisse passer sans auth
             return;
         }
