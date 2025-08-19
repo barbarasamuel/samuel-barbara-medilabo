@@ -6,6 +6,8 @@ import org.medilabo.microhisto.web.service.HistoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.List;
 
@@ -23,6 +25,10 @@ public class HistoController {
      */
     @GetMapping("/{id}")
     public List<Histo> getAllHistoByPatient(@PathVariable String id) {
+        // Récupérer l'utilisateur authentifié
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
         return histoService.getHistoByPatient(Long.valueOf(id));
     }
 
@@ -33,7 +39,13 @@ public class HistoController {
      */
     @GetMapping("/details/{id}")
     public Histo geNoteById(@PathVariable String id) {
+
+        // Récupérer l'utilisateur authentifié
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
         return histoService.getNoteById(id);
+
     }
 
     /**
@@ -43,7 +55,13 @@ public class HistoController {
      */
     @PostMapping(value = "/creation")
     public Histo insert(@RequestBody Histo histo) {
+
+        // Récupérer l'utilisateur authentifié
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
         return histoService.insert(histo);
+
     }
 
     /**
@@ -53,6 +71,10 @@ public class HistoController {
      */
     @GetMapping("/risque/{patientId}")
     public ResponseEntity<HistoriqueDTO> getHistorique(@PathVariable String patientId) {
+        // Récupérer l'utilisateur authentifié
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
         try {
             HistoriqueDTO historique = histoService.getHistoriqueByPatientId(patientId);
             return ResponseEntity.ok(historique);

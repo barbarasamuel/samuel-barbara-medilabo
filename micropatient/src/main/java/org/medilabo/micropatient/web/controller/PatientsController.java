@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.net.URI;
 import java.util.List;
@@ -26,9 +28,15 @@ public class PatientsController {
      *
      */
     @GetMapping("")
-    public List<Patients> listePatients() {
-        List<Patients> listePatients = patientsService.findAll();
-        return listePatients;
+    public ResponseEntity<List<Patients>> listePatients() {
+
+        // Récupérer l'utilisateur authentifié
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        return ResponseEntity.ok(patientsService.findAll());
+        /*List<Patients> listePatients = patientsService.findAll();
+        return listePatients;*/
     }
 
     /**
@@ -37,10 +45,18 @@ public class PatientsController {
      *
      */
     @GetMapping("/{id}")
+    //public ResponseEntity<Patients> listePatients() {
     public Patients afficherDetailPatient(@PathVariable Long id) {
+        // Récupérer l'utilisateur authentifié
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        //System.out.println("Request from user: " + username);
+
+        //return ResponseEntity.ok(patientAffiche.get());
         Optional<Patients> patientAffiche = patientsService.findById(id);
         if(patientAffiche.get()==null) throw new PatientIntrouvableException("Le produit avec l'id " + id + " est INTROUVABLE. Écran Bleu si je pouvais.");
-        //return "Vous avez demandé la fiche d'un patient avec l'id  " + id;
+
         return patientAffiche.get();
     }
 
@@ -51,6 +67,10 @@ public class PatientsController {
      */
     @PostMapping("")
     public ResponseEntity<Patients> ajouterPatient(@RequestBody Patients patient) {
+        // Récupérer l'utilisateur authentifié
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
         Patients patientAjoute = patientsService.save(patient);
         if (patientAjoute == null)
             return ResponseEntity.noContent().build();
@@ -60,8 +80,9 @@ public class PatientsController {
                 .path("/{id}")
                 .buildAndExpand(patientAjoute.getId())
                 .toUri();
-
-        return ResponseEntity.created(location).build();
+/*
+        return ResponseEntity.created(location).build();*/
+        return ResponseEntity.created(location).body(patientAjoute);
 
     }
 
@@ -72,6 +93,10 @@ public class PatientsController {
      */
     @PutMapping(value = "/{id}")
     public ResponseEntity<Patients> modifierPatient(@RequestBody Patients patient,@PathVariable Long id) {
+        // Récupérer l'utilisateur authentifié
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
         Optional<Patients> existing = patientsService.findById(id);
         if (existing.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -88,6 +113,10 @@ public class PatientsController {
      */
     @GetMapping("/info/{id}")
     public ResponseEntity<PatientsDTO> getPatient(@PathVariable String id) {
+        // Récupérer l'utilisateur authentifié
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
         try {
             PatientsDTO patient = patientsService.getPatientById(id);
             return ResponseEntity.ok(patient);

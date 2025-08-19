@@ -6,6 +6,30 @@ spring:
     name: microapigateway
   cloud:
     gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders:
+              - "*"
+            allowCredentials: false
+        #  default-filters:
+        #   - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+        #  - AddResponseHeader=Access-Control-Allow-Origin, *
+        #  - AddResponseHeader=Access-Control-Allow-Methods, "GET", "POST", "PUT", "DELETE", "OPTIONS"
+        #   - AddResponseHeader=Access-Control-Allow-Headers, Content-Type,Authorization
+      #default-filters:
+       # - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+       # - AddResponseHeader="Access-Control-Allow-Origin, *"
+       # - AddResponseHeader="Access-Control-Allow-Methods, GET,POST,PUT,DELETE,OPTIONS"
+       # - AddResponseHeader="Access-Control-Allow-Headers, Content-Type,Authorization"
       discovery:
         locator:
           enabled: true
@@ -17,24 +41,45 @@ spring:
             - Path=/patients/**
           filters:
             - StripPrefix=0
+            - name: JwtAuthentication
+
         - id: microhisto
           uri: lb://MICROHISTO
           predicates:
             - Path=/hist/**
           filters:
             - StripPrefix=0
-        #- id: auth-service
-        #  uri: lb://MICROHISTO
-        #  predicates:
-        #    - Path=/auth/**
-        #  filters:
-        #    - StripPrefix=0
+            - name: JwtAuthentication
+
+        - id: auth-service
+          uri: http://localhost:8996
+          predicates:
+            - Path=/auth/**
+          filters:
+            - StripPrefix=0
+            - name: JwtAuthentication
+              args:
+                secured: false
+
         - id: microrisque
           uri: lb://MICRORISQUE
           predicates:
             - Path=/evaluer/**
           filters:
             - StripPrefix=0
+            - name: JwtAuthentication
+
+        #default-filters:
+        #- DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+        #- AddResponseHeader=Access-Control-Allow-Origin, *
+        #- AddResponseHeader=Access-Control-Allow-Methods, GET,POST,PUT,DELETE,OPTIONS
+        #- AddResponseHeader=Access-Control-Allow-Headers, Content-Type,Authorization
+
+# Configuration JWT
+jwt:
+  secret: ${JWT_SECRET:myVeryLongSecretKeyForJWT1234567890123456789012345678901234567890}
+  expiration: ${JWT_EXPIRATION:86400000} # 24 heures
+  refresh-expiration: ${JWT_REFRESH_EXPIRATION:604800000} # 7 jours
 
 eureka:
   client:
@@ -55,6 +100,16 @@ logging:
     org.springframework.cloud.gateway: DEBUG
     org.springframework.web: DEBUG
 
-jwt:
-  header: Authorization
-  secret: my-very-secret-key
+# Management endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,gateway,refresh
+  endpoint:
+    health:
+      show-details: always
+
+#jwt:
+#  header: Authorization
+#  secret: my-very-secret-key

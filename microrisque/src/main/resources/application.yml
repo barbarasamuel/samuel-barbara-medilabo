@@ -4,6 +4,9 @@ spring:
   application:
     name: microrisque # Nom du service, utilisé par Eureka et l'API Gateway
 
+jwt:
+  secret: ${JWT_SECRET:myVeryLongSecretKeyForJWT1234567890123456789012345678901234567890}
+
 eureka:
   client:
     serviceUrl:
@@ -21,3 +24,10 @@ logging:
     org.medilabo.microrisque: debug # Niveau DEBUG pour les logs spécifiques de l'application microrisque
     org.springframework.boot.web.embedded.tomcat: INFO # Pour les logs Tomcat embarqué
     org.springframework.security: DEBUG # Pour les logs détaillés de Spring Security (utile pour JWT)
+
+# Management
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

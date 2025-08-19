@@ -2,8 +2,8 @@ server:
   port: 8998
 
 spring:
-  profiles:
-    active: secret
+  #profiles:
+  #   active: secret
   ############
   application:
     name: microhisto
@@ -12,6 +12,10 @@ spring:
       #uri: mongodb://localhost:27017/histo
       uri: mongodb://root:rootroot_2024@mongodb:27017/histo
       auto-index-creation: true
+
+# Configuration JWT
+jwt:
+  secret: ${JWT_SECRET:myVeryLongSecretKeyForJWT1234567890123456789012345678901234567890}
 
 eureka:
   client:
@@ -32,3 +36,10 @@ logging:
     org.springframework.security: DEBUG # Pour les logs détaillés de Spring Security (utile pour JWT)
     org.springframework.data.mongodb: DEBUG
     org.springframework.web: DEBUG
+
+# Management
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

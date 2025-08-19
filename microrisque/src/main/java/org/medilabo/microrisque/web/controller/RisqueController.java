@@ -5,6 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 
 @RestController
 @RequestMapping("/evaluer")
@@ -21,9 +24,14 @@ public class RisqueController {
     @GetMapping("/{patientId}")
     public ResponseEntity<String> evaluerRisque(@PathVariable String patientId) {
         try {
-            String resultat = risqueService.evaluerRisque(patientId);
+            // Récupérer l'utilisateur authentifié
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String username = authentication.getName();
 
-            return ResponseEntity.ok(resultat);
+            //System.out.println("Request from user: " + username);
+
+            return ResponseEntity.ok(risqueService.evaluerRisque(patientId));
+
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de l'évaluation du risque : " + e.getMessage());
 

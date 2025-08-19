@@ -2,8 +2,8 @@ server:
   port: 8999
 
 spring:
-    profiles:
-      active: secret
+  # profiles:
+  #   active: secret
     application:
       name: micropatient
     datasource:
@@ -28,6 +28,10 @@ spring:
           dialect: org.hibernate.dialect.MySQL8Dialect
           format_sql: true
 
+# Configuration JWT
+jwt:
+  secret: ${JWT_SECRET:myVeryLongSecretKeyForJWT1234567890123456789012345678901234567890}
+
 eureka:
   client:
     serviceUrl:
@@ -45,3 +49,10 @@ logging:
     org.medilabo.micropatient: debug # Niveau DEBUG pour les logs spécifiques de l'application micropatient
     org.springframework.boot.web.embedded.tomcat: INFO # Pour les logs Tomcat embarqué
     org.springframework.security: DEBUG # Pour les logs détaillés de Spring Security (utile pour JWT)
+
+# Management
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
