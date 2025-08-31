@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.util.List;
@@ -22,6 +24,7 @@ public class PatientsController {
     @Autowired
     private PatientsService patientsService;
 
+    private static final Logger log = LoggerFactory.getLogger(PatientsController.class);
     /**
      *
      * To list all the patients
@@ -33,7 +36,7 @@ public class PatientsController {
         // Récupérer l'utilisateur authentifié
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-
+        log.debug("Appel GET /patients par l'utilisateur : {}", username);
         return ResponseEntity.ok(patientsService.findAll());
         /*List<Patients> listePatients = patientsService.findAll();
         return listePatients;*/
@@ -52,12 +55,15 @@ public class PatientsController {
         String username = authentication.getName();
 
         //System.out.println("Request from user: " + username);
-
+        log.debug("Appel GET /patients/{} reçu", id);
         //return ResponseEntity.ok(patientAffiche.get());
-        Optional<Patients> patientAffiche = patientsService.findById(id);
+        /*Optional<Patients> patientAffiche = patientsService.findById(id);
         if(patientAffiche.get()==null) throw new PatientIntrouvableException("Le produit avec l'id " + id + " est INTROUVABLE. Écran Bleu si je pouvais.");
 
-        return patientAffiche.get();
+        return patientAffiche.get();*/
+        return patientsService.findById(id)
+                .orElseThrow(() -> new PatientIntrouvableException("Le patient avec l'id " + id + " est INTROUVABLE."));
+
     }
 
     /**

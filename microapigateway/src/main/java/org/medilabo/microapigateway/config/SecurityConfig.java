@@ -1,6 +1,5 @@
 package org.medilabo.microapigateway.config;
 
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -22,6 +21,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.web.server.context.NoOpServerSecurityContextRepository;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import reactor.core.publisher.Mono;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.web.server.authentication.HttpStatusServerEntryPoint;
 
 /**
  *
@@ -67,12 +68,29 @@ public class SecurityConfig {
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
         return http
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
+                .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)//////////
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .authenticationEntryPoint(new HttpStatusServerEntryPoint(HttpStatus.UNAUTHORIZED))
+                )///////////////////////
                 .securityContextRepository(NoOpServerSecurityContextRepository.getInstance())
-                .authorizeExchange(exchange -> exchange
+                /*.authorizeExchange(exchange -> exchange
                         .pathMatchers("/auth/**").permitAll()
                         .pathMatchers("/actuator/health").permitAll()
                         .anyExchange().authenticated()
-                )
+
+
+                        .requestMatchers("/auth/**").permitAll()
+                .requestMatchers("/histo/**", "/patient/**", "/evaluer/**").authenticated()
+                .anyRequest().denyAll()*/
+                /*.authorizeExchange(exchange -> exchange
+                        //.anyExchange().permitAll()
+                        .pathMatchers("/auth/**").permitAll()
+                        .pathMatchers("/histo/**", "/patient/**", "/evaluer/**").authenticated()
+                        .anyExchange().denyAll()
+                )*/
+                .authorizeExchange(exchange -> exchange
+                        .pathMatchers("/", "/auth/anonymous").permitAll()
+                        .anyExchange().permitAll()) // Pas de blocage ici, filtre JWT s'en charge
                 .build();
     }
 

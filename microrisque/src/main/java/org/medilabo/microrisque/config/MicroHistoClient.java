@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
  * to communicate with the microhisto remote microservice
  *
 */
-//@FeignClient(name = "microhisto", configuration = FeignConfig.class, url = "${microhisto.url:http://localhost:8998}")
-@FeignClient(name = "microhisto", configuration = FeignConfig.class, url = "${microhisto.url:http://microhisto:8998}")
+@FeignClient(name = "microhisto", configuration = FeignConfig.class, url = "${microhisto.url:http://localhost:8998}")
+//@FeignClient(name = "microhisto", configuration = FeignConfig.class, url = "${microhisto.url:http://microhisto:8998}")
 public interface MicroHistoClient {
     @GetMapping("/hist/risque/{patientId}")
     ResponseEntity<HistoriqueDTO> getHistorique(@PathVariable String patientId);

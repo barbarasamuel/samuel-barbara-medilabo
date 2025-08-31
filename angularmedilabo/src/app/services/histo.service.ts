@@ -33,5 +33,5 @@ export class HistoService {
     //return this.http.post<Histo>('/api/hist/creation', histo);
     return this.http.post<Histo>('/api/hist/creation', histo);
   }
-
+  
 }

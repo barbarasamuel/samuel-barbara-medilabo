@@ -7,8 +7,8 @@ spring:
     application:
       name: micropatient
     datasource:
-      #url: jdbc:mysql://localhost:3307/medilabo
-      url: jdbc:mysql://mysql:3307/medilabo?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      url: jdbc:mysql://localhost:3307/medilabo
+      #url: jdbc:mysql://mysql:3307/medilabo?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
       username: root
       password: rootroot_2024
       driver-class-name: com.mysql.cj.jdbc.Driver
@@ -35,8 +35,8 @@ jwt:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://eureka-server:8761/eureka/
-      #defaultZone: http://localhost:8761/eureka/
+    #defaultZone: http://eureka-server:8761/eureka/
+      defaultZone: http://localhost:8761/eureka/
     register-with-eureka: true
   instance:
     prefer-ip-address: true
@@ -44,11 +44,13 @@ eureka:
 # Configuration du logging
 logging:
   level:
-    root: ERROR # Niveau de log par défaut pour toutes les classes non spécifiées
+    root: INFO #ERROR # Niveau de log par défaut pour toutes les classes non spécifiées
     org.medilabo: INFO # Niveau INFO pour les classes du package org.medilabo
     org.medilabo.micropatient: debug # Niveau DEBUG pour les logs spécifiques de l'application micropatient
     org.springframework.boot.web.embedded.tomcat: INFO # Pour les logs Tomcat embarqué
     org.springframework.security: DEBUG # Pour les logs détaillés de Spring Security (utile pour JWT)
+    org.springframework.web: DEBUG
+    org.springframework.boot: DEBUG
 
 # Management
 management:

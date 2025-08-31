@@ -20,6 +20,11 @@ spring:
             allowedHeaders:
               - "*"
             allowCredentials: false
+        default-filters:
+          - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+          - AddResponseHeader=Access-Control-Allow-Origin, *
+          - "AddResponseHeader=Access-Control-Allow-Methods, GET,POST,PUT,DELETE,OPTIONS"
+          - AddResponseHeader=Access-Control-Allow-Headers, Content-Type,Authorization
         #  default-filters:
         #   - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
         #  - AddResponseHeader=Access-Control-Allow-Origin, *
@@ -51,15 +56,26 @@ spring:
             - StripPrefix=0
             - name: JwtAuthentication
 
+          #- id: auth-service
+          #uri: http://localhost:8996
+          #predicates:
+          #  - Path=/auth/**
+          #filters:
+          #  - StripPrefix=0
+          #  - name: JwtAuthentication
+          #    args:
+          #      secured: false
         - id: auth-service
-          uri: http://localhost:8996
+          uri: lb://MICROAPIGATEWAY
           predicates:
             - Path=/auth/**
           filters:
             - StripPrefix=0
-            - name: JwtAuthentication
-              args:
-                secured: false
+
+        - id: home
+          uri: http://localhost:5900
+          predicates:
+            - Path=/
 
         - id: microrisque
           uri: lb://MICRORISQUE
@@ -68,12 +84,6 @@ spring:
           filters:
             - StripPrefix=0
             - name: JwtAuthentication
-
-        #default-filters:
-        #- DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
-        #- AddResponseHeader=Access-Control-Allow-Origin, *
-        #- AddResponseHeader=Access-Control-Allow-Methods, GET,POST,PUT,DELETE,OPTIONS
-        #- AddResponseHeader=Access-Control-Allow-Headers, Content-Type,Authorization
 
 # Configuration JWT
 jwt:
@@ -84,8 +94,8 @@ jwt:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://microeureka-server:8761/eureka/
-      #defaultZone: http://localhost:8761/eureka/
+      #defaultZone: http://microeureka-server:8761/eureka/
+      defaultZone: http://localhost:8761/eureka/
     register-with-eureka: true
     fetch-registry: true
   instance:

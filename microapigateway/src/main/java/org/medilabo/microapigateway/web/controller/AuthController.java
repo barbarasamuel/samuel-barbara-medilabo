@@ -27,7 +27,7 @@ public class AuthController {
         this.authenticationManager = authenticationManager;
     }
 
-    @PostMapping("/login")
+    /*@PostMapping("/login")
     public Mono<ResponseEntity<AuthResponse>> login(@RequestBody AuthRequest request) {
         UsernamePasswordAuthenticationToken authRequest =
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword());
@@ -75,5 +75,34 @@ public class AuthController {
     public Mono<ResponseEntity<Boolean>> validateToken(@RequestParam String token) {
         boolean isValid = jwtService.isTokenValid(token);
         return Mono.just(ResponseEntity.ok(isValid));
+    }*/
+
+    @GetMapping("/anonymous")
+    public Mono<ResponseEntity<AuthResponse>> anonymous() {
+        String username = "anonymous";
+        String accessToken = jwtService.generateToken(username);
+        String refreshToken = jwtService.generateRefreshToken(username);
+
+        AuthResponse response = new AuthResponse();
+        response.setUsername(username);
+        response.setAccessToken(accessToken);
+        response.setRefreshToken(refreshToken);
+        //response.setRefreshToken(null); // pas de refresh pour anonymes
+
+        return Mono.just(ResponseEntity.ok(response));
     }
+    /*@PostMapping("/anonymous")
+    public Mono<ResponseEntity<AuthResponse>> anonymous() {
+        String username = "anonymous";
+        String accessToken = jwtService.generateToken(username);
+        String refreshToken = jwtService.generateRefreshToken(username);
+
+        AuthResponse response = new AuthResponse();
+        response.setUsername(username);
+        response.setAccessToken(accessToken);
+        response.setRefreshToken(refreshToken);
+        //response.setRefreshToken(null); // pas de refresh pour anonymes
+
+        return Mono.just(ResponseEntity.ok(response));
+    }*/
 }

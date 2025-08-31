@@ -33,9 +33,10 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
     @Autowired
     private JwtAuthenticationFilter jwtAuthFilter;
-
+/*
     public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter) {
         this.jwtAuthFilter = jwtAuthFilter;
     }
@@ -44,6 +45,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,
                                                    JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception{
+    */@Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
 
         return http
                 .csrf(csrf -> {
@@ -52,10 +55,15 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/actuator/health").permitAll();
-                    auth.anyRequest().authenticated();
+                    auth.anyRequest().permitAll(); // aucune restriction ici
+                    /*auth.requestMatchers("/hist/**").authenticated(); // ✅ accès avec JWT requis
+                    auth.anyRequest().denyAll();*/
+                    /*auth.requestMatchers("/actuator/health").permitAll();
+                    auth.anyRequest().authenticated();*/
+                    //auth.anyRequest().permitAll();
+
                 })
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)//;
+                //.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)//;
                 .build();
     }
 

@@ -1,6 +1,6 @@
 package org.medilabo.microapigateway.config;
 
-import org.medilabo.microapigateway.filter.JwtAuthenticationFilterFactory;
+import org.medilabo.microapigateway.filter.JwtAuthenticationGatewayFilterFactory;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
@@ -17,9 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class GatewayConfig {
 
     @Autowired
-    private JwtAuthenticationFilterFactory jwtFilter;
+    private JwtAuthenticationGatewayFilterFactory jwtFilter;
 
-    public GatewayConfig(JwtAuthenticationFilterFactory jwtFilter) {
+    public GatewayConfig(JwtAuthenticationGatewayFilterFactory jwtFilter) {
         this.jwtFilter = jwtFilter;
     }
 
@@ -29,24 +29,26 @@ public class GatewayConfig {
                 // Route pour les microservices protégés
                 .route("micropatient", r -> r
                         .path("/patients/**")
-                        .filters(f -> f.filter(jwtFilter.apply(new JwtAuthenticationFilterFactory.Config())))
-                        .uri("http://localhost:8999"))//.uri("http://micropatient:8999"))//lb://MICROPATIENT
+                        .filters(f -> f.filter(jwtFilter.apply(new JwtAuthenticationGatewayFilterFactory.Config())))
+                        .uri("lb://MICROPATIENT"))//.uri("http://localhost:8999"))//
 
                 .route("microhisto", r -> r
                         .path("/hist/**")
-                        .filters(f -> f.filter(jwtFilter.apply(new JwtAuthenticationFilterFactory.Config())))
-                        .uri("http://localhost:8998"))//.uri("http://microhisto:8998"))////lb://MICROHISTO
+                        .filters(f -> f.filter(jwtFilter.apply(new JwtAuthenticationGatewayFilterFactory.Config())))
+                        .uri("lb://MICROHISTO"))//.uri("http://localhost:8998"))////
 
                 .route("microrisque", r -> r
                         .path("/evaluer/**")
-                        .filters(f -> f.filter(jwtFilter.apply(new JwtAuthenticationFilterFactory.Config())))
-                        .uri("http://localhost:8997"))
+                        .filters(f -> f.filter(jwtFilter.apply(new JwtAuthenticationGatewayFilterFactory.Config())))
+                        .uri("lb://MICRORISQUE"))//.uri("http://localhost:8997"))
 
                 // Routes publiques (sans JWT)
                 .route("auth-service", r -> r
                         .path("/auth/**")
-                        .uri("http://localhost:8996"))
+                        .uri("lb://MICROAPIGATEWAY"))//.uri("http://localhost:8996"))
 
+                .route("home", r -> r.path("/")
+                        .uri("http://localhost:5900"))
                 .build();
     }
 }

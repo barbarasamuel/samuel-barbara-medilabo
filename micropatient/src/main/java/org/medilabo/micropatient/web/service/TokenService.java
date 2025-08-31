@@ -29,7 +29,7 @@ public class TokenService {
 
     // Utilitaire générique pour extraire n'importe quelle info du token
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        Claims claims = Jwts.parserBuilder()
+        Claims claims = Jwts.parser()//.parserBuilder()
                 .setSigningKey(getSigningKey())
                 .build()
                 .parseClaimsJws(token)
