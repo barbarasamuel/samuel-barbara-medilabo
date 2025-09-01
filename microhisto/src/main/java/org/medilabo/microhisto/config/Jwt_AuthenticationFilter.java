@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @Component
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
+public class Jwt_AuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private TokenService tokenService;
 

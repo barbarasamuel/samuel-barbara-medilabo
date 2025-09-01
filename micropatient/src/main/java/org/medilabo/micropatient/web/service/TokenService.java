@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
-import java.security.Key;
 import java.util.Date;
 import java.util.function.Function;
 
@@ -18,7 +18,7 @@ public class TokenService {
     @Value("${jwt.secret}")
     private String secret;
 
-    private Key getSigningKey() {
+    private SecretKey getSigningKey() {
         return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
@@ -28,12 +28,20 @@ public class TokenService {
     }
 
     // Utilitaire générique pour extraire n'importe quelle info du token
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        Claims claims = Jwts.parser()//.parserBuilder()
+    /*public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        Claims claims = Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+        return claimsResolver.apply(claims);
+    }*/
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        Claims claims = Jwts.parser()  // parser() au lieu de parserBuilder()
+                .verifyWith(getSigningKey())  // verifyWith() au lieu de setSigningKey()
+                .build()
+                .parseSignedClaims(token)  // parseSignedClaims() au lieu de parseClaimsJws()
+                .getPayload();  // getPayload() au lieu de getBody()
         return claimsResolver.apply(claims);
     }
 

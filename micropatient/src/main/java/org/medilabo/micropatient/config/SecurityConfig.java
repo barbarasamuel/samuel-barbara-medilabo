@@ -44,8 +44,9 @@ public class SecurityConfig {
                 .csrf(csrf -> {
                     csrf.disable();
                 })
+                .cors(Customizer.withDefaults())
                 //.cors(cors -> cors.disable())
-                .cors(cors -> cors.configurationSource(corsConf.corsConfigurationSource()))
+                //.cors(cors -> cors.configurationSource(corsConf.corsConfigurationSource()))
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> {
                     //auth.anyRequest().permitAll(); // aucune restriction ici

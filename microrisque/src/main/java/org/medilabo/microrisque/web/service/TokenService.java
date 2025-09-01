@@ -1,4 +1,4 @@
-package org.medilabo.microhisto.web.service;
+package org.medilabo.microrisque.web.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.function.Function;
 
 @Service
-public class TokenService{
+public class TokenService {
     @Value("${jwt.secret}")
     private String secret;
 
