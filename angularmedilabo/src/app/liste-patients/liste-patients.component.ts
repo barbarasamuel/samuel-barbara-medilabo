@@ -6,6 +6,7 @@ import { PatientsService } from '../services/patients.service';
 import { Observable } from 'rxjs';
 //import { filter } from 'rxjs/operators';
 import { Patient } from '../models/patient';
+import { AuthService } from '../services/auth.service';
 import {CommonModule} from '@angular/common';
 
 
@@ -23,12 +24,23 @@ export class ListePatientsComponent  implements OnInit {
   
   patientForm!: FormGroup;
   
-  constructor(private route: ActivatedRoute, private router: Router,private formBuilder: FormBuilder, private patientsService: PatientsService) { 
+  constructor(private authService: AuthService, private route: ActivatedRoute, private router: Router,private formBuilder: FormBuilder, private patientsService: PatientsService) { 
     this.patients$ = this.patientsService.patients$;
     
   } 
 
-  ngOnInit() {
+  ngOnInit() {//async ngOnInit() {//
+    
+    
+    // Forcer l'initialisation de la session (et donc du token)
+    //await this.authService.initAnonymousSession();//avec async ngOnInit() {
+    /*// Attendre que le token soit chargé
+    this.authService.token$.pipe(
+      filter(token => token !== null), // Attendre un token non-null
+      take(1)
+    ).subscribe(token => {
+      console.log('Token prêt:', token);*/
+
     // Appel de la méthode du service
     this.patients$ = this.patientsService.getAllPatients();
 

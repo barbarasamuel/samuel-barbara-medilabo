@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/auth")
 @CrossOrigin(origins = "*")
@@ -78,8 +81,20 @@ public class AuthController {
     }*/
 
     @GetMapping("/anonymous")
-    public Mono<ResponseEntity<AuthResponse>> anonymous() {
-        String username = "anonymous";
+    //public Mono<ResponseEntity<AuthResponse>> anonymous() {
+    public Mono<ResponseEntity<?>> anonymous() {
+        ///////////////////////////////////////
+        String accessToken = jwtService.generateToken("anonymous", List.of("ROLE_ANONYMOUS"));
+        String refreshToken = jwtService.generateRefreshToken("anonymous");
+
+        return Mono.just(ResponseEntity.ok(Map.of(
+                "accessToken", accessToken,
+                "refreshToken", refreshToken,
+                "username", "anonymous",
+                "authorities", List.of("ROLE_ANONYMOUS")
+        )));
+        ////////////////////////////////////
+        /*String username = "anonymous";
         String accessToken = jwtService.generateToken(username);
         String refreshToken = jwtService.generateRefreshToken(username);
 
@@ -89,7 +104,7 @@ public class AuthController {
         response.setRefreshToken(refreshToken);
         //response.setRefreshToken(null); // pas de refresh pour anonymes
 
-        return Mono.just(ResponseEntity.ok(response));
+        return Mono.just(ResponseEntity.ok(response));*/
     }
     /*@PostMapping("/anonymous")
     public Mono<ResponseEntity<AuthResponse>> anonymous() {

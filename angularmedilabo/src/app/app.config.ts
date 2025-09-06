@@ -33,7 +33,7 @@ export const appConfig: ApplicationConfig = {
   ]
 };*/
 
-import { ApplicationConfig, APP_INITIALIZER, importProvidersFrom } from '@angular/core';
+import { ApplicationConfig, APP_INITIALIZER, importProvidersFrom, inject } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideClientHydration } from '@angular/platform-browser';
@@ -48,8 +48,12 @@ import { HttpClientModule } from '@angular/common/http'; // nécessaire pour inj
  * Fonction d'initialisation qui appelle initAnonymousSession()
  * Angular attend qu'elle soit résolue avant de lancer l'app.
  */
-export function initAuthFactory(authService: AuthService): () => Promise<void> {
+/*export function initAuthFactory(authService: AuthService): () => Promise<void> {
   return () => authService.initAnonymousSession();
+}*/
+export function appInitializer() {
+  const authService = inject(AuthService);
+  return () => authService.initAnonymousSession(); // doit retourner une Promise<void>
 }
 
 export const appConfig: ApplicationConfig = {
@@ -70,11 +74,16 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(HttpClientModule),
 
     //  Initialisation du token anonyme
-    {
+    /*{
       provide: APP_INITIALIZER,
       useFactory: initAuthFactory,
       deps: [AuthService],
       multi: true,
+    }*/
+   {
+      provide: APP_INITIALIZER,
+      useFactory: appInitializer,
+      multi: true
     }
   ]
 };

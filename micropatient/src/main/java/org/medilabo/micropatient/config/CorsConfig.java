@@ -23,7 +23,7 @@ public class CorsConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(List.of("http://localhost", "http://localhost:8080", "http://localhost:4200", 
-                                         "http://localhost:5900", "http://localhost:8996", "*")); // Permet toutes les origines
+                                         "http://localhost:5900", "http://localhost:8996")); //, "*" Permet toutes les origines
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*")); // Permet tous les headers
         config.setAllowCredentials(true); // pour gérer les cookies ou auth

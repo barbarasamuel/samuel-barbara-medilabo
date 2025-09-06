@@ -50,7 +50,18 @@ public class SecurityConfig {
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> {
                     //auth.anyRequest().permitAll(); // aucune restriction ici
+                    //avtdernier auth.anyRequest().authenticated();
+                    // Autoriser le jeton anonyme à accéder aux méthodes GET, POST, PUT sur /api/patients
+                    auth.requestMatchers(HttpMethod.GET, "/patients/**").hasAuthority("ROLE_ANONYMOUS");
+                    auth.requestMatchers(HttpMethod.POST, "/patients").hasAuthority("ROLE_ANONYMOUS");
+                    auth.requestMatchers(HttpMethod.PUT, "/patients/**").hasAuthority("ROLE_ANONYMOUS");
+
+                    // Autoriser l'accès non authentifié au endpoint qui fournit le token anonyme
+                    auth.requestMatchers("/auth/anonymous").permitAll();
+
+                    // Toute autre requête nécessite une authentification
                     auth.anyRequest().authenticated();
+                    //auth.requestMatchers(HttpMethod.POST, "/api/patients").hasAuthority("ROLE_ANONYMOUS");
                     /*auth.requestMatchers("/patients/**").authenticated(); // accès avec JWT requis
                     auth.anyRequest().denyAll();*/
                     /*auth.requestMatchers("/actuator/health").permitAll();

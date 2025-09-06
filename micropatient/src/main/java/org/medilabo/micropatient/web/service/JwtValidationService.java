@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 
 @Service
@@ -50,5 +52,29 @@ public class JwtValidationService{
                 .parseSignedClaims(token)
                 .getPayload();
     }
+
+    public List<String> extractAuthorities(String token) {
+
+        Claims claims = Jwts.parser()
+                .verifyWith(getSigningKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+        /*Claims claims = Jwts.parser()
+                .setSigningKey(secretKey) // le secret
+                .parseClaimsJws(token)
+                .getBody();*/
+
+        Object rawAuthorities = claims.get("authorities"); // doit correspondre au claim du JWT
+
+        if (rawAuthorities instanceof List<?> rawList) {
+            return rawList.stream()
+                    .filter(Objects::nonNull)
+                    .map(Object::toString)
+                    .toList();
+        }
+
+        return List.of(); // Aucun rôle trouvé
+    }/**/
 
 }

@@ -1,20 +1,25 @@
 package org.medilabo.microapigateway.web.service;
 
+import io.jsonwebtoken.Jwts;
+/////////////////////
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.MacAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
 @Service
 public class JwtService {
 
-    @Value("${jwt.secret:mySecretKey1234567890123456789012345678901234567890}")
+    //@Value("${jwt.secret:mySecretKey1234567890123456789012345678901234567890}")
+    @Value("${jwt.secret:myVeryLongSecretKeyForJWT1234567890123456789012345678901234567890}")
     private String secretKey;
 
     @Value("${jwt.expiration:86400000}") // 24 heures en millisecondes
@@ -22,6 +27,8 @@ public class JwtService {
 
     @Value("${jwt.refresh-expiration:604800000}") // 7 jours
     private Long refreshExpiration;
+
+    private final MacAlgorithm algorithm = Jwts.SIG.HS512;
 
     private SecretKey getSigningKey() {
         return Keys.hmacShaKeyFor(secretKey.getBytes());
@@ -35,7 +42,20 @@ public class JwtService {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
+///////////////////////////////////////////////////
+    public String generateToken(String username, List<String> roles) {
+        Date now = new Date();
+        Date expiry = new Date(now.getTime() + 1000 * 60 * 60 * 24); // 24h
 
+        return Jwts.builder()
+                .subject(username)
+                .claim("authorities", roles)
+                .issuedAt(now)
+                .expiration(expiry)
+                .signWith(getSigningKey(), algorithm)
+                .compact();
+    }
+    ////////////////////////////////////////////////////
     public String generateToken(String username) {
         return generateToken(new HashMap<>(), username);
     }

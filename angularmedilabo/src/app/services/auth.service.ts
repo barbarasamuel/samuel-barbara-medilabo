@@ -1,179 +1,9 @@
-/*import { Injectable } from '@angular/core';
-
-@Injectable({
-  providedIn: 'root'
-})
-export class AuthService {
-
-  constructor() { }
-}*/
-///////////////////////////////////
-
-/*import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { lastValueFrom, Observable, of } from 'rxjs';
-
-@Injectable({
-  providedIn: 'root'
-})
-export class AuthService {
-
-  private anonymousTokenUrl = '/api/auth/anonymous'; // URL backend
-
-  constructor(private http: HttpClient) {}
-*/
-  /**
-   * Appelle le backend pour obtenir un token JWT anonyme
-   */
-  /*fetchAnonymousToken(): Observable<{ token: string }> {
-    return this.http.get<{ token: string }>(this.anonymousTokenUrl);
-  }
-*/
-  /**
-   * Sauvegarde le token dans le localStorage
-   * @param token JWT à sauvegarder
-   *//*
-  saveToken(token: string): void {
-    if (this.isBrowser()) {
-      localStorage.setItem('jwtToken', token);
-    }
-  }*/
-
-  /**
-   * Récupère le token depuis le localStorage
-   *//*
-  getToken(): string | null {
-    if (this.isBrowser()) {
-      return localStorage.getItem('jwtToken');
-    }
-    return null;
-  }*/
-
-  /**
-   * Supprime le token du localStorage (ex: lors d’un logout)
-   *//*
-  clearToken(): void {
-    if (this.isBrowser()) {
-      localStorage.removeItem('jwtToken');
-    }
-  }*/
-
-  /**
-   * Vérifie si un token est déjà présent
-   *//*
-  isAuthenticated(): boolean {
-    return !!this.getToken();
-  }*/
-
-  /**
-   * Initialise la session anonyme si aucun token n’est présent
-   */
-  /*initAnonymousSession(): void {
-    if (!this.isAuthenticated()) {
-      this.fetchAnonymousToken().subscribe({
-        next: (response) => this.saveToken(response.token),
-        error: (err) => console.error('Erreur récupération token anonyme', err)
-      });
-    }
-  }*/
- /**
-   * On retourne une Promise pour APP_INITIALIZER
-   *//*
-  initAnonymousSession(): Promise<void> {
-    if (this.isAuthenticated()) {
-      return Promise.resolve();
-    }
-
-    return lastValueFrom(this.fetchAnonymousToken())
-      .then(response => {
-        this.saveToken(response.token);
-      })
-      .catch(err => {
-        console.error('Erreur récupération token anonyme', err);
-        // On résout quand même pour ne bloquer l'init de l'app
-        return;
-      });
-  }*/
-
-  /**
-   * Vérifie si on est dans un navigateur (pas dans Node, ni lors de tests)
-   *//*
-  private isBrowser(): boolean {
-    return typeof window !== 'undefined' && typeof localStorage !== 'undefined';
-  }
-}*/
-/*import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, lastValueFrom, Observable } from 'rxjs';
-
-@Injectable({
-  providedIn: 'root'
-})
-export class AuthService {
-  private anonymousTokenUrl = '/api/auth/anonymous';
-  private tokenSubject = new BehaviorSubject<string | null>(null);
-  public token$ = this.tokenSubject.asObservable();
-
-  constructor(private http: HttpClient) {
-    const existingToken = this.getToken();
-    if (existingToken) {
-      this.tokenSubject.next(existingToken);
-    }
-  }
-
-  fetchAnonymousToken(): Observable<{ token: string }> {
-    return this.http.get<{ token: string }>(this.anonymousTokenUrl);
-  }
-
-  saveToken(token: string): void {
-    if (this.isBrowser()) {
-      localStorage.setItem('jwtToken', token);
-      this.tokenSubject.next(token);
-    }
-  }
-
-  getToken(): string | null {
-    if (this.isBrowser()) {
-      return localStorage.getItem('jwtToken');
-    }
-    return null;
-  }
-
-  clearToken(): void {
-    if (this.isBrowser()) {
-      localStorage.removeItem('jwtToken');
-      this.tokenSubject.next(null);
-    }
-  }
-
-  isAuthenticated(): boolean {
-    return !!this.getToken();
-  }
-
-  initAnonymousSession(): Promise<void> {
-    if (this.isAuthenticated()) {
-      this.tokenSubject.next(this.getToken());
-      return Promise.resolve();
-    }
-
-    return lastValueFrom(this.fetchAnonymousToken())
-      .then(response => {
-        this.saveToken(response.token);
-      })
-      .catch(err => {
-        console.error('Erreur récupération token anonyme', err);
-        return;
-      });
-  }
-
-  private isBrowser(): boolean {
-    return typeof window !== 'undefined' && typeof localStorage !== 'undefined';
-  }
-}*/
+/**/
 
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, lastValueFrom, Observable } from 'rxjs';
+import { AuthResponse } from '../models/auth-response';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -188,22 +18,69 @@ export class AuthService {
     }
   }
 
-  fetchAnonymousToken(): Observable<{ token: string }> {
-    return this.http.get<{ token: string }>(this.anonymousTokenUrl);
+  /*
+  fetchAnonymousToken(): Observable<{ accessToken: string }> {
+    return this.http.get<{ accessToken: string }>(this.anonymousTokenUrl);
+  }*/
+  fetchAnonymousToken(): Observable<AuthResponse> {
+    return this.http.get<AuthResponse>(this.anonymousTokenUrl);
   }
 
   getToken(): string | null {
+  //getToken(authresponse: AuthResponse | undefined | null): string | null {
     if ((typeof window !== 'undefined') && (this.isBrowser())) {
-      return localStorage.getItem('jwtToken')
+      /////////////////////////////////////////
+      /*if (authresponse && this.isBrowser()) {
+        console.log('Token récupéré :', authresponse);
+        localStorage.setItem('jwtToken', authresponse.accessToken);
+        localStorage.setItem('refreshToken', authresponse.refreshToken);
+        localStorage.setItem('username', authresponse.username);
+        localStorage.setItem('authorities', JSON.stringify(authresponse.authorities || []));
+      */
+      /////////////////////////////////////////
+      //////////////////////////////////
+      lastValueFrom(this.fetchAnonymousToken())
+        .then(response => {
+          if (response?.accessToken) {//if (response?.token) {
+            this.saveToken(response); //this.saveToken(response.accessToken); //this.saveToken(response.token);
+          } else {
+            console.error('Token manquant dans la réponse du serveur:', response);
+          }
+        })
+        .catch(err => {
+          console.error('Erreur récupération token anonyme', err);
+        });
+      //////////////////////////////////
+        //return localStorage.getItem('jwtToken')
+        const token = localStorage.getItem('jwtToken');
+        console.log('Token localStorage :', localStorage.getItem('jwtToken'));
+        return token && token !== 'undefined' ? token : null;
+      /*}*/
     }
     return null;
     //return typeof window !== 'undefined' ? localStorage.getItem('jwtToken') : null;
   }
 
-  saveToken(token: string): void {
-    if ((typeof window !== 'undefined') && (this.isBrowser())) { //if (typeof window !== 'undefined') {
+  /*
+ saveToken(token: string | undefined | null): void {
+    if (token && this.isBrowser()) {
+      console.log('Token enregistré :', token);
       localStorage.setItem('jwtToken', token);
-      this.tokenSubject.next(token); // propager à l'observable
+      this.tokenSubject.next(token);
+    } else {
+      console.warn('Token invalide non enregistré :', token);
+    }
+  }*/
+  saveToken(authresponse: AuthResponse | undefined | null): void {
+    if (authresponse && this.isBrowser()) {
+      console.log('Token enregistré :', authresponse);
+      localStorage.setItem('jwtToken', authresponse.accessToken);
+      localStorage.setItem('refreshToken', authresponse.refreshToken);
+      localStorage.setItem('username', authresponse.username);
+      localStorage.setItem('authorities', JSON.stringify(authresponse.authorities || []));
+      this.tokenSubject.next(authresponse.accessToken);
+    } else {
+      console.warn('Token invalide non enregistré :', authresponse);
     }
   }
 
@@ -212,9 +89,14 @@ export class AuthService {
       return Promise.resolve();
     }
 
+    /**/
     return lastValueFrom(this.fetchAnonymousToken())
       .then(response => {
-        this.saveToken(response.token); // tokenSubject.next() sera appelé ici
+        if (response?.accessToken) {//if (response?.token) {
+          this.saveToken(response); //this.saveToken(response.accessToken); //this.saveToken(response.token);
+        } else {
+          console.error('Token manquant dans la réponse du serveur:', response);
+        }
       })
       .catch(err => {
         console.error('Erreur récupération token anonyme', err);
