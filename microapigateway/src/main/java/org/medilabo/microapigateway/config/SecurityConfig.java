@@ -59,11 +59,7 @@ public class SecurityConfig {
     public ReactiveAuthenticationManager reactiveAuthenticationManager(ReactiveUserDetailsService userDetailsService) {
         return new UserDetailsRepositoryReactiveAuthenticationManager(userDetailsService);
     }
-    /////////////////////////////////////////////
 
-
-    //@Bean
-    //public SecurityWebFilterChain securityWebFilterChain(HttpSecurity http) throws Exception{
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
         return http
@@ -71,23 +67,8 @@ public class SecurityConfig {
                 .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)//////////
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .authenticationEntryPoint(new HttpStatusServerEntryPoint(HttpStatus.UNAUTHORIZED))
-                )///////////////////////
+                )
                 .securityContextRepository(NoOpServerSecurityContextRepository.getInstance())
-                /*.authorizeExchange(exchange -> exchange
-                        .pathMatchers("/auth/**").permitAll()
-                        .pathMatchers("/actuator/health").permitAll()
-                        .anyExchange().authenticated()
-
-
-                        .requestMatchers("/auth/**").permitAll()
-                .requestMatchers("/histo/**", "/patient/**", "/evaluer/**").authenticated()
-                .anyRequest().denyAll()*/
-                /*.authorizeExchange(exchange -> exchange
-                        //.anyExchange().permitAll()
-                        .pathMatchers("/auth/**").permitAll()
-                        .pathMatchers("/histo/**", "/patient/**", "/evaluer/**").authenticated()
-                        .anyExchange().denyAll()
-                )*/
                 .authorizeExchange(exchange -> exchange
                         .pathMatchers("/", "/auth/anonymous").permitAll()
                         .anyExchange().permitAll()) // Pas de blocage ici, filtre JWT s'en charge

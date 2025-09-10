@@ -25,16 +25,6 @@ spring:
           - AddResponseHeader=Access-Control-Allow-Origin, *
           - "AddResponseHeader=Access-Control-Allow-Methods, GET,POST,PUT,DELETE,OPTIONS"
           - AddResponseHeader=Access-Control-Allow-Headers, Content-Type,Authorization
-        #  default-filters:
-        #   - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
-        #  - AddResponseHeader=Access-Control-Allow-Origin, *
-        #  - AddResponseHeader=Access-Control-Allow-Methods, "GET", "POST", "PUT", "DELETE", "OPTIONS"
-        #   - AddResponseHeader=Access-Control-Allow-Headers, Content-Type,Authorization
-      #default-filters:
-       # - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
-       # - AddResponseHeader="Access-Control-Allow-Origin, *"
-       # - AddResponseHeader="Access-Control-Allow-Methods, GET,POST,PUT,DELETE,OPTIONS"
-       # - AddResponseHeader="Access-Control-Allow-Headers, Content-Type,Authorization"
       discovery:
         locator:
           enabled: true
@@ -56,15 +46,6 @@ spring:
             - StripPrefix=0
             - name: JwtAuthentication
 
-          #- id: auth-service
-          #uri: http://localhost:8996
-          #predicates:
-          #  - Path=/auth/**
-          #filters:
-          #  - StripPrefix=0
-          #  - name: JwtAuthentication
-          #    args:
-          #      secured: false
         - id: auth-service
           uri: lb://MICROAPIGATEWAY
           predicates:
@@ -119,7 +100,3 @@ management:
   endpoint:
     health:
       show-details: always
-
-#jwt:
-#  header: Authorization
-#  secret: my-very-secret-key

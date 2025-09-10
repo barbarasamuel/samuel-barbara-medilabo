@@ -4,9 +4,6 @@ import { HeaderComponent } from './header/header.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import { PatientsService } from './services/patients.service';
 import { CommonModule } from '@angular/common';
-/*import { ListePatientsComponent } from './liste-patients/liste-patients.component';
-import { DetailsPatientComponent } from './details-patient/details-patient.component';
-import { BrowserModule } from '@angular/platform-browser';*/
 
 @Component({
   selector: 'app-root',
@@ -17,13 +14,13 @@ import { BrowserModule } from '@angular/platform-browser';*/
 })
 
 export class AppComponent {
-  
+
   patientsData: any;
 
   constructor(private patientsService: PatientsService) {}
 
   ngOnInit(): void {
-    
+
     this.patientsService.getAllPatients().subscribe({
         next: (data) => { // 'next' est pour les données reçues avec succès
           console.log(data);
@@ -36,15 +33,6 @@ export class AppComponent {
           console.log('Data fetching completed.');
         }
       });
-      
-    /*this.patientsService.getAllPatients().subscribe(
-      data => {
-        console.log(data);
-        this.patientsData = data;
-      },
-      (error) => {
-        console.error('Error fetching data:', error);
-      }
-    );*/
+
   }
 }

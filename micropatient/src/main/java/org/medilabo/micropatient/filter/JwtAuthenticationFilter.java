@@ -17,6 +17,15 @@ import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ *
+ * Pour intercepter les requêtes entrantes,
+ * extraire le token JWT,
+ * le valider
+ * et, si tout est correct, authentifier l'utilisateur dans le contexte de sécurité de Spring
+ *
+ */
+
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
@@ -49,7 +58,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 log.debug("Token JWT valide pour l'utilisateur {}", username);
 
                 // Extraire les rôles depuis le token
-                List<String> roles = jwtService.extractAuthorities(token); //  à implémenter
+                List<String> roles = jwtService.extractAuthorities(token);
                 List<SimpleGrantedAuthority> authorities = roles.stream()
                         .map(SimpleGrantedAuthority::new)
                         .toList();
@@ -69,47 +78,4 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-/*@Component
-public class JwtAuthenticationFilter  extends OncePerRequestFilter {
-
-    private static final Logger log = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
-
-    @Autowired
-    private JwtValidationService jwtService;
-
-    @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain)
-            throws ServletException, IOException {
-
-        final String authHeader = request.getHeader("Authorization");
-
-        log.info(">>> JwtAuthenticationFilter appelé");
-
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            log.debug("Authorization header absent ou mal formé");
-            filterChain.doFilter(request, response);
-            return;
-        }
-        log.debug("JwtAuthenticationFilter exécuté - vérification du token : {}", authHeader);
-        String token = authHeader.substring(7);
-        String username = jwtService.extractUsername(token);
-
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            if (jwtService.isTokenValid(token)) {//, username)) {
-                log.debug("Token JWT valide pour l'utilisateur {}", username);
-                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
-                        //username, null, List.of(new SimpleGrantedAuthority("ROLE_USER"))
-                        username, null, List.of(new SimpleGrantedAuthority("ROLE_ANONYMOUS"))
-                );
-                SecurityContextHolder.getContext().setAuthentication(auth);
-            }else {
-                log.warn("Token JWT invalide ou expiré");
-            }
-        }
-
-        filterChain.doFilter(request, response);
-    }
-    */
 }

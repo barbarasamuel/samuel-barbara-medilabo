@@ -72,40 +72,22 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-oauth2-jose</artifactId>
 		</dependency>
-		<!--<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt-api</artifactId>
-			<version>0.11.5</version>
-		</dependency>
-		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt-impl</artifactId>
-			<version>0.11.5</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt-jackson</artifactId>
-			<version>0.11.5</version>
-			<scope>runtime</scope>
-		</dependency>
-		-->
 
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-api</artifactId>
-			<version>0.12.6</version><!--<version>0.12.3</version><-->
+			<version>0.12.6</version>
 		</dependency>
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-impl</artifactId>
-			<version>0.12.6</version><!--<version>0.12.3</version><-->
+			<version>0.12.6</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-jackson</artifactId>
-			<version>0.12.6</version><!--<version>0.12.3</version><-->
+			<version>0.12.6</version>
 			<scope>runtime</scope>
 		</dependency>
 
@@ -117,28 +99,8 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-			<!--<version>4.3.0</version>
-			<exclusions>
-				<exclusion>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-starter-webflux</artifactId>
-			</exclusion>
-			<exclusion>
-				<groupId>io.projectreactor</groupId>
-				<artifactId>reactor-core</artifactId>
-			</exclusion>
-		</exclusions>-->
+
 		</dependency>
-		<!--<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-gateway-server</artifactId>
-			<version>4.3.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-gateway</artifactId>
-			<version>4.3.0</version>
-		</dependency>-->
 	</dependencies>
 
 	<build>

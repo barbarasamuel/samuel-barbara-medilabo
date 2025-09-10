@@ -1,7 +1,7 @@
 package org.medilabo.microapigateway.web.service;
 
 import io.jsonwebtoken.Jwts;
-/////////////////////
+
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.MacAlgorithm;
@@ -15,10 +15,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
+/**
+ *
+ * To manage the token methods
+ *
+ */
 @Service
 public class JwtService {
 
-    //@Value("${jwt.secret:mySecretKey1234567890123456789012345678901234567890}")
     @Value("${jwt.secret:myVeryLongSecretKeyForJWT1234567890123456789012345678901234567890}")
     private String secretKey;
 
@@ -42,7 +46,7 @@ public class JwtService {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
-///////////////////////////////////////////////////
+
     public String generateToken(String username, List<String> roles) {
         Date now = new Date();
         Date expiry = new Date(now.getTime() + 1000 * 60 * 60 * 24); // 24h
@@ -55,7 +59,7 @@ public class JwtService {
                 .signWith(getSigningKey(), algorithm)
                 .compact();
     }
-    ////////////////////////////////////////////////////
+
     public String generateToken(String username) {
         return generateToken(new HashMap<>(), username);
     }

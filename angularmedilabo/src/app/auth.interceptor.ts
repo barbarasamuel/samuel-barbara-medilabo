@@ -4,7 +4,6 @@ import { inject } from '@angular/core';
 import { AuthService } from './services/auth.service';
 import { filter, switchMap, take } from 'rxjs/operators';
 import { of } from 'rxjs';
-//import { take, switchMap, of } from 'rxjs';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
@@ -28,4 +27,4 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       }
     })
   );
-};/**/
+};

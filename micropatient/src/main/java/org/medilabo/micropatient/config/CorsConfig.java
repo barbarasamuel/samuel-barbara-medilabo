@@ -13,7 +13,9 @@ import java.util.List;
 
 /**
  *
- * To manage the CORS
+ * Mécanisme de sécurité des navigateurs qui empêche par défaut un frontend
+ * (ex: Angular sur localhost:4200) de faire des requêtes vers un backend
+ * hébergé sur un autre domaine
  *
  */
 @Configuration
@@ -26,7 +28,7 @@ public class CorsConfig {
                                          "http://localhost:5900", "http://localhost:8996")); //, "*" Permet toutes les origines
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*")); // Permet tous les headers
-        config.setAllowCredentials(true); // pour gérer les cookies ou auth
+        config.setAllowCredentials(true); //  Permet l’envoi de cookies, tokens JWT, ou headers d’authentification avec les requêtes CORS
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);

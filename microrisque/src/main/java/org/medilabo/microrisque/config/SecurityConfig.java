@@ -26,16 +26,6 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    //@Autowired
-//    private JwtAuthenticationFilter jwtAuthenticationFilter;
-
-    @Autowired
-    private JwtAuthenticationFilter jwtAuthFilter;
-/*
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter) {
-        this.jwtAuthFilter = jwtAuthFilter;
-    }*/
-
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -47,14 +37,9 @@ public class SecurityConfig {
                 .cors(cors -> cors.disable())
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> {
-                    auth.anyRequest().permitAll(); // aucune restriction ici
-                    /*auth.requestMatchers("/evaluer/**").authenticated(); // ✅ accès avec JWT requis
-                    auth.anyRequest().denyAll();*/
-                    /*auth.requestMatchers("/actuator/health").permitAll();
-                    auth.anyRequest().authenticated();*/
-                    //auth.anyRequest().permitAll();
+                    auth.anyRequest().permitAll(); // aucune restriction
+
                 })
-                //.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)//;
                 .build();
     }
 

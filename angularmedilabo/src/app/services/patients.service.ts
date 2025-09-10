@@ -13,10 +13,9 @@ export class PatientsService {
   // Observable public pour la consommation
   public patients$: Observable<Patient[]>;
   //private apiUrl = '/patients';
-  //private apiUrl = 'http://micropatient:8999/patients';
   private apiUrl = '/api/patients';
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient) {
     // Initialisation avec un tableau vide ou des données initiales
     const initialPatients: Patient[] = [];
     this.patientsSubject = new BehaviorSubject<Patient[]>(initialPatients);
@@ -25,13 +24,11 @@ export class PatientsService {
 
   getAllPatients(): Observable<Patient[]> {
     //return this.http.get<Patient[]>('http://localhost:8999/patients');
-    //return this.http.get<Patient[]>('http://micropatient:8999/patients');
     return this.http.get<Patient[]>('/api/patients');
   }
 
   getPatientById(id: number): Observable<Patient> {
     //return this.http.get<Patient>(`${'http://localhost:8999/patients'}/${id}`);
-    //return this.http.get<Patient>(`${'http://micropatient:8999/patients'}/${id}`);
     return this.http.get<Patient>(`${'/api/patients'}/${id}`);
   }
 
@@ -42,12 +39,9 @@ export class PatientsService {
   updatePatient(patient: Patient): Observable<Patient> {
     return this.http.put<Patient>(`${this.apiUrl}/${patient.id}`, patient);
   }
-  
+
   getPatientRisque(patientId: number): Observable<string> {
     /*return this.http.get(`${'http://localhost:8997/evaluer'}/${patientId}`, {
-    responseType: 'text'
-  });*/
-    /*return this.http.get(`${'http://microrisque:8997/evaluer'}/${patientId}`, {
     responseType: 'text'
   });*/
   return this.http.get(`${'/api/evaluer'}/${patientId}`, {

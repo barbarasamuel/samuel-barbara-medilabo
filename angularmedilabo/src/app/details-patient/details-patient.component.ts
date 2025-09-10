@@ -3,7 +3,6 @@ import { RouterOutlet } from '@angular/router';
 import { FormBuilder,FormGroup,Validators,ReactiveFormsModule,ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { PatientsService } from '../services/patients.service';
 import { ActivatedRoute,Router } from '@angular/router';
-//import { switchMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Patient } from '../models/patient';
 import { JsonPipe,NgIf, DatePipe } from '@angular/common'; //CommonModule,
@@ -23,14 +22,14 @@ export class DetailsPatientComponent implements OnInit{
   @Input() mode: 'create' | 'edit' | 'view' = 'view';
   @Input() patientId?: number;
   @Input() patient!: Patient;
-  
+
   isReadOnly = false;
-    
+
   constructor(private router: Router, private formBuilder: FormBuilder,private route: ActivatedRoute,
-    private patientsService: PatientsService) { 
-      
+    private patientsService: PatientsService) {
+
   }
-  
+
   ngOnInit(): void {
 
     const modeFromRoute = this.route.snapshot.data['mode'];
@@ -50,17 +49,17 @@ export class DetailsPatientComponent implements OnInit{
       updateOn: 'blur'
     });
 
-    if (this.mode==="edit") { 
+    if (this.mode==="edit") {
       const patientId = Number(this.route.snapshot.paramMap.get('id'));
       this.patientsService.getPatientById(patientId).subscribe(data =>{
         this.patient = data;
         this.initializeForm();
       });
-  
+
       this.patientsService.getPatientRisque(patientId).subscribe((data) => this.note = data);
-      
+
     }
-          
+
     function telephoneValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const value = control.value?.trim();
@@ -87,9 +86,9 @@ export class DetailsPatientComponent implements OnInit{
     });
   }
 
-  
+
   onSave(){
-    
+
     //console.log(this.patientForm.get('genre')?.errors);
     if (this.patientForm.invalid) return;
     const patientData: Patient = this.patientForm.value;
@@ -120,9 +119,9 @@ export class DetailsPatientComponent implements OnInit{
     setTimeout(() => {
       this.router.navigate(['/liste-patients']);
     }, 100);
-    
+
   }
-  
+
   formatDateJsonForDatetimeLocal(dateString: string): string {
     const date = new Date(dateString);
     const offset = date.getTimezoneOffset();

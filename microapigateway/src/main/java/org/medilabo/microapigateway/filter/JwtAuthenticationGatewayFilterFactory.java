@@ -24,6 +24,14 @@ import java.util.List;
 import java.util.Map;
 import java.nio.charset.StandardCharsets;
 
+/**
+ *
+ * Pour filter les routes indiquées dans la classe GatewayConfig
+ * Pour ajouter une couche de sécurité aux API gérées par Spring Cloud Gateway
+ * en validant les tokens JWT dans les requêtes entrantes
+ *
+ */
+
 @Component
 public class JwtAuthenticationGatewayFilterFactory extends AbstractGatewayFilterFactory<JwtAuthenticationGatewayFilterFactory.Config> {
 
@@ -31,8 +39,6 @@ public class JwtAuthenticationGatewayFilterFactory extends AbstractGatewayFilter
     private static final Logger log = LoggerFactory.getLogger(JwtAuthenticationGatewayFilterFactory.class);
     private static final String BEARER_PREFIX = "Bearer ";
 
-    // Liste blanche des chemins à ignorer
-    //private static final Set<String> EXCLUDE_PATHS = Set.of("/auth/anonymous");
     public JwtAuthenticationGatewayFilterFactory(JwtService jwtService) {
         super(Config.class);
         this.jwtService = jwtService;
@@ -41,29 +47,24 @@ public class JwtAuthenticationGatewayFilterFactory extends AbstractGatewayFilter
     @Override
     public GatewayFilter apply(Config config) {
         return (exchange, chain) -> {
-            ///////////////////////
+
             // Exclusions
             String path = exchange.getRequest().getURI().getPath();
-            if (path.equals("/") || path.contains("/auth/anonymous")) {//if (path.equals("/auth/anonymous")) {
+            if (path.equals("/") || path.contains("/auth/anonymous")) {
                 return chain.filter(exchange);
-            }/**/
-            //////////////////////
-// Bypass pour les endpoints anonymes
+            }
 
-            /*if (EXCLUDE_PATHS.contains(path)) {
-                return chain.filter(exchange);
-            }*/
             // Sinon, logique JWT classique
             List<String> authHeaders = exchange.getRequest().getHeaders().getOrEmpty(HttpHeaders.AUTHORIZATION);
             if (authHeaders.isEmpty() || !authHeaders.get(0).startsWith("Bearer ")) {
                 return unauthorized(exchange);
             }
 
-            String token = authHeaders.get(0).substring(7); // Remove "Bearer "
+            String token = authHeaders.get(0).substring(7); // Retire "Bearer "
             if (!jwtService.isTokenValid(token)) {
                 return unauthorized(exchange);
             }
-            ///////////////////
+
             if (!config.isSecured()) {
                 log.debug("Route non sécurisée, passage sans vérification JWT");
                 return chain.filter(exchange);
@@ -73,12 +74,12 @@ public class JwtAuthenticationGatewayFilterFactory extends AbstractGatewayFilter
         };
     }
 
-    ////////////////////////
+
     private Mono<Void> unauthorized(ServerWebExchange exchange) {
         exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
         return exchange.getResponse().setComplete();
     }
-    ///////////////////////
+
     private Mono<Void> authenticateRequest(ServerWebExchange exchange, GatewayFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
         String authHeader = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
@@ -152,7 +153,7 @@ public class JwtAuthenticationGatewayFilterFactory extends AbstractGatewayFilter
     }
 
     private boolean shouldIncludeErrorBody() {
-        // Vous pouvez rendre cela configurable
+        // Possible de rendre cela configurable
         return true;
     }
 
@@ -176,68 +177,5 @@ public class JwtAuthenticationGatewayFilterFactory extends AbstractGatewayFilter
             this.includeUserInfo = includeUserInfo;
         }
     }
-    /*@Autowired
-    private JwtService jwtService;
 
-    private static final Logger log = LoggerFactory.getLogger(JwtAuthenticationGatewayFilterFactory.class);
-
-    public JwtAuthenticationGatewayFilterFactory(JwtService jwtService) {
-        super(Config.class);
-        this.jwtService = jwtService;
-    }
-
-    @Override
-    public GatewayFilter apply(Config config) {
-        log.debug("JwtAuthenticationGatewayFilterFactory exécuté - vérification du token", config);
-
-        return (exchange, chain) -> {
-            ServerHttpRequest request = exchange.getRequest();
-
-            if (!config.isSecured()) {
-                // Pas besoin de token, on laisse passer la requête
-                return chain.filter(exchange);
-            }
-
-            String authHeader = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
-
-            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-                exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-                return exchange.getResponse().setComplete();
-            }
-
-            String token = authHeader.substring(7);
-
-            try {
-                if (!jwtService.isTokenValid(token)) {
-                    exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-                    return exchange.getResponse().setComplete();
-                }
-
-                String username = jwtService.extractUsername(token);
-                ServerHttpRequest modifiedRequest = request.mutate()
-                        .header("X-User-Name", username)
-                        .header("X-Auth-Token", token)
-                        .build();
-
-                ServerWebExchange modifiedExchange = exchange.mutate().request(modifiedRequest).build();
-                return chain.filter(modifiedExchange);
-
-            } catch (Exception e) {
-                exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-                return exchange.getResponse().setComplete();
-            }
-        };
-    }
-
-    public static class Config {
-        private boolean secured = true;
-
-        public boolean isSecured() {
-            return secured;
-        }
-
-        public void setSecured(boolean secured) {
-            this.secured = secured;
-        }
-    }*/
 }

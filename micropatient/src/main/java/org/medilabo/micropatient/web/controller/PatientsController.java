@@ -38,8 +38,7 @@ public class PatientsController {
         String username = authentication.getName();
         log.debug("Appel GET /patients par l'utilisateur : {}", username);
         return ResponseEntity.ok(patientsService.findAll());
-        /*List<Patients> listePatients = patientsService.findAll();
-        return listePatients;*/
+
     }
 
     /**
@@ -56,11 +55,7 @@ public class PatientsController {
 
         //System.out.println("Request from user: " + username);
         log.debug("Appel GET /patients/{} reçu", id);
-        //return ResponseEntity.ok(patientAffiche.get());
-        /*Optional<Patients> patientAffiche = patientsService.findById(id);
-        if(patientAffiche.get()==null) throw new PatientIntrouvableException("Le produit avec l'id " + id + " est INTROUVABLE. Écran Bleu si je pouvais.");
 
-        return patientAffiche.get();*/
         return patientsService.findById(id)
                 .orElseThrow(() -> new PatientIntrouvableException("Le patient avec l'id " + id + " est INTROUVABLE."));
 
@@ -86,8 +81,7 @@ public class PatientsController {
                 .path("/{id}")
                 .buildAndExpand(patientAjoute.getId())
                 .toUri();
-/*
-        return ResponseEntity.created(location).build();*/
+
         return ResponseEntity.created(location).body(patientAjoute);
 
     }

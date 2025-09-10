@@ -28,15 +28,7 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    @Autowired
-    private JwtAuthenticationFilter jwtAuthFilter;
 
-    @Autowired
-    private CorsConfig corsConf;
-/*
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter) {
-        this.jwtAuthFilter = jwtAuthFilter;
-    }*/
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
@@ -45,12 +37,8 @@ public class SecurityConfig {
                     csrf.disable();
                 })
                 .cors(Customizer.withDefaults())
-                //.cors(cors -> cors.disable())
-                //.cors(cors -> cors.configurationSource(corsConf.corsConfigurationSource()))
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> {
-                    //auth.anyRequest().permitAll(); // aucune restriction ici
-                    //avtdernier auth.anyRequest().authenticated();
                     // Autoriser le jeton anonyme à accéder aux méthodes GET, POST, PUT sur /api/patients
                     auth.requestMatchers(HttpMethod.GET, "/patients/**").hasAuthority("ROLE_ANONYMOUS");
                     auth.requestMatchers(HttpMethod.POST, "/patients").hasAuthority("ROLE_ANONYMOUS");
@@ -61,14 +49,7 @@ public class SecurityConfig {
 
                     // Toute autre requête nécessite une authentification
                     auth.anyRequest().authenticated();
-                    //auth.requestMatchers(HttpMethod.POST, "/api/patients").hasAuthority("ROLE_ANONYMOUS");
-                    /*auth.requestMatchers("/patients/**").authenticated(); // accès avec JWT requis
-                    auth.anyRequest().denyAll();*/
-                    /*auth.requestMatchers("/actuator/health").permitAll();
-                    auth.anyRequest().authenticated();*/
-                    //auth.anyRequest().permitAll();
                 })
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)//;
                 .build();
     }
 

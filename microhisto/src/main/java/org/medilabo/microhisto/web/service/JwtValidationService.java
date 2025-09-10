@@ -9,6 +9,11 @@ import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.function.Function;
 
+/**
+ *
+ * To validate the token
+ *
+ */
 @Service
 public class JwtValidationService{
     @Value("${jwt.secret}")

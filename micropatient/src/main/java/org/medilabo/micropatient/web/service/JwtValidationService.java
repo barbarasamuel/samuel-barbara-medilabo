@@ -11,6 +11,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
+/**
+ *
+ * To validate JWT
+ *
+ */
+
 @Service
 public class JwtValidationService{
     @Value("${jwt.secret}")
