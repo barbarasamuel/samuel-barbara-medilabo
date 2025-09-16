@@ -5,9 +5,9 @@ import org.medilabo.microhisto.model.Histo;
 import org.medilabo.microhisto.web.dao.HistoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -59,6 +59,10 @@ public class HistoService {
      *
      */
     public HistoriqueDTO getHistoriqueByPatientId(String patientId) {
+        if (!histoRepository.existsByPatId(Long.valueOf(patientId))) {
+            throw new NoSuchElementException("Patient not found");
+        }
+
         List<Histo> historique = histoRepository.findByPatId(Long.valueOf(patientId));
 
         List<String> notesList = new ArrayList<>();

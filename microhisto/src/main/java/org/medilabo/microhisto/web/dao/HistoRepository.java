@@ -14,4 +14,9 @@ import java.util.Optional;
 public interface HistoRepository extends MongoRepository<Histo, Long> {
     List<Histo> findByPatId(Long id);
     Optional<Histo> findById(String id);
+
+    boolean existsByPatId(Long patId);
+
+    void deleteByPatId(Long patId);
+    void deleteByPatIdAndNote(Long patId, String note);
 }

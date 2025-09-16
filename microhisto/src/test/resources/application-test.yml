@@ -1,0 +1,44 @@
+server:
+  port: 8998
+
+spring:
+  #profiles:
+  #   active: secret
+  ############
+  application:
+    name: microhisto
+  data:
+    mongodb:
+      uri: mongodb://root:rootroot_2024@localhost:27017/medilabo?authSource=admin
+      auto-index-creation: true
+
+# Configuration JWT
+jwt:
+  secret: ${JWT_SECRET:myVeryLongSecretKeyForJWT1234567890123456789012345678901234567890}
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka-server:8761/eureka/
+    #defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+  instance:
+    prefer-ip-address: true
+
+# Configuration du logging
+logging:
+  level:
+    root: ERROR # Niveau de log par défaut pour toutes les classes non spécifiées
+    org.medilabo: INFO # Niveau INFO pour les classes du package org.medilabo
+    org.medilabo.microhisto: debug # Niveau DEBUG pour les logs spécifiques de l'application microhisto
+    org.springframework.boot.web.embedded.tomcat: INFO # Pour les logs Tomcat embarqué
+    org.springframework.security: DEBUG # Pour les logs détaillés de Spring Security (utile pour JWT)
+    org.springframework.data.mongodb: DEBUG
+    org.springframework.web: DEBUG
+
+# Management
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

@@ -1,0 +1,102 @@
+server:
+  port: 8996
+
+spring:
+  application:
+    name: microapigateway
+  cloud:
+    gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders:
+              - "*"
+            allowCredentials: false
+        default-filters:
+          - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+          - AddResponseHeader=Access-Control-Allow-Origin, *
+          - "AddResponseHeader=Access-Control-Allow-Methods, GET,POST,PUT,DELETE,OPTIONS"
+          - AddResponseHeader=Access-Control-Allow-Headers, Content-Type,Authorization
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: micropatient
+          uri: lb://MICROPATIENT
+          predicates:
+            - Path=/patients/**
+          filters:
+            - StripPrefix=0
+            - name: JwtAuthentication
+
+        - id: microhisto
+          uri: lb://MICROHISTO
+          predicates:
+            - Path=/hist/**
+          filters:
+            - StripPrefix=0
+            - name: JwtAuthentication
+
+        - id: auth-service
+          uri: lb://MICROAPIGATEWAY
+          predicates:
+            - Path=/auth/**
+          filters:
+            - StripPrefix=0
+
+        - id: home
+          uri: http://localhost:5900
+          predicates:
+            - Path=/
+
+        - id: microrisque
+          uri: lb://MICRORISQUE
+          predicates:
+            - Path=/evaluer/**
+          filters:
+            - StripPrefix=0
+            - name: JwtAuthentication
+
+# Configuration JWT
+jwt:
+  secret: ${JWT_SECRET:myVeryLongSecretKeyForJWT1234567890123456789012345678901234567890}
+  expiration: ${JWT_EXPIRATION:86400000} # 24 heures
+  refresh-expiration: ${JWT_REFRESH_EXPIRATION:604800000} # 7 jours
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://microeureka-server:8761/eureka/
+      #defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true   # Utilisation de l’adresse IP pour l’enregistrement Eureka
+
+logging:
+  level:
+    root: ERROR
+    org.medilabo: INFO
+    org.springframework.boot.web.embedded.tomcat: INFO
+    org.springframework.security: DEBUG
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.web: DEBUG
+
+# Management endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,gateway,refresh
+  endpoint:
+    health:
+      show-details: always

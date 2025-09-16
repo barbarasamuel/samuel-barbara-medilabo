@@ -1,0 +1,60 @@
+server:
+  port: 8999
+
+spring:
+  # profiles:
+  #   active: secret
+    application:
+      name: micropatient
+    datasource:
+      url: jdbc:mysql://localhost:3306/medilabo
+      username: root
+      password: rootroot_2024
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      hikari: # Configuration du pool de connexions HikariCP
+        connection-timeout: 30000 # Durée maximale d'attente pour une connexion du pool (en ms)
+        maximum-pool-size: 5 # Nombre maximal de connexions dans le pool
+        initialization-fail-timeout: 0 # Le démarrage de l'application ne devrait pas échouer si une connexion initiale ne peut pas être établie
+
+    jpa:
+      defer-datasource-initialization: true # Reporte l'initialisation de la source de données (utile avec ddl-auto)
+      hibernate:
+        ddl-auto: update
+      # ddl-auto: create
+      show-sql: true
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.MySQL8Dialect
+          format_sql: true
+
+# Configuration JWT
+jwt:
+  secret: ${JWT_SECRET:myVeryLongSecretKeyForJWT1234567890123456789012345678901234567890}
+
+eureka:
+  client:
+    enabled: false
+    serviceUrl:
+      defaultZone: http://eureka-server:8761/eureka/
+      #defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+  instance:
+    prefer-ip-address: true
+
+# Configuration du logging
+logging:
+  level:
+    root: INFO #ERROR # Niveau de log par défaut pour toutes les classes non spécifiées
+    org.medilabo: INFO # Niveau INFO pour les classes du package org.medilabo
+    org.medilabo.micropatient: debug # Niveau DEBUG pour les logs spécifiques de l'application micropatient
+    org.springframework.boot.web.embedded.tomcat: INFO # Pour les logs Tomcat embarqué
+    org.springframework.security: DEBUG # Pour les logs détaillés de Spring Security (utile pour JWT)
+    org.springframework.web: DEBUG
+    org.springframework.boot: DEBUG
+
+# Management
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

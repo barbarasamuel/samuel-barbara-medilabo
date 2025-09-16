@@ -1,13 +1,8 @@
 package org.medilabo.microapigateway.web.controller;
 
-import org.medilabo.microapigateway.dto.AuthRequest;
-import org.medilabo.microapigateway.dto.AuthResponse;
-import org.medilabo.microapigateway.dto.RefreshTokenRequest;
 import org.medilabo.microapigateway.web.service.JwtService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import reactor.core.publisher.Mono;
