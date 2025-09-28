@@ -9,7 +9,6 @@ import org.medilabo.micropatient.web.dao.PatientsRepository;
 import org.medilabo.micropatient.web.service.PatientsService;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;

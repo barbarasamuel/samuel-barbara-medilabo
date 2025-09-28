@@ -3,6 +3,8 @@ package org.medilabo.microhisto.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import jakarta.validation.constraints.NotBlank;
+
 
 /**
  *
@@ -15,6 +17,7 @@ public class Histo {
     private String id;
     private Long patId;
     private String patient;
+    @NotBlank(message = "La note est obligatoire")
     private String note;
 
     public String getId() {

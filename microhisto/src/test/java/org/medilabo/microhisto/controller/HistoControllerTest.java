@@ -16,9 +16,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.BindingResult;
+
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class HistoControllerTest {
@@ -105,13 +109,16 @@ public class HistoControllerTest {
         histo.setPatient("Dupont");
         histo.setNote("S'est mis à fumer");
 
+        BindingResult result = mock(BindingResult.class);
+        when(result.hasErrors()).thenReturn(false);
+
         Mockito.when(histoService.insert(histo)).thenReturn(histo);
 
         //Act
-        Histo result = histoController.insert(histo);
+        ResponseEntity<?> response = histoController.insert(histo);//, result);//
 
         //Assert
-        assertEquals(histo, result);
+        assertEquals(histo, response.getBody());
     }
 
     /**

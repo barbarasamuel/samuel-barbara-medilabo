@@ -5,10 +5,12 @@ import org.medilabo.micropatient.model.Patients;
 import org.medilabo.micropatient.web.dao.PatientsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.Optional;
 
+@Validated
 @Service
 public class PatientsService {
     @Autowired

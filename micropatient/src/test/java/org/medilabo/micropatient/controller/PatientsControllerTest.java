@@ -10,13 +10,13 @@ import org.medilabo.micropatient.web.exceptions.PatientIntrouvableException;
 import org.medilabo.micropatient.web.service.PatientsService;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.BindingResult;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -26,6 +26,8 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class PatientsControllerTest {
@@ -42,9 +44,9 @@ public class PatientsControllerTest {
 
     @BeforeEach
     void setUp() {
-        SecurityContext securityContext = Mockito.mock(SecurityContext.class);
-        Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
-        Mockito.when(authentication.getName()).thenReturn("anonymous");
+        SecurityContext securityContext = mock(SecurityContext.class);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        when(authentication.getName()).thenReturn("anonymous");
         SecurityContextHolder.setContext(securityContext);
 
         dateNaissance = Date.from((LocalDate.now().minusYears(60).atStartOfDay(ZoneId.systemDefault()).toInstant()));
@@ -74,7 +76,7 @@ public class PatientsControllerTest {
         patient2.setDateNaissance(dateNaissance);
 
         List<Patients> mockList = List.of(patient1, patient2);
-        Mockito.when(patientsService.findAll()).thenReturn(mockList);
+        when(patientsService.findAll()).thenReturn(mockList);
 
         //Act
         ResponseEntity<List<Patients>> response = patientsController.listePatients();
@@ -99,7 +101,7 @@ public class PatientsControllerTest {
         patient1.setGenre("M");
         patient1.setDateNaissance(dateNaissance);
 
-        Mockito.when(patientsService.findById(200L)).thenReturn(Optional.of(patient1));
+        when(patientsService.findById(200L)).thenReturn(Optional.of(patient1));
 
         //Act
         Patients result = patientsController.afficherDetailPatient(200L);
@@ -116,7 +118,7 @@ public class PatientsControllerTest {
     @Test
     void shouldNotPrintPatientDetailTest() {
         //Arrange
-        Mockito.when(patientsService.findById(99L)).thenReturn(Optional.empty());
+        when(patientsService.findById(99L)).thenReturn(Optional.empty());
 
         //Act and Assert
         assertThrows(PatientIntrouvableException.class, () -> {
@@ -138,8 +140,11 @@ public class PatientsControllerTest {
         patient.setGenre("M");
         patient.setDateNaissance(dateNaissance);
 
+        BindingResult result = mock(BindingResult.class);
+        when(result.hasErrors()).thenReturn(false);
+
         //Act
-        ResponseEntity<Patients> response = patientsController.ajouterPatient(patient);
+        ResponseEntity<?> response = patientsController.ajouterPatient(patient);//,result);
 
         //Assert
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
@@ -161,16 +166,19 @@ public class PatientsControllerTest {
         patient.setGenre("M");
         patient.setDateNaissance(dateNaissance);
 
-        Mockito.when(patientsService.findById(200L)).thenReturn(Optional.of(patient));
-        Mockito.when(patientsService.save(patient)).thenReturn(patient);
+        BindingResult result = mock(BindingResult.class);
+        when(result.hasErrors()).thenReturn(false);
+
+        when(patientsService.findById(200L)).thenReturn(Optional.of(patient));
+        when(patientsService.save(patient)).thenReturn(patient);
         patient.setAdresse("15 rue des alouettes");
 
         //Act
-        ResponseEntity<Patients> response = patientsController.modifierPatient(patient, 200L);
+        ResponseEntity<?> response = patientsController.modifierPatient(200L, patient);//, result);
 
         //Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("15 rue des alouettes", response.getBody().getAdresse());
+        assertEquals("15 rue des alouettes", ((Patients) response.getBody()).getAdresse());
     }
 
     /**
@@ -188,10 +196,13 @@ public class PatientsControllerTest {
         patient.setGenre("M");
         patient.setDateNaissance(dateNaissance);
 
-        Mockito.when(patientsService.findById(200L)).thenReturn(Optional.empty());
+        BindingResult result = mock(BindingResult.class);
+        when(result.hasErrors()).thenReturn(false);
+
+        when(patientsService.findById(200L)).thenReturn(Optional.empty());
 
         //Act
-        ResponseEntity<Patients> response = patientsController.modifierPatient(patient, 200L);
+        ResponseEntity<?> response = patientsController.modifierPatient(200L, patient);//, result);
 
         //Assert
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
@@ -211,7 +222,7 @@ public class PatientsControllerTest {
                 .dateNaissance(dateNaissance)
                 .build();
 
-        Mockito.when(patientsService.getPatientById("1")).thenReturn(dto);
+        when(patientsService.getPatientById("1")).thenReturn(dto);
 
         //Act
         ResponseEntity<PatientsDTO> response = patientsController.getPatient("1");
@@ -224,7 +235,7 @@ public class PatientsControllerTest {
     @Test
     void testGetPatient_notFound() {
         //Arrange
-        Mockito.when(patientsService.getPatientById("999")).thenThrow(new RuntimeException());
+        when(patientsService.getPatientById("999")).thenThrow(new RuntimeException());
 
         //Act
         ResponseEntity<PatientsDTO> response = patientsController.getPatient("999");

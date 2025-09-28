@@ -47,6 +47,11 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
+    /**
+     *
+     * To generate the token
+     *
+     */
     public String generateToken(String username, List<String> roles) {
         Date now = new Date();
         Date expiry = new Date(now.getTime() + 1000 * 60 * 60 * 24); // 24h
@@ -60,18 +65,15 @@ public class JwtService {
                 .compact();
     }
 
-    public String generateToken(String username) {
-        return generateToken(new HashMap<>(), username);
-    }
-
-    public String generateToken(Map<String, Object> extraClaims, String username) {
-        return buildToken(extraClaims, username, jwtExpiration);
-    }
-
     public String generateRefreshToken(String username) {
         return buildToken(new HashMap<>(), username, refreshExpiration);
     }
 
+    /**
+     *
+     * To generate the refresh token
+     *
+     */
     private String buildToken(
             Map<String, Object> extraClaims,
             String username,
@@ -86,11 +88,11 @@ public class JwtService {
                 .compact();
     }
 
-    public boolean isTokenValid(String token, String username) {
-        final String extractedUsername = extractUsername(token);
-        return (extractedUsername.equals(username)) && !isTokenExpired(token);
-    }
-
+    /**
+     *
+     * To verify whether the token is expired
+     *
+     */
     public boolean isTokenValid(String token) {
         try {
             return !isTokenExpired(token);

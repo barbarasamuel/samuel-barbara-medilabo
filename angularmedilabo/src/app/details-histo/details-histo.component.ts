@@ -21,6 +21,8 @@ export class DetailsHistoComponent {
     @Input() histo!: Histo;
     isReadOnly = false;
     responseData!: Histo;
+    // Propriété pour stocker les erreurs
+    validationErrors: { [key: string]: string } = {};
 
     constructor(private router: Router, private formBuilder: FormBuilder,private route: ActivatedRoute,
       private histoService: HistoService) { 
@@ -73,23 +75,48 @@ export class DetailsHistoComponent {
           }
   
           onSave() {
-            if (this.histoForm.invalid) return;
-  
+            // Réinitialiser les erreurs précédentes
+            this.validationErrors = {};
+            
             const noteData = this.histoForm.value;
-   
+
             console.log(noteData);
             this.histo = noteData;  
             
             console.log(this.mode);
             if (this.mode === 'create') {
-        
+
               console.log(this.histo);
-              this.histoService.postAddHisto(this.histo).subscribe((response) => {
-                console.log('Nouvelle note créée:', response);
-                this.router.navigate(['/liste-histo', this.histo.patId, this.histo.patient]);
-            });
+              this.histoService.postAddHisto(this.histo).subscribe({
+                next: (response) => {
+                  console.log('Nouvelle note créée:', response);
+                  // Redirection seulement en cas de succès
+                  this.router.navigate(['/liste-histo', this.histo.patId, this.histo.patient]);
+                },
+                error: (error) => {
+                  console.error('Erreur lors de l\'ajout de la note:', error);
+                  
+                  // Vérifier si c'est une erreur de validation (400)
+                  if (error.status === 400 && error.error) {
+                    this.validationErrors = error.error;
+                    console.log('Erreurs de validation:', this.validationErrors);
+                  } else {
+                    // Autres types d'erreurs
+                    this.validationErrors = { general: 'Une erreur est survenue lors de l\'ajout de la note.' };
+                  }
+                }
+              });
             }
-            
+          }
+
+          // Méthode utilitaire pour récupérer l'erreur d'un champ spécifique
+          getFieldError(fieldName: string): string | null {
+            return this.validationErrors[fieldName] || null;
+          }
+          
+          // Méthode pour vérifier si un champ a une erreur
+          hasFieldError(fieldName: string): boolean {
+            return !!this.validationErrors[fieldName];
           }
 
           onGoBack(){

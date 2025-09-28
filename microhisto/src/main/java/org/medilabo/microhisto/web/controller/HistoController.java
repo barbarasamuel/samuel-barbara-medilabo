@@ -5,13 +5,16 @@ import org.medilabo.microhisto.model.Histo;
 import org.medilabo.microhisto.web.service.HistoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import jakarta.validation.Valid;
 import java.util.List;
 
 @RestController
+@Validated
 @RequestMapping("/hist")
 //@CrossOrigin(origins = {"http://localhost","http://localhost:8080","http://localhost:4200"})
 public class HistoController {
@@ -54,13 +57,16 @@ public class HistoController {
      *
      */
     @PostMapping(value = "/creation")
-    public Histo insert(@RequestBody Histo histo) {
+    public ResponseEntity<?> insert(@RequestBody @Valid Histo histo) {
 
         // Récupérer l'utilisateur authentifié
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
 
-        return histoService.insert(histo);
+        // Enregistrer l'histo
+        Histo savedHisto = histoService.insert(histo);
+
+        return ResponseEntity.ok(savedHisto);
 
     }
 

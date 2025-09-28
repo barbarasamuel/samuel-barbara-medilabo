@@ -13,50 +13,75 @@
         </div>
         <div>
             <label for="nom">Nom</label>
-            <input type="text" id="nom" formControlName="nom" placeholder="Dupont" required />
+            <!--<input type="text" id="nom" formControlName="nom" placeholder="Dupont" required />-->
+            <input type="text" id="nom" formControlName="nom" [class.is-invalid]="hasFieldError('nom')" placeholder="Dupont" required />
         </div>
-        <div *ngIf="patientForm.controls['nom'].invalid && patientForm.controls['nom'].touched">
+        <div *ngIf="hasFieldError('nom')">
+            {{ getFieldError('nom') }}
+        </div>
+        <!--<div *ngIf="patientForm.controls['nom'].invalid && patientForm.controls['nom'].touched">
             Merci de saisir un nom.
-        </div>
+        </div>-->
         <div>
             <label for="prenom">Prénom</label>
-            <input type="text" id="prenom" formControlName="prenom" placeholder="Michel" required />
+            <!--<input type="text" id="prenom" formControlName="prenom" placeholder="Michel" required />-->
+            <input type="text" id="prenom" formControlName="prenom" [class.is-invalid]="hasFieldError('prenom')" placeholder="Michel" required />
+            
         </div>
-         <div *ngIf="patientForm.controls['prenom'].invalid && patientForm.controls['prenom'].touched">
+        <!-- Message d'erreur du backend -->
+        <div *ngIf="hasFieldError('prenom')">
+            {{ getFieldError('prenom') }}
+        </div>
+        <!--<div *ngIf="!hasFieldError('prenom') && patientForm.get('prenom')?.invalid && patientForm.get('prenom')?.touched" class="text-danger">
+        Merci de saisir un prénom.
+        </div>-->
+        <!-- <div *ngIf="patientForm.controls['prenom'].invalid && patientForm.controls['prenom'].touched">
             Merci de saisir un prénom.
-        </div>
+        </div>-->
         <div *ngIf="mode === 'edit'">
             <label for="date-naissance">Date de naissance</label><!---->
             <input type="date" id="date-naissance" formControlName="dateNaissance" name="date-naissance" required />
         </div>
         <div *ngIf="mode === 'create'">
             <label for="date-naissance">Date de naissance</label>
-              <input type="text" id="date-naissance" formControlName="dateNaissance" placeholder="jj/MM/yyyy" name="date-naissance" required />
-        </div>
+              <input type="text" id="date-naissance" formControlName="dateNaissance" placeholder="yyyy-mm-jj" name="date-naissance" required />
+        </div><!--placeholder="jj/MM/yyyy"-->-->
          <div *ngIf="patientForm.controls['dateNaissance'].invalid && patientForm.controls['dateNaissance'].touched">
-            Format invalide. Utilisez jj/MM/yyyy.
+            Format invalide. Utilisez yyyy-mm-jj.
         </div>
         <div>
             <label for="genre">Genre</label>
-            <select formControlName="genre" id="genre" required>
+            <!--<select formControlName="genre" id="genre" required></select>-->
+            <select formControlName="genre" id="genre" [class.is-invalid]="hasFieldError('genre')" required>
                 <option value="F">Féminin</option>
                 <option value="M">Masculin</option>
             </select>
         </div>
-        <div *ngIf="patientForm.controls['genre'].invalid && patientForm.controls['genre'].touched">
-            Merci de sélectionner un genre.
+        <div *ngIf="hasFieldError('genre')">
+            {{ getFieldError('genre') }}
         </div>
+        <!--<div *ngIf="patientForm.controls['genre'].invalid && patientForm.controls['genre'].touched">
+            Merci de sélectionner un genre.
+        </div>-->
         <div>
             <label for="adresse">Adresse</label>
-            <input type="text" id="adresse" formControlName="adresse" placeholder="123 Rue de Paris" name="adresse"/>
+            <!--<input type="text" id="adresse" formControlName="adresse" placeholder="123 Rue de Paris" name="adresse"/>-->
+            <input type="text" id="adresse" formControlName="adresse" [class.is-invalid]="hasFieldError('adresse')" placeholder="123 Rue de Paris" name="adresse"/>
+        </div>
+        <div *ngIf="hasFieldError('adresse')">
+            {{ getFieldError('adresse') }}
         </div>
         <div>
             <label for="telephone">Numéro de téléphone</label>
-            <input type="text" id="telephone" formControlName="telephone" placeholder="123-123-1234" name="telephone"/>
+            <!--<input type="text" id="telephone" formControlName="telephone" placeholder="123-123-1234" name="telephone"/>-->
+            <input type="text" id="telephone" formControlName="telephone" [class.is-invalid]="hasFieldError('telephone')" placeholder="123-123-1234" name="telephone"/>
         </div>
+        <div *ngIf="hasFieldError('telephone')">
+            {{ getFieldError('telephone') }}
+        </div><!--
         <div *ngIf="patientForm.controls['telephone'].invalid && patientForm.controls['telephone'].touched">
             Merci de saisir un numéro de téléphone au format suivant: 123-123-1234
-        </div>
+        </div>-->
         <div>
             <button type="submit" [disabled]="patientForm.invalid">Enregistrer ({{ patientForm.invalid ? 'invalide' : 'valide' }})</button>
         </div>

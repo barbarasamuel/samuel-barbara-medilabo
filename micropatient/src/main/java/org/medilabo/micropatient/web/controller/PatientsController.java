@@ -6,6 +6,7 @@ import org.medilabo.micropatient.web.exceptions.PatientIntrouvableException;
 import org.medilabo.micropatient.web.service.PatientsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.security.core.Authentication;
@@ -13,11 +14,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
+@Validated
 @RequestMapping("/patients")
 //@CrossOrigin(origins = {"http://localhost","http://localhost:8080","http://localhost:4200"})
 public class PatientsController {
@@ -67,7 +70,8 @@ public class PatientsController {
      *
      */
     @PostMapping("")
-    public ResponseEntity<Patients> ajouterPatient(@RequestBody Patients patient) {
+    public ResponseEntity<?> ajouterPatient(@RequestBody @Valid Patients patient) {
+
         // Récupérer l'utilisateur authentifié
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
@@ -92,7 +96,8 @@ public class PatientsController {
      *
      */
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Patients> modifierPatient(@RequestBody Patients patient,@PathVariable Long id) {
+    public ResponseEntity<?> modifierPatient(@PathVariable Long id, @RequestBody @Valid Patients patient) {
+
         // Récupérer l'utilisateur authentifié
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();

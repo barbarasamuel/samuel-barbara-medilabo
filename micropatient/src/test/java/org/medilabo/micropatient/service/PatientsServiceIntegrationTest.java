@@ -1,6 +1,5 @@
 package org.medilabo.micropatient.service;
 
-import org.medilabo.micropatient.web.service.JwtValidationService;
 import org.junit.jupiter.api.Test;
 import org.medilabo.micropatient.model.Patients;
 import org.medilabo.micropatient.web.dao.PatientsRepository;
@@ -26,9 +25,6 @@ public class PatientsServiceIntegrationTest {
 
     @Autowired
     private PatientsRepository patientsRepository;
-
-    @MockBean
-    private JwtValidationService jwtValidationService;
 
     @MockBean
     private SecurityFilterChain securityFilterChain;

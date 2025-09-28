@@ -1,10 +1,5 @@
 package org.medilabo.micropatient.config;
 
-import org.medilabo.micropatient.filter.JwtAuthenticationFilter;
-import org.medilabo.micropatient.config.CorsConfig;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -13,12 +8,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-//import org.springframework.web.cors.CorsConfiguration;
-//import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.List;
 
 /**
  *
@@ -44,7 +33,7 @@ public class SecurityConfig {
                     auth.requestMatchers(HttpMethod.POST, "/patients").hasAuthority("ROLE_ANONYMOUS");
                     auth.requestMatchers(HttpMethod.PUT, "/patients/**").hasAuthority("ROLE_ANONYMOUS");
 
-                    // Autoriser l'accès non authentifié au endpoint qui fournit le token anonyme
+                    // Autoriser l'accès non authentifié à cet endpoint qui fournit le token anonyme
                     auth.requestMatchers("/auth/anonymous").permitAll();
 
                     // Toute autre requête nécessite une authentification

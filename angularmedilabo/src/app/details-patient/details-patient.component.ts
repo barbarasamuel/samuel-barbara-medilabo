@@ -17,6 +17,8 @@ import { JsonPipe,NgIf, DatePipe } from '@angular/common'; //CommonModule,
 export class DetailsPatientComponent implements OnInit{
   patients$!: Observable<Patient>;
   note : string = '';
+  // Propriété pour stocker les erreurs
+  validationErrors: { [key: string]: string } = {};
 
   patientForm!: FormGroup;
   @Input() mode: 'create' | 'edit' | 'view' = 'view';
@@ -86,40 +88,76 @@ export class DetailsPatientComponent implements OnInit{
     });
   }
 
-
-  onSave(){
-
-    //console.log(this.patientForm.get('genre')?.errors);
-    if (this.patientForm.invalid) return;
+  onSave() {
+    // Réinitialiser les erreurs précédentes
+    this.validationErrors = {};
+    
     const patientData: Patient = this.patientForm.value;
 
     if (this.mode === 'create') {
-
       const formValue = this.patientForm.value;
 
-      // Convertir la date (ex: '2025-06-11') → objet Date → JSON
+      // Convertir la date
       const date = new Date(formValue.dateNaissance);
-      const dateJson = date.toISOString(); // ← format JSON correct
+      const dateJson = date.toISOString();
 
       const patientData: Patient = {
         ...formValue,
-        dateNaissance: dateJson  // remplace la date brute par format JSON
+        dateNaissance: dateJson
       };
 
-      this.patientsService.addPatient(patientData).subscribe((response) => {
-                console.log('Nouveau patient:', response);
-            });
+      this.patientsService.addPatient(patientData).subscribe({
+        next: (response) => {
+          console.log('Nouveau patient:', response);
+          // Redirection seulement en cas de succès
+          setTimeout(() => {
+            this.router.navigate(['/liste-patients']);
+          }, 100);
+        },
+        error: (error) => {
+          console.error('Erreur lors de l\'ajout:', error);
+          
+          // Vérifier si c'est une erreur de validation (400)
+          if (error.status === 400 && error.error) {
+            this.validationErrors = error.error;
+            console.log('Erreurs de validation:', this.validationErrors);
+          } else {
+            // Autres types d'erreurs
+            this.validationErrors = { general: 'Une erreur est survenue lors de l\'ajout du patient.' };
+          }
+        }
+      });
+      
     } else if (this.mode === 'edit') {
-
-      this.patientsService.updatePatient(patientData).subscribe((response) => {
-                console.log('Patient mis à jour:', response);
-        });
+      this.patientsService.updatePatient(patientData).subscribe({
+        next: (response) => {
+          console.log('Patient mis à jour:', response);
+          // Redirection seulement en cas de succès
+          setTimeout(() => {
+            this.router.navigate(['/liste-patients']);
+          }, 100);
+        },
+        error: (error) => {
+          console.error('Erreur lors de la mise à jour:', error);
+          
+          if (error.status === 400 && error.error) {
+            this.validationErrors = error.error;
+          } else {
+            this.validationErrors = { general: 'Une erreur est survenue lors de la mise à jour du patient.' };
+          }
+        }
+      });
     }
+  }
 
-    setTimeout(() => {
-      this.router.navigate(['/liste-patients']);
-    }, 100);
-
+    // Méthode utilitaire pour récupérer l'erreur d'un champ spécifique
+  getFieldError(fieldName: string): string | null {
+    return this.validationErrors[fieldName] || null;
+  }
+  
+  // Méthode pour vérifier si un champ a une erreur
+  hasFieldError(fieldName: string): boolean {
+    return !!this.validationErrors[fieldName];
   }
 
   formatDateJsonForDatetimeLocal(dateString: string): string {

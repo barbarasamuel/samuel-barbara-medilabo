@@ -7,7 +7,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.server.ServerWebExchange;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,11 +16,9 @@ import io.jsonwebtoken.JwtException;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.MediaType;
-import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import reactor.core.publisher.Mono;
 import java.util.List;
-import java.util.Map;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -54,7 +51,7 @@ public class JwtAuthenticationGatewayFilterFactory extends AbstractGatewayFilter
                 return chain.filter(exchange);
             }
 
-            // Sinon, logique JWT classique
+            // Si header vide ou ne contenant pas Bearer en début
             List<String> authHeaders = exchange.getRequest().getHeaders().getOrEmpty(HttpHeaders.AUTHORIZATION);
             if (authHeaders.isEmpty() || !authHeaders.get(0).startsWith("Bearer ")) {
                 return unauthorized(exchange);
@@ -75,11 +72,21 @@ public class JwtAuthenticationGatewayFilterFactory extends AbstractGatewayFilter
     }
 
 
+    /**
+     *
+     * To set an unauthorized status code
+     *
+     */
     private Mono<Void> unauthorized(ServerWebExchange exchange) {
         exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
         return exchange.getResponse().setComplete();
     }
 
+    /**
+     *
+     * To authenticate the request
+     *
+     */
     private Mono<Void> authenticateRequest(ServerWebExchange exchange, GatewayFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
         String authHeader = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
@@ -114,6 +121,11 @@ public class JwtAuthenticationGatewayFilterFactory extends AbstractGatewayFilter
         return authHeader.substring(BEARER_PREFIX.length());
     }
 
+    /**
+     *
+     * To validate then process the token
+     *
+     */
     private Mono<Void> validateAndProcessToken(ServerWebExchange exchange, GatewayFilterChain chain, String token) {
         if (!jwtService.isTokenValid(token)) {
             log.warn("Token invalide détecté");

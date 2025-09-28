@@ -3,7 +3,6 @@ package org.medilabo.microrisque.controller;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.medilabo.microrisque.web.controller.RisqueController;
-import org.medilabo.microrisque.web.service.JwtValidationService;
 import org.medilabo.microrisque.web.service.RisqueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -34,9 +33,6 @@ public class RisqueControllerMockMvcTest {
 
     @MockBean
     private RisqueService risqueService;
-
-    @MockBean
-    private JwtValidationService jwtValidationService;
 
     @TestConfiguration
     static class TestSecurityConfig {

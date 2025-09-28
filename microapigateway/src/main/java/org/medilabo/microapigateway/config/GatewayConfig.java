@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
- * Gateway configuration
+ * Gateway configuration (manage the routes)
  *
  */
 @Configuration

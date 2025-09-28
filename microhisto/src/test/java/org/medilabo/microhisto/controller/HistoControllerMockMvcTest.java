@@ -2,7 +2,6 @@ package org.medilabo.microhisto.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.medilabo.microhisto.dto.HistoriqueDTO;
-import org.medilabo.microhisto.web.service.JwtValidationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.medilabo.microhisto.model.Histo;
@@ -39,9 +38,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class HistoControllerMockMvcTest {
     @Autowired
     private MockMvc mockMvc;
-
-    @MockBean
-    private JwtValidationService jwtValidationService;
 
     @MockBean
     private HistoService histoService;

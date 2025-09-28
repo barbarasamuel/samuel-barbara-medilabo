@@ -18,11 +18,15 @@
         </div>
         <div>
             <label for="note">Note</label>
-            <input type="text" id="note" formControlName="note" placeholder="Le patient a arrêté de fumer" name="note" required />
+            <!--<input type="text" id="note" formControlName="note" placeholder="Le patient a arrêté de fumer" name="note" required />-->
+            <input type="text" id="note" formControlName="note" [class.is-invalid]="hasFieldError('note')" placeholder="Le patient a arrêté de fumer" name="note" required />
         </div>
-        <!----><div *ngIf="histoForm.controls['note'].invalid && histoForm.controls['note'].touched">
+        <div *ngIf="hasFieldError('note')">
+            {{ getFieldError('note') }}
+        </div>
+        <!--<div *ngIf="histoForm.controls['note'].invalid && histoForm.controls['note'].touched">
             Merci de saisir la note pour le patient.
-        </div>
+        </div>-->
         <div *ngIf="mode === 'create'">
             <button type="submit" [disabled]="histoForm.invalid">Enregistrer</button>
         </div>

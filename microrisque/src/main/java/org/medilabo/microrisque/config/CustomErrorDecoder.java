@@ -3,6 +3,11 @@ package org.medilabo.microrisque.config;
 import feign.Response;
 import feign.codec.ErrorDecoder;
 
+/**
+ *
+ * To manage the errors
+ *
+ */
 public class CustomErrorDecoder  implements ErrorDecoder {
     @Override
     public Exception decode(String methodKey, Response response) {

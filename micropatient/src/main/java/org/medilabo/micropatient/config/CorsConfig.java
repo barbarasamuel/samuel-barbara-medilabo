@@ -15,7 +15,7 @@ import java.util.List;
  *
  * Mécanisme de sécurité des navigateurs qui empêche par défaut un frontend
  * (ex: Angular sur localhost:4200) de faire des requêtes vers un backend
- * hébergé sur un autre domaine
+ * hébergé sur un domaine non énuméré
  *
  */
 @Configuration
